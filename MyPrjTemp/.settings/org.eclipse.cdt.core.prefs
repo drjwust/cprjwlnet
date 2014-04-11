@@ -1,0 +1,15 @@
+eclipse.preferences.version=1
+environment/project/rt_thread.configuration.id/PATH/delimiter=;
+environment/project/rt_thread.configuration.id/PATH/operation=replace
+environment/project/rt_thread.configuration.id/PATH/value=D\:/ProgramFiles/eclipse/utils;C\:\\Program Files (x86)\\CodeSourcery\\Sourcery_CodeBench_Lite_for_ARM_EABI\\arm-none-eabi\\bin;G\:\\\u5DE5\u5177\u4E0E\u8F6F\u4EF6\\openocd-0.7.0\\bin-x64;C\:\\Program Files (x86)\\CodeSourcery\\Sourcery_CodeBench_Lite_for_ARM_EABI\\bin;C\:\\Python27\\Scripts;C\:\\Program Files (x86)\\CodeSourcery\\Sourcery_CodeBench_Lite_for_ARM_EABI\\bin;C\:\\Windows\\system32;C\:\\Windows;C\:\\Windows\\System32\\Wbem;C\:\\Windows\\System32\\WindowsPowerShell\\v1.0\\;C\:\\Program Files\\Broadcom\\Broadcom 802.11 Network Adapter\\Driver;C\:\\Program Files (x86)\\Microsoft SQL Server\\100\\Tools\\Binn\\;C\:\\Program Files\\Microsoft SQL Server\\100\\Tools\\Binn\\;C\:\\Program Files\\Microsoft SQL Server\\100\\DTS\\Binn\\;C\:\\Program Files (x86)\\ICBCEbankTools\\Gemplus\\GemSafe Libraries\\BIN\\;C\:\\Program Files (x86)\\Java\\jre6\\bin;D\:\\Program Files\\eclipse\\plugins\\Yagarto\\yagarto-tools-20100703\\bin;D\:\\Program Files\\eclipse\\plugins\\Yagarto\\bin;D\:\\ProgramFiles\\eclipse\\plugins\\Yagarto\\bin;D\:\\ProgramFiles\\eclipse\\plugins\\Yagarto\\yagarto-tools-20100703\\bin;D\:\\ProgramFiles\\MATLAB\\runtime\\win64;D\:\\ProgramFiles\\MATLAB\\bin;D\:\\ProgramFiles\\MPLAB\\MPLAB C32 Suite\\bin;%HTC_PIC%\\BIN;C\:\\Program Files\\TortoiseSVN\\bin;C\:\\Program Files (x86)\\VisualSVN Server\\bin;G\:\\\u5DE5\u5177\u4E0E\u8F6F\u4EF6\\openocd-0.7.0\\bin-x64;C\:\\Program Files (x86)\\ATMEL Corporation\\AT91-ISP v1.13\\Library\\;C\:\\Program Files (x86)\\ATMEL Corporation\\AT91-ISP v1.13\\sam-ba 2.9;C\:\\Program Files\\Java\\jre7\\bin;C\:\\Program Files (x86)\\SEGGER\\JLinkARM_V434;C\:\\Program Files (x86)\\CodeSourcery\\Sourcery_CodeBench_Lite_for_ARM_EABI\\bin
+environment/project/rt_thread.configuration.id/RTT_CC/delimiter=;
+environment/project/rt_thread.configuration.id/RTT_CC/operation=replace
+environment/project/rt_thread.configuration.id/RTT_CC/value=gcc
+environment/project/rt_thread.configuration.id/RTT_EXEC_PATH/delimiter=;
+environment/project/rt_thread.configuration.id/RTT_EXEC_PATH/operation=replace
+environment/project/rt_thread.configuration.id/RTT_EXEC_PATH/value=C\:\\Program Files (x86)\\CodeSourcery\\Sourcery_CodeBench_Lite_for_ARM_EABI\\arm-none-eabi\\bin
+environment/project/rt_thread.configuration.id/RTT_ROOT/delimiter=;
+environment/project/rt_thread.configuration.id/RTT_ROOT/operation=replace
+environment/project/rt_thread.configuration.id/RTT_ROOT/value=H\:\\RT-Thread
+environment/project/rt_thread.configuration.id/append=true
+environment/project/rt_thread.configuration.id/appendContributed=true
