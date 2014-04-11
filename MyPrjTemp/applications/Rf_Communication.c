@@ -22,9 +22,10 @@ void rf_thread_entry(void *para)
 	halRfReceiveEnable();
 	while (1)
 	{
-		pRfData = rt_malloc(sizeof(RF_DATA));
-		halRfReceivePacket((uint8_t* )pRfData, sizeof(RF_DATA));	// Transmit Tx buffer data
-		if (pRfData->dst_addr == 20)
+		leng = sizeof(RF_DATA);
+		pRfData = rt_malloc(leng);
+		halRfReceivePacket((uint8_t* )pRfData, &leng);	// Transmit Tx buffer data
+		if (pRfData->dst_addr == 12)
 		{
 			rt_thread_delay(600);
 			rt_hw_led_off(2);
