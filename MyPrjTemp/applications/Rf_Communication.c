@@ -20,10 +20,11 @@ void rf_thread_entry(void *para)
 	halSpiReadStatus(CCxxx0_VERSION);
 
 	halRfReceiveEnable();
+	leng = sizeof(RF_DATA);
+	pRfData = rt_malloc(leng);
+
 	while (1)
 	{
-		leng = sizeof(RF_DATA);
-		pRfData = rt_malloc(leng);
 		halRfReceivePacket((uint8_t* )pRfData, &leng);	// Transmit Tx buffer data
 		if (pRfData->dst_addr == 12)
 		{
