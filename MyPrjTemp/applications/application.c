@@ -69,9 +69,10 @@ void thread_init_entry(void* parameter)
 		}
 #endif
 	}
+	user_data_init();
 #endif
 
-	user_data_init();
+
 
 #ifdef RT_USING_RTGUI
 	{

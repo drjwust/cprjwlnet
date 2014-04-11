@@ -6,7 +6,7 @@
  */
 
 #include <includes.h>
-
+#ifdef RT_USING_DFS
 void user_data_init(void)
 {
 	uint16_t i;
@@ -112,3 +112,4 @@ void user_data_init(void)
 	write(fd,buffer,num);
 	close(fd);
 }
+#endif
