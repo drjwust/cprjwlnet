@@ -53,6 +53,8 @@ APP_EXT uint16_t ErrorNodeNums;		//异常节点个数
 APP_EXT uint16_t NodeInNets;		//已搜索到的节点
 APP_EXT NODE_LIST * NodeList;
 
+APP_EXT struct rt_event rf_event;
+
 
 
 #endif /* VARA_DEFINE_H_ */

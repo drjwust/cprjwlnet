@@ -10,7 +10,7 @@
 uint8_t PaTabel[8] =
 { 0x60, 0x60, 0x60, 0x60, 0x60, 0x60, 0x60, 0x60 };
 
-void rf_thread_entry(void *para)
+static void rf_thread_entry(void *para)
 {
 	uint8_t leng = 0;
 	uint8_t tf = 0;
@@ -36,3 +36,18 @@ void rf_thread_entry(void *para)
 		}
 	}
 }
+
+void rf_thread_init(void)
+{
+	rt_thread_t init_thread;
+
+	rt_event_init(&rf_event,"rf",RT_IPC_FLAG_FIFO);
+	init_thread = rt_thread_create("rf", rf_thread_entry, RT_NULL, 2048,
+			8, 20);
+	if (init_thread != RT_NULL)
+	{
+		rt_thread_startup(init_thread);
+	}
+}
+
+

@@ -330,6 +330,21 @@ void EXTI2_IRQHandler(void)
 	{
 		EXTI_ClearITPendingBit(EXTI_Line2);
 	}
+	rt_interrupt_leave();
+}
+
+void EXTI9_5_IRQHandler(void)
+{
+	rt_interrupt_enter();
+	if (EXTI_GetFlagStatus(EXTI_Line6) == SET)	//
+	{
+		EXTI_ClearITPendingBit(EXTI_Line6);
+	}
+	if (EXTI_GetFlagStatus(EXTI_Line8) == SET)	//
+	{
+		Pen_IRQHandler();
+	}
+	rt_interrupt_leave();
 }
 
 #if defined(RT_USING_DFS) && STM32_USE_SDIO
