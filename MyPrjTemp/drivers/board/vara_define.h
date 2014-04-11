@@ -35,6 +35,19 @@ typedef struct node_list
 	uint16_t error_num;
 } NODE_LIST;
 
+typedef struct rf_packet{
+	uint16_t dst_addr;
+	uint16_t src_addr;
+	uint16_t temperature;
+	uint8_t state;
+}RF_DATA;
+
+typedef struct rf_ack{
+	uint16_t dst_addr;
+	uint16_t src_addr;
+	uint8_t ack;
+}RF_ACK;
+
 APP_EXT uint16_t NodeNums;			//测温节点个数
 APP_EXT uint16_t ErrorNodeNums;		//异常节点个数
 APP_EXT uint16_t NodeInNets;		//已搜索到的节点
