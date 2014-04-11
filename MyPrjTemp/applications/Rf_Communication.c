@@ -19,22 +19,7 @@ void rf_thread_entry(void *para)
 	rf_init();
 	halSpiWriteBurstReg(CCxxx0_PATABLE, PaTabel, 8);
 	halSpiReadStatus(CCxxx0_VERSION);
-#if 0
-	halRfReceiveEnable();
-	while (1)
-	{
-		leng = 8;
-		halRfReceivePacket(RxBuf, leng);	// Transmit Tx buffer data
-		if (RxBuf[0] == 0x01)
-		{
-			rt_thread_delay(600);
-			rt_hw_led_off(2);
-			rt_thread_delay(600);
-			rt_hw_led_on(2);
-			RxBuf[0] = 0;
-		}
-	}
-#else
+
 	halRfTransmitEnable();
 	pRfData = rt_malloc(sizeof(RF_DATA));
 	pRfData->dst_addr = 12;
@@ -44,11 +29,10 @@ void rf_thread_entry(void *para)
 	while (1)
 	{
 		leng=8;
-		halRfSendPacket(&pRfData,sizeof(RF_DATA));	// Transmit Tx buffer data
+		halRfSendPacket(pRfData,sizeof(RF_DATA));	// Transmit Tx buffer data
 		rt_thread_delay(300);
 		rt_hw_led_on(2);
 		rt_thread_delay(300);
 		rt_hw_led_off(2);
 	}
-#endif
 }
