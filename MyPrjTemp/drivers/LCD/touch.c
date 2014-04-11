@@ -419,7 +419,7 @@ static void touch_thread_entry(void *parameter)
 	} /* thread while(1) */
 }
 
-void EXTI9_5_IRQHandler(void)
+void Pen_IRQHandler(void)
 {
 	/* disable interrupt */
 	touch_int_cmd(DISABLE);
