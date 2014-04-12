@@ -16,14 +16,14 @@
 
 typedef struct node_data
 {
-	int16_t num;
-	char temperature;
-	char state;
-	char signal_intensity;
+	uint16_t num;
+	uint16_t temperature;
 	long address;
 	long name;
-	char relative_alarm_value;
-	char abs_alram_value;
+	uint8_t state;
+	uint8_t signal_intensity;
+	uint8_t relative_alarm_value;
+	uint8_t abs_alram_value;
 } NODE_DATA;
 
 typedef struct node_list
@@ -41,12 +41,6 @@ typedef struct rf_packet{
 	uint16_t temperature;
 	uint8_t state;
 }RF_DATA;
-
-typedef struct rf_ack{
-	uint16_t dst_addr;
-	uint16_t src_addr;
-	uint8_t ack;
-}RF_ACK;
 
 APP_EXT uint16_t NodeNums;			//测温节点个数
 APP_EXT uint16_t ErrorNodeNums;		//异常节点个数
