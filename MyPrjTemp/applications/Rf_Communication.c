@@ -12,7 +12,7 @@ uint8_t PaTabel[8] =
 
 static void rf_thread_entry(void *para)
 {
-	uint8_t leng = 0, state, filedata[100];
+	uint8_t leng = 0, state, filedata[200];
 	RF_DATA * pRfData;
 	int fd, node;
 	time_t now;
@@ -41,7 +41,7 @@ static void rf_thread_entry(void *para)
 			NodeList->node[node].temperature = pRfData->temperature & 0X3F;	//低10位数据为温度
 			NodeList->node[node].state = pRfData->state;
 			now = time(RT_NULL), tmp = localtime(&now);
-			rt_sprintf(filedata, "%d\t%d\t%d\t%d\t%d\t\t%d年%d月%d日\t%d:%d\n",
+			rt_sprintf(filedata, "\n%d\t%d\t%d\t%d\t%d\t%d年%d月%d日\t%d:%d",
 					node, NodeList->node[node].temperature,
 					NodeList->node[node].state,
 					NodeList->node[node].relative_alarm_value,
