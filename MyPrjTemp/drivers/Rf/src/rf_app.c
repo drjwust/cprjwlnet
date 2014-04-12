@@ -185,13 +185,13 @@ uint8_t halRfReceivePacket(uint8_t *rxBuffer, uint8_t *length)
 
 //    halSpiStrobe(CCxxx0_SRX);		//进入接收状态
 //	delay(2);
-	while (GDO0)
-	{
-		delay(2);
-		--i;
-		if(i<1)
-		   return 0;
-	}
+//	while (GDO0)
+//	{
+//		delay(2);
+//		--i;
+//		if(i<1)
+//		   return 0;
+//	}
     if ((halSpiReadStatus(CCxxx0_RXBYTES) & BYTES_IN_RXFIFO)) //如果接的字节数不为0
 	{
         packetLength = halSpiReadReg(CCxxx0_RXFIFO);//读出第一个字节，此字节为该帧数据长度

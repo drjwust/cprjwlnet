@@ -30,10 +30,19 @@ static void rf_thread_entry(void *para)
 		halRfReceivePacket((uint8_t* )pRfData, &leng);	// Transmit Tx buffer data
 		if (pRfData->dst_addr == 12)
 		{
+			rt_kprintf("received data\n");
+			if (state == RESET)
+			{
+				state = SET;
+			}
+			else
+			{
+				state = RESET;
+			}
 			rt_hw_led_set_state(2,state);
 			pRfData->dst_addr =0;
-			state = !state;
 		}
+//		rt_thread_delay(300);
 	}
 }
 

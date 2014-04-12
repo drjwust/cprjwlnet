@@ -29,6 +29,7 @@ static void io_port_init(void)
 	GPIO_Init(GPIOD, &GPIO_InitStructure);
 
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
+	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6;
 	GPIO_Init(GPIOB, &GPIO_InitStructure);
 
@@ -54,6 +55,8 @@ static void io_port_init(void)
 		EXTI_InitStructure.EXTI_LineCmd = ENABLE;
 		EXTI_ClearITPendingBit(EXTI_Line6);
 		EXTI_Init(&EXTI_InitStructure);
+
+		SYSCFG_EXTILineConfig(EXTI_PortSourceGPIOB, EXTI_PinSource6);
 	}
 }
 
@@ -106,7 +109,7 @@ void SpiInit(void)
 	SPI_InitStructure.SPI_CPOL = SPI_CPOL_Low;
 	SPI_InitStructure.SPI_CPHA = SPI_CPHA_1Edge;
 	SPI_InitStructure.SPI_NSS = SPI_NSS_Soft;
-	SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_256;
+	SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_64;
 	SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_MSB;
 	SPI_InitStructure.SPI_CRCPolynomial = 7;
 	SPI_Init(SPI3, &SPI_InitStructure);
