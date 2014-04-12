@@ -45,7 +45,7 @@ typedef struct rf_packet{
 APP_EXT uint16_t NodeNums;			//测温节点个数
 APP_EXT uint16_t ErrorNodeNums;		//异常节点个数
 APP_EXT uint16_t NodeInNets;		//已搜索到的节点
-APP_EXT NODE_LIST * NodeList;
+APP_EXT volatile NODE_LIST * NodeList;
 
 APP_EXT struct rt_semaphore rf_sem;
 
