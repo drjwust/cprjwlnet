@@ -12,7 +12,7 @@ uint8_t PaTabel[8] =
 
 static void rf_thread_entry(void *para)
 {
-	uint8_t leng = 0, state, filedata[200];
+	uint8_t leng = 0, state, filedata[200],crc_state;
 	RF_DATA * pRfData;
 	int fd, node;
 	time_t now;
@@ -34,8 +34,8 @@ static void rf_thread_entry(void *para)
 	{
 		halRfSetRxMode();
 		rt_sem_take(&rf_sem, RT_WAITING_FOREVER);	//等待数据接收完成
-		halRfReceivePacket((uint8_t*) pRfData, &leng);	//接收到的数据放入pRfData中
-		if (leng != 0)
+		crc_state = halRfReceivePacket((uint8_t*) pRfData, &leng);	//接收到的数据放入pRfData中
+		if (crc_state != 0)
 		{
 			node = pRfData->src_addr;
 			NodeList->node[node].temperature = pRfData->temperature & 0X3F;	//低10位数据为温度
@@ -52,6 +52,7 @@ static void rf_thread_entry(void *para)
 			lseek(fd, 0, DFS_SEEK_END);
 			write(fd, filedata, leng);
 			close(fd);
+			rt_kprintf(filedata);
 			if (pRfData->state != 0)
 			{
 				NodeList->error_node[NodeList->error_num] =
