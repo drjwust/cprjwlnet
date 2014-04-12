@@ -22,13 +22,18 @@ void rf_thread_entry(void *para)
 
 	halRfTransmitEnable();
 	pRfData = rt_malloc(sizeof(RF_DATA));
-	pRfData->dst_addr = 12;
+	pRfData->dst_addr = 1;
 	pRfData->src_addr = 0;
-	pRfData->temperature = 35;
+	pRfData->temperature = 1;
 	pRfData->state = 0;
 	while (1)
 	{
-		leng=8;
+		pRfData->src_addr += 1;
+		if (pRfData->src_addr == 1024)
+			pRfData->src_addr =0;
+		pRfData->temperature += 1;
+		if (pRfData->temperature == 150)
+			pRfData->temperature = 1;
 		halRfSendPacket(pRfData,sizeof(RF_DATA));	// Transmit Tx buffer data
 		rt_thread_delay(300);
 		rt_hw_led_on(2);
