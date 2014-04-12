@@ -55,17 +55,10 @@ void thread_init_entry(void* parameter)
 		/* init the elm chan FatFs filesystam*/
 		elm_init();
 
-
-
 		/* mount sd card fat partition 1 as root directory */
 		if (dfs_mount("sd0", "/", "elm", 0, 0) == 0)
 		{
 			rt_kprintf("File System initialized!\n");
-		}
-		else
-		{
-			mkfs("elm","sd0");
-			rt_kprintf("File System initialzation failed!\n");
 		}
 #endif
 	}
