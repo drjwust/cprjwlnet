@@ -44,6 +44,19 @@ void rt_hw_led_init(void)
 	GPIO_Init(GPIOE, &GPIO_InitStructure);
 }
 
+void rt_hw_led_set_state(uint8_t led,uint8_t state)
+{
+	switch (led)
+	{
+	case 1:
+		GPIO_WriteBit(led1_gpio,led1_pin,state);
+		break;
+	case 2:
+		GPIO_WriteBit(led2_gpio,led2_pin,state);
+		break;
+	}
+}
+
 void rt_hw_led_off(rt_uint32_t n)
 {
 	switch (n)
@@ -59,6 +72,7 @@ void rt_hw_led_off(rt_uint32_t n)
 		break;
 	}
 }
+
 
 void rt_hw_led_on(rt_uint32_t n)
 {

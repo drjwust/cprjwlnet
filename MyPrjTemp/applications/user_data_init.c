@@ -11,7 +11,7 @@ void user_data_init(void)
 {
 	uint16_t i;
 	int fd, size;
-	uint8_t buffer[80], data, *ps[2], *buf, *sptr;
+	char buffer[80], data, *ps[2], *buf, *sptr;
 	char num;
 	long pos;
 

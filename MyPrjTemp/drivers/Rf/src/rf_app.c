@@ -173,7 +173,7 @@ void halRfSendPacket(uint8_t *txBuffer, uint8_t size)
 }
 
 
-void setRxMode(void)
+void halRfSetRxMode(void)
 {
     halSpiStrobe(CCxxx0_SRX);		//进入接收状态
 }
@@ -183,8 +183,8 @@ uint8_t halRfReceivePacket(uint8_t *rxBuffer, uint8_t *length)
     uint8_t packetLength;
 	uint8_t i=(*length)*4;  // 具体多少要根据datarate和length来决定
 
-    halSpiStrobe(CCxxx0_SRX);		//进入接收状态
-	delay(2);
+//    halSpiStrobe(CCxxx0_SRX);		//进入接收状态
+//	delay(2);
 	while (GDO0)
 	{
 		delay(2);

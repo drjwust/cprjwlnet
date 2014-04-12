@@ -24,7 +24,7 @@
 
 #define RT_USING_OVERFLOW_CHECK
 
-#define RT_USING_MINILIBC
+//#define RT_USING_MINILIBC
 
 /* Using Hook */
 #define RT_USING_HOOK
