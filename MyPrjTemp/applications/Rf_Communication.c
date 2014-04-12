@@ -29,7 +29,7 @@ void rf_thread_entry(void *para)
 	while (1)
 	{
 		pRfData->src_addr += 1;
-		if (pRfData->src_addr == 1024)
+		if (pRfData->src_addr == 20)
 			pRfData->src_addr =0;
 		pRfData->temperature += 1;
 		if (pRfData->temperature == 150)
