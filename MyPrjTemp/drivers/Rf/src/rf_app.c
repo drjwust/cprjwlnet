@@ -25,6 +25,7 @@ typedef struct S_RF_SETTINGS
     uint8_t DEVIATN;   // Modem deviation setting (when FSK modulation is enabled).
     uint8_t FREND1;    // Front end RX configuration.
     uint8_t FREND0;    // Front end RX configuration.
+    uint8_t MCSM1;
     uint8_t MCSM0;     // Main Radio Control State Machine configuration.
     uint8_t FOCCFG;    // Frequency Offset Compensation Configuration.
     uint8_t BSCFG;     // Bit synchronization Configuration.
@@ -66,11 +67,12 @@ const RF_SETTINGS rfSettings =
     0x47,   // DEVIATN   Modem deviation setting (when FSK modulation is enabled).
     0xB6,   // FREND1    Front end RX configuration.
     0x10,   // FREND0    Front end RX configuration.
+    0x30,	// MCSM1
     0x18,   // MCSM0     Main Radio Control State Machine configuration.
     0x1D,   // FOCCFG    Frequency Offset Compensation Configuration.
     0x1C,   // BSCFG     Bit synchronization Configuration.
     0xC7,   // AGCCTRL2  AGC control.
-    0x00,   // AGCCTRL1  AGC control.
+    0x40,   // AGCCTRL1  AGC control. XXX 00->0X40
     0xB2,   // AGCCTRL0  AGC control.
 
     0xEA,   // FSCAL3    Frequency synthesizer calibration.
@@ -81,7 +83,7 @@ const RF_SETTINGS rfSettings =
     0x81,   // TEST2     Various test settings.
     0x35,   // TEST1     Various test settings.
     0x09,   // TEST0     Various test settings.
-    0x09,   // IOCFG2    GDO2 output pin configuration.
+    0x0E,   // IOCFG2    GDO2 output pin configuration.
     0x06,   // IOCFG0    GDO0 output pin configuration. Refer to SmartRF?Studio User Manual for detailed pseudo register explanation.
 
     0x04,   // PKTCTRL1  Packet automation control.
@@ -129,6 +131,7 @@ void halRfWriteRfSettings(void)
     halSpiWriteReg(CCxxx0_DEVIATN,  rfSettings.DEVIATN);
     halSpiWriteReg(CCxxx0_FREND1,   rfSettings.FREND1);
     halSpiWriteReg(CCxxx0_FREND0,   rfSettings.FREND0);
+    halSpiWriteReg(CCxxx0_MCSM1 ,   rfSettings.MCSM1 );	//XXX 这个地方是我新加的
     halSpiWriteReg(CCxxx0_MCSM0 ,   rfSettings.MCSM0 );
     halSpiWriteReg(CCxxx0_FOCCFG,   rfSettings.FOCCFG);
     halSpiWriteReg(CCxxx0_BSCFG,    rfSettings.BSCFG);
@@ -160,6 +163,8 @@ void halRfWriteRfSettings(void)
 
 void halRfSendPacket(uint8_t *txBuffer, uint8_t size)
 {
+	uint8_t status;
+
 	halSpiWriteReg(CCxxx0_TXFIFO, size);
     halSpiWriteBurstReg(CCxxx0_TXFIFO, txBuffer, size);	//写入要发送的数据
 
@@ -169,6 +174,7 @@ void halRfSendPacket(uint8_t *txBuffer, uint8_t size)
     while (!GDO0);
     // Wait for GDO0 to be cleared -> end of packet
     while (GDO0);
+
 	halSpiStrobe(CCxxx0_SFTX);
 }
 

@@ -13,7 +13,7 @@ uint8_t PaTabel[8] =
 void rf_thread_entry(void *para)
 {
 	uint8_t leng = 0;
-	uint8_t tf = 0;
+	uint8_t tf = 0,status;
 	RF_DATA* pRfData;
 
 	rf_init();
