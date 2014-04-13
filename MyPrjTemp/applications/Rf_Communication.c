@@ -35,10 +35,11 @@ void rf_thread_entry(void *para)
 		if (pRfData->temperature == 150)
 			pRfData->temperature = 1;
 		halRfSendPacket(pRfData,sizeof(RF_DATA));	// Transmit Tx buffer data
-		rt_thread_delay(300);
+		rt_thread_delay(50);
 		rt_hw_led_on(2);
-		rt_thread_delay(300);
+		rt_thread_delay(50);
 		rt_hw_led_off(2);
+		halRfReadStatusReg(CCxxx0_RSSI);
 	}
 }
 
