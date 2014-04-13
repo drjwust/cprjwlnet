@@ -81,7 +81,7 @@ const RF_SETTINGS rfSettings =
     0x81,   // TEST2     Various test settings.
     0x35,   // TEST1     Various test settings.
     0x09,   // TEST0     Various test settings.
-    0x0B,   // IOCFG2    GDO2 output pin configuration.
+    0x09,   // IOCFG2    GDO2 output pin configuration.
     0x06,   // IOCFG0    GDO0 output pin configuration. Refer to SmartRF?Studio User Manual for detailed pseudo register explanation.
 
     0x04,   // PKTCTRL1  Packet automation control.
@@ -173,7 +173,7 @@ void halRfSendPacket(uint8_t *txBuffer, uint8_t size)
 }
 
 
-void setRxMode(void)
+void halRfSetRxMode(void)
 {
     halSpiStrobe(CCxxx0_SRX);		//进入接收状态
 }
@@ -183,15 +183,15 @@ uint8_t halRfReceivePacket(uint8_t *rxBuffer, uint8_t *length)
     uint8_t packetLength;
 	uint8_t i=(*length)*4;  // 具体多少要根据datarate和length来决定
 
-    halSpiStrobe(CCxxx0_SRX);		//进入接收状态
-	delay(2);
-	while (GDO0)
-	{
-		delay(2);
-		--i;
-		if(i<1)
-		   return 0;
-	}
+//    halSpiStrobe(CCxxx0_SRX);		//进入接收状态
+//	delay(2);
+//	while (GDO0)
+//	{
+//		delay(2);
+//		--i;
+//		if(i<1)
+//		   return 0;
+//	}
     if ((halSpiReadStatus(CCxxx0_RXBYTES) & BYTES_IN_RXFIFO)) //如果接的字节数不为0
 	{
         packetLength = halSpiReadReg(CCxxx0_RXFIFO);//读出第一个字节，此字节为该帧数据长度

@@ -41,3 +41,16 @@ void rf_thread_entry(void *para)
 		rt_hw_led_off(2);
 	}
 }
+
+void rf_thread_init(void)
+{
+	rt_thread_t init_thread;
+
+	rt_sem_init(&rf_sem, "rf", 0, RT_IPC_FLAG_FIFO);
+	init_thread = rt_thread_create("rf", rf_thread_entry, RT_NULL, 2048, 10,
+			20);
+	if (init_thread != RT_NULL)
+	{
+		rt_thread_startup(init_thread);
+	}
+}

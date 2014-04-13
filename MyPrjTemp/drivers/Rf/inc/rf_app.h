@@ -127,6 +127,7 @@ uint8_t halSpiReadStatus(uint8_t addr);
 void halRfWriteRfSettings(void);
 void halRfSendPacket(uint8_t *txBuffer, uint8_t size);
 uint8_t halRfReceivePacket(uint8_t *rxBuffer, uint8_t *plength);
+void halRfSetRxMode(void);
 void halRfReceiveEnable (void);
 void halRfTransmitEnable (void);
 

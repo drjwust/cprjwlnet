@@ -133,13 +133,7 @@ int rt_application_init(void)
 		rt_thread_startup(init_thread);
 	}
 
-	init_thread = rt_thread_create("rf", rf_thread_entry, RT_NULL, 2048,
-			8, 20);
-	if (init_thread != RT_NULL)
-	{
-		rt_thread_startup(init_thread);
-	}
-
+	rf_thread_init();
 	return 0;
 }
 /*@}*/
