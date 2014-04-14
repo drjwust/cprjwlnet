@@ -29,12 +29,12 @@ void rf_thread_entry(void *para)
 	pRfData->state = 0;
 	while (1)
 	{
-		pRfData->src_addr += 1;
-		if (pRfData->src_addr == 20)
-			pRfData->src_addr = 0;
-		pRfData->temperature += 1;
-		if (pRfData->temperature == 150)
-			pRfData->temperature = 1;
+//		pRfData->src_addr += 1;
+//		if (pRfData->src_addr == 20)
+//			pRfData->src_addr = 0;
+//		pRfData->temperature += 1;
+//		if (pRfData->temperature == 150)
+//			pRfData->temperature = 1;
 //		halRfSendPacket(pRfData,sizeof(RF_DATA));	// Transmit Tx buffer data
 		halRfReceiveEnable();
 		halSpiStrobe(CCxxx0_SRX);
@@ -43,7 +43,7 @@ void rf_thread_entry(void *para)
 		{
 			leng = halRfReceivePacket((uint8_t*) pRfData, status);
 			if (leng != 0)
-				rt_kprintf("接收成功(1),RSSI:%d\t", status[0]);
+				rt_kprintf("\n接收成功(1),RSSI:%d\t编号(%d)\n", status[0]),pRfData->dst_addr;
 			else
 			{
 				status[0] = halSpiReadStatus(CCxxx0_RSSI);
