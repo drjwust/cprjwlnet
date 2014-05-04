@@ -24,8 +24,6 @@
 void thread_init_entry(void* parameter)
 {
 
-
-
 	/* LwIP Initialization */
 #ifdef RT_USING_LWIP
 	{
