@@ -112,6 +112,7 @@ void rt_hw_board_init()
 
 	rt_hw_led_init();
 	rt_hw_usart_init();
+	rt_delay_init();
 
 #ifdef RT_USING_CONSOLE
 	rt_console_set_device(CONSOLE_DEVICE);

@@ -34,6 +34,7 @@
 #include <math.h>
 #include <func.h>
 #include <string.h>
+#include <delay.h>
 
 #include <app.h>
 
