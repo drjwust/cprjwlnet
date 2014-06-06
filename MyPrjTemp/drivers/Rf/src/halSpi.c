@@ -11,30 +11,29 @@ static void io_port_init(void)
 {
 	GPIO_InitTypeDef GPIO_InitStructure;
 	RCC_AHB1PeriphClockCmd(
-			RCC_AHB1Periph_GPIOA | RCC_AHB1Periph_GPIOB | RCC_AHB1Periph_GPIOD
-					| RCC_AHB1Periph_GPIOE, ENABLE);
+			RCC_AHB1Periph_GPIOB | RCC_AHB1Periph_GPIOE, ENABLE);
 
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
 	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
 	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
 
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_12;
-	GPIO_Init(GPIOA, &GPIO_InitStructure);
-
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_7;
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8;
 	GPIO_Init(GPIOB, &GPIO_InitStructure);
 
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6;
-	GPIO_Init(GPIOD, &GPIO_InitStructure);
-
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
-	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6;
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9;
 	GPIO_Init(GPIOB, &GPIO_InitStructure);
 
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0;
 	GPIO_Init(GPIOE, &GPIO_InitStructure);
+
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
+	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_7;
+	GPIO_Init(GPIOB, &GPIO_InitStructure);
+
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6;
+	GPIO_Init(GPIOB, &GPIO_InitStructure);
 	{
 		EXTI_InitTypeDef EXTI_InitStructure;
 		NVIC_InitTypeDef NVIC_InitStructure;
@@ -49,14 +48,14 @@ static void io_port_init(void)
 		NVIC_Init(&NVIC_InitStructure);
 
 		/* Configure  EXTI  */
-		EXTI_InitStructure.EXTI_Line = EXTI_Line6;
+		EXTI_InitStructure.EXTI_Line = EXTI_Line7;
 		EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;
 		EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Falling;
 		EXTI_InitStructure.EXTI_LineCmd = ENABLE;
-		EXTI_ClearITPendingBit(EXTI_Line6);
+		EXTI_ClearITPendingBit(EXTI_Line7);
 		EXTI_Init(&EXTI_InitStructure);
 
-		SYSCFG_EXTILineConfig(EXTI_PortSourceGPIOB, EXTI_PinSource6);
+		SYSCFG_EXTILineConfig(EXTI_PortSourceGPIOB, EXTI_PinSource7);
 	}
 }
 

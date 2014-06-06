@@ -8,9 +8,9 @@
 #ifndef RF_APP_H_
 #define RF_APP_H_
 
-#define RF_CSn(x)	GPIO_WriteBit(GPIOA,GPIO_Pin_12,x)
+#define RF_CSn(x)	GPIO_WriteBit(GPIOB,GPIO_Pin_8,x)
 #define RF_MISO()	GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_4)
-#define GDO0 		GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_6)
+#define GDO0 		GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_7)
 
 
 #define WRITE_BURST     	0x40						//Á¬ÐøÐ´Èë

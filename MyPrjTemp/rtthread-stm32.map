@@ -3651,123 +3651,123 @@ LOAD c:/program files (x86)/codesourcery/sourcery_codebench_lite_for_arm_eabi/bi
                 0x080015b4       0xc8 build\drivers\board\delay.o
                 0x080015b4                rt_delay_init
  .text.rt_hw_led_init
-                0x0800167c       0x6c build\drivers\board\led.o
+                0x0800167c       0x70 build\drivers\board\led.o
                 0x0800167c                rt_hw_led_init
  .text.rt_hw_led_set_state
-                0x080016e8       0x48 build\drivers\board\led.o
-                0x080016e8                rt_hw_led_set_state
+                0x080016ec       0x4c build\drivers\board\led.o
+                0x080016ec                rt_hw_led_set_state
  .text.rt_hw_led_off
-                0x08001730       0x4c build\drivers\board\led.o
-                0x08001730                rt_hw_led_off
+                0x08001738       0x50 build\drivers\board\led.o
+                0x08001738                rt_hw_led_off
  .text.rt_hw_led_on
-                0x0800177c       0x4c build\drivers\board\led.o
-                0x0800177c                rt_hw_led_on
- .text.led      0x080017c8       0x78 build\drivers\board\led.o
-                0x080017c8                led
+                0x08001788       0x50 build\drivers\board\led.o
+                0x08001788                rt_hw_led_on
+ .text.led      0x080017d8       0x78 build\drivers\board\led.o
+                0x080017d8                led
  .text.NMI_Handler
-                0x08001840        0xc build\drivers\board\stm32f4xx_it.o
-                0x08001840                NMI_Handler
+                0x08001850        0xc build\drivers\board\stm32f4xx_it.o
+                0x08001850                NMI_Handler
  .text.MemManage_Handler
-                0x0800184c        0x8 build\drivers\board\stm32f4xx_it.o
-                0x0800184c                MemManage_Handler
- .text.BusFault_Handler
-                0x08001854        0x8 build\drivers\board\stm32f4xx_it.o
-                0x08001854                BusFault_Handler
- .text.UsageFault_Handler
                 0x0800185c        0x8 build\drivers\board\stm32f4xx_it.o
-                0x0800185c                UsageFault_Handler
+                0x0800185c                MemManage_Handler
+ .text.BusFault_Handler
+                0x08001864        0x8 build\drivers\board\stm32f4xx_it.o
+                0x08001864                BusFault_Handler
+ .text.UsageFault_Handler
+                0x0800186c        0x8 build\drivers\board\stm32f4xx_it.o
+                0x0800186c                UsageFault_Handler
  .text.SVC_Handler
-                0x08001864        0xc build\drivers\board\stm32f4xx_it.o
-                0x08001864                SVC_Handler
+                0x08001874        0xc build\drivers\board\stm32f4xx_it.o
+                0x08001874                SVC_Handler
  .text.DebugMon_Handler
-                0x08001870        0xc build\drivers\board\stm32f4xx_it.o
-                0x08001870                DebugMon_Handler
+                0x08001880        0xc build\drivers\board\stm32f4xx_it.o
+                0x08001880                DebugMon_Handler
  .text.USART1_IRQHandler
-                0x0800187c       0x18 build\drivers\board\stm32f4xx_it.o
-                0x0800187c                USART1_IRQHandler
+                0x0800188c       0x18 build\drivers\board\stm32f4xx_it.o
+                0x0800188c                USART1_IRQHandler
  .text.USART2_IRQHandler
-                0x08001894        0xc build\drivers\board\stm32f4xx_it.o
-                0x08001894                USART2_IRQHandler
+                0x080018a4        0xc build\drivers\board\stm32f4xx_it.o
+                0x080018a4                USART2_IRQHandler
  .text.USART3_IRQHandler
-                0x080018a0        0xc build\drivers\board\stm32f4xx_it.o
-                0x080018a0                USART3_IRQHandler
+                0x080018b0        0xc build\drivers\board\stm32f4xx_it.o
+                0x080018b0                USART3_IRQHandler
  .text.UART4_IRQHandler
-                0x080018ac        0xc build\drivers\board\stm32f4xx_it.o
-                0x080018ac                UART4_IRQHandler
+                0x080018bc        0xc build\drivers\board\stm32f4xx_it.o
+                0x080018bc                UART4_IRQHandler
  .text.USART6_IRQHandler
-                0x080018b8       0x18 build\drivers\board\stm32f4xx_it.o
-                0x080018b8                USART6_IRQHandler
+                0x080018c8       0x18 build\drivers\board\stm32f4xx_it.o
+                0x080018c8                USART6_IRQHandler
  .text.TIM7_IRQHandler
-                0x080018d0       0x50 build\drivers\board\stm32f4xx_it.o
-                0x080018d0                TIM7_IRQHandler
+                0x080018e0       0x50 build\drivers\board\stm32f4xx_it.o
+                0x080018e0                TIM7_IRQHandler
  .text.DMA2_Stream6_IRQHandler
-                0x08001920       0x28 build\drivers\board\stm32f4xx_it.o
-                0x08001920                DMA2_Stream6_IRQHandler
+                0x08001930       0x28 build\drivers\board\stm32f4xx_it.o
+                0x08001930                DMA2_Stream6_IRQHandler
  .text.EXTI2_IRQHandler
-                0x08001948       0x24 build\drivers\board\stm32f4xx_it.o
-                0x08001948                EXTI2_IRQHandler
+                0x08001958       0x28 build\drivers\board\stm32f4xx_it.o
+                0x08001958                EXTI2_IRQHandler
  .text.EXTI9_5_IRQHandler
-                0x0800196c       0x40 build\drivers\board\stm32f4xx_it.o
-                0x0800196c                EXTI9_5_IRQHandler
+                0x08001980       0x30 build\drivers\board\stm32f4xx_it.o
+                0x08001980                EXTI9_5_IRQHandler
  .text.SDIO_IRQHandler
-                0x080019ac       0x24 build\drivers\board\stm32f4xx_it.o
-                0x080019ac                SDIO_IRQHandler
- .text.str2num  0x080019d0       0x80 build\drivers\Clib\func.o
-                0x080019d0                str2num
- .text.f_gets   0x08001a50       0x74 build\drivers\Clib\func.o
-                0x08001a50                f_gets
+                0x080019b0       0x24 build\drivers\board\stm32f4xx_it.o
+                0x080019b0                SDIO_IRQHandler
+ .text.str2num  0x080019d4       0x80 build\drivers\Clib\func.o
+                0x080019d4                str2num
+ .text.f_gets   0x08001a54       0x74 build\drivers\Clib\func.o
+                0x08001a54                f_gets
  .text.LCD_FSMCConfig
-                0x08001ac4      0x274 build\drivers\LCD\ssd1289.o
- .text.delay    0x08001d38       0x48 build\drivers\LCD\ssd1289.o
+                0x08001ac8      0x274 build\drivers\LCD\ssd1289.o
+ .text.delay    0x08001d3c       0x48 build\drivers\LCD\ssd1289.o
  .text.lcd_port_init
-                0x08001d80        0xc build\drivers\LCD\ssd1289.o
+                0x08001d84        0xc build\drivers\LCD\ssd1289.o
  .text.write_cmd
-                0x08001d8c       0x1c build\drivers\LCD\ssd1289.o
+                0x08001d90       0x1c build\drivers\LCD\ssd1289.o
  .text.read_data
-                0x08001da8       0x18 build\drivers\LCD\ssd1289.o
+                0x08001dac       0x18 build\drivers\LCD\ssd1289.o
  .text.write_data
-                0x08001dc0       0x20 build\drivers\LCD\ssd1289.o
+                0x08001dc4       0x20 build\drivers\LCD\ssd1289.o
  .text.write_reg
-                0x08001de0       0x28 build\drivers\LCD\ssd1289.o
+                0x08001de4       0x28 build\drivers\LCD\ssd1289.o
  .text.read_reg
-                0x08001e08       0x30 build\drivers\LCD\ssd1289.o
+                0x08001e0c       0x30 build\drivers\LCD\ssd1289.o
  .text.lcd_SetCursor
-                0x08001e38       0x30 build\drivers\LCD\ssd1289.o
+                0x08001e3c       0x30 build\drivers\LCD\ssd1289.o
  .text.lcd_read_gram
-                0x08001e68       0x38 build\drivers\LCD\ssd1289.o
+                0x08001e6c       0x38 build\drivers\LCD\ssd1289.o
  .text.lcd_clear
-                0x08001ea0       0x50 build\drivers\LCD\ssd1289.o
+                0x08001ea4       0x50 build\drivers\LCD\ssd1289.o
  .text.lcd_data_bus_test
-                0x08001ef0       0xa4 build\drivers\LCD\ssd1289.o
+                0x08001ef4       0xa4 build\drivers\LCD\ssd1289.o
  .text.ssd1289_init
-                0x08001f94      0x288 build\drivers\LCD\ssd1289.o
-                0x08001f94                ssd1289_init
+                0x08001f98      0x288 build\drivers\LCD\ssd1289.o
+                0x08001f98                ssd1289_init
  .text.ssd1289_lcd_set_pixel
-                0x0800221c       0x34 build\drivers\LCD\ssd1289.o
-                0x0800221c                ssd1289_lcd_set_pixel
+                0x08002220       0x34 build\drivers\LCD\ssd1289.o
+                0x08002220                ssd1289_lcd_set_pixel
  .text.ssd1289_lcd_get_pixel
-                0x08002250       0x28 build\drivers\LCD\ssd1289.o
-                0x08002250                ssd1289_lcd_get_pixel
+                0x08002254       0x28 build\drivers\LCD\ssd1289.o
+                0x08002254                ssd1289_lcd_get_pixel
  .text.ssd1289_lcd_draw_hline
-                0x08002278       0x54 build\drivers\LCD\ssd1289.o
-                0x08002278                ssd1289_lcd_draw_hline
+                0x0800227c       0x54 build\drivers\LCD\ssd1289.o
+                0x0800227c                ssd1289_lcd_draw_hline
  .text.ssd1289_lcd_draw_vline
-                0x080022cc       0x54 build\drivers\LCD\ssd1289.o
-                0x080022cc                ssd1289_lcd_draw_vline
+                0x080022d0       0x54 build\drivers\LCD\ssd1289.o
+                0x080022d0                ssd1289_lcd_draw_vline
  .text.ssd1289_lcd_blit_line
-                0x08002320       0x5c build\drivers\LCD\ssd1289.o
-                0x08002320                ssd1289_lcd_blit_line
+                0x08002324       0x5c build\drivers\LCD\ssd1289.o
+                0x08002324                ssd1289_lcd_blit_line
  .text.lcd_init
-                0x0800237c       0x18 build\drivers\LCD\ssd1289.o
+                0x08002380       0x18 build\drivers\LCD\ssd1289.o
  .text.lcd_open
-                0x08002394       0x1c build\drivers\LCD\ssd1289.o
+                0x08002398       0x1c build\drivers\LCD\ssd1289.o
  .text.lcd_close
-                0x080023b0       0x18 build\drivers\LCD\ssd1289.o
+                0x080023b4       0x18 build\drivers\LCD\ssd1289.o
  .text.lcd_control
-                0x080023c8       0x88 build\drivers\LCD\ssd1289.o
+                0x080023cc       0x88 build\drivers\LCD\ssd1289.o
  .text.rt_hw_lcd_init
-                0x08002450       0xe4 build\drivers\LCD\ssd1289.o
-                0x08002450                rt_hw_lcd_init
+                0x08002454       0xe0 build\drivers\LCD\ssd1289.o
+                0x08002454                rt_hw_lcd_init
  .text.SPI_WriteByte
                 0x08002534       0x54 build\drivers\LCD\touch.o
                 0x08002534                SPI_WriteByte
@@ -10571,7 +10571,7 @@ LOAD c:/program files (x86)/codesourcery/sourcery_codebench_lite_for_arm_eabi/bi
  .debug_abbrev  0x0001290e      0x2a9 build\components\rtgui\widgets\widget.o
  .debug_abbrev  0x00012bb7      0x2b1 build\components\rtgui\widgets\window.o
 
-.debug_line     0x00000000    0x24991
+.debug_line     0x00000000    0x24990
  *(.debug_line)
  .debug_line    0x00000000      0x1f9 build\applications\Rf_Communication.o
  .debug_line    0x000001f9      0x27e build\applications\application.o
@@ -10580,161 +10580,161 @@ LOAD c:/program files (x86)/codesourcery/sourcery_codebench_lite_for_arm_eabi/bi
  .debug_line    0x00000745      0x229 build\drivers\board\board.o
  .debug_line    0x0000096e      0x1b9 build\drivers\board\delay.o
  .debug_line    0x00000b27      0x1c6 build\drivers\board\led.o
- .debug_line    0x00000ced      0x287 build\drivers\board\stm32f4xx_it.o
- .debug_line    0x00000f74      0x141 build\drivers\Clib\func.o
- .debug_line    0x000010b5      0x423 build\drivers\LCD\ssd1289.o
- .debug_line    0x000014d8      0x4d3 build\drivers\LCD\touch.o
- .debug_line    0x000019ab      0x3b7 build\drivers\Rf\src\halSpi.o
- .debug_line    0x00001d62      0x1e7 build\drivers\Rf\src\rf_app.o
- .debug_line    0x00001f49      0x327 build\drivers\RTC\rtc.o
- .debug_line    0x00002270      0x22b build\drivers\SD\sd_lowlevel.o
- .debug_line    0x0000249b      0x9bd build\drivers\SD\sdio_sd.o
- .debug_line    0x00002e58      0x303 build\drivers\serial\serial.o
- .debug_line    0x0000315b      0x21a build\drivers\serial\usart.o
- .debug_line    0x00003375      0x2a9 build\gui_example\demo_application.o
- .debug_line    0x0000361e      0x261 build\gui_example\demo_view.o
- .debug_line    0x0000387f       0xdf build\gui_example\demo_xml.o
- .debug_line    0x0000395e      0x2b3 build\gui_example\demo_view_benchmark.o
- .debug_line    0x00003c11      0x285 build\gui_example\demo_view_dc.o
- .debug_line    0x00003e96      0x24e build\gui_example\demo_view_dc_buffer.o
- .debug_line    0x000040e4      0x2af build\gui_example\demo_view_animation.o
- .debug_line    0x00004393      0x2e5 build\gui_example\demo_view_buffer_animation.o
- .debug_line    0x00004678      0x292 build\gui_example\demo_view_instrument_panel.o
- .debug_line    0x0000490a      0x350 build\gui_example\demo_view_window.o
- .debug_line    0x00004c5a      0x223 build\gui_example\demo_view_label.o
- .debug_line    0x00004e7d      0x223 build\gui_example\demo_view_button.o
- .debug_line    0x000050a0      0x227 build\gui_example\demo_view_checkbox.o
- .debug_line    0x000052c7      0x288 build\gui_example\demo_view_progressbar.o
- .debug_line    0x0000554f      0x219 build\gui_example\demo_view_scrollbar.o
- .debug_line    0x00005768      0x208 build\gui_example\demo_view_radiobox.o
- .debug_line    0x00005970      0x242 build\gui_example\demo_view_textbox.o
- .debug_line    0x00005bb2      0x224 build\gui_example\demo_view_listbox.o
- .debug_line    0x00005dd6      0x244 build\gui_example\demo_view_menu.o
- .debug_line    0x0000601a      0x267 build\gui_example\demo_view_listctrl.o
- .debug_line    0x00006281      0x20a build\gui_example\demo_view_combobox.o
- .debug_line    0x0000648b      0x217 build\gui_example\demo_view_slider.o
- .debug_line    0x000066a2      0x20a build\gui_example\demo_view_notebook.o
- .debug_line    0x000068ac      0x204 build\gui_example\demo_view_mywidget.o
- .debug_line    0x00006ab0      0x2d2 build\gui_example\demo_view_edit.o
- .debug_line    0x00006d82      0x39b build\gui_example\demo_view_bmp.o
- .debug_line    0x0000711d      0x23e build\gui_example\demo_plot.o
- .debug_line    0x0000735b      0x22d build\gui_example\mywidget.o
- .debug_line    0x00007588      0x21f build\gui_example\demo_view_digtube.o
- .debug_line    0x000077a7      0x18d build\Libraries\CMSIS\ST\STM32F4xx\Source\Templates\system_stm32f4xx.o
- .debug_line    0x00007934      0x215 build\Libraries\STM32F4xx_StdPeriph_Driver\src\misc.o
- .debug_line    0x00007b49      0xc34 build\Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_dma.o
- .debug_line    0x0000877d      0x347 build\Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_exti.o
- .debug_line    0x00008ac4      0x74f build\Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_fsmc.o
- .debug_line    0x00009213      0x780 build\Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_gpio.o
- .debug_line    0x00009993      0x2d8 build\Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_pwr.o
- .debug_line    0x00009c6b      0x97b build\Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_rcc.o
- .debug_line    0x0000a5e6      0xd79 build\Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_rtc.o
- .debug_line    0x0000b35f      0x660 build\Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_sdio.o
- .debug_line    0x0000b9bf      0x805 build\Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_spi.o
- .debug_line    0x0000c1c4      0x232 build\Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_syscfg.o
- .debug_line    0x0000c3f6     0x21be build\Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_tim.o
- .debug_line    0x0000e5b4      0x9ff build\Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_usart.o
- .debug_line    0x0000efb3       0xa7 build\Libraries\CMSIS\ST\STM32F4xx\Source\Templates\gcc_ride7\startup_stm32f4xx.o
- .debug_line    0x0000f05a      0x21c build\my windows\gui_app.o
- .debug_line    0x0000f276      0x386 build\my windows\my_view1.o
- .debug_line    0x0000f5fc      0x344 build\my windows\my_view2.o
- .debug_line    0x0000f940      0x343 build\my windows\my_view3.o
- .debug_line    0x0000fc83      0x350 build\my windows\my_view4.o
- .debug_line    0x0000ffd3      0x350 build\my windows\my_view5.o
- .debug_line    0x00010323       0xb8 build\src\clock.o
- .debug_line    0x000103db      0x23f build\src\device.o
- .debug_line    0x0001061a      0x119 build\src\idle.o
- .debug_line    0x00010733      0xb05 build\src\ipc.o
- .debug_line    0x00011238       0x90 build\src\irq.o
- .debug_line    0x000112c8      0x5a0 build\src\kservice.o
- .debug_line    0x00011868      0x33a build\src\mem.o
- .debug_line    0x00011ba2      0x271 build\src\mempool.o
- .debug_line    0x00011e13      0x251 build\src\object.o
- .debug_line    0x00012064      0x213 build\src\scheduler.o
- .debug_line    0x00012277      0x33a build\src\thread.o
- .debug_line    0x000125b1      0x3b7 build\src\timer.o
- .debug_line    0x00012968       0xf1 build\libcpu\arm\cortex-m4\cpuport.o
- .debug_line    0x00012a59       0xca build\libcpu\arm\cortex-m4\context_gcc.o
- .debug_line    0x00012b23      0x26c build\components\dfs\src\dfs.o
- .debug_line    0x00012d8f      0x2bb build\components\dfs\src\dfs_fs.o
- .debug_line    0x0001304a      0x2c5 build\components\dfs\src\dfs_file.o
- .debug_line    0x0001330f      0x325 build\components\dfs\src\dfs_posix.o
- .debug_line    0x00013634      0x4ac build\components\dfs\filesystems\elmfat\dfs_elm.o
- .debug_line    0x00013ae0     0x10a6 build\components\dfs\filesystems\elmfat\ff.o
- .debug_line    0x00014b86      0x112 build\components\dfs\filesystems\elmfat\option\cc936.o
- .debug_line    0x00014c98      0x32a build\components\finsh\shell.o
- .debug_line    0x00014fc2       0xa7 build\components\finsh\symbol.o
- .debug_line    0x00015069      0x525 build\components\finsh\cmd.o
- .debug_line    0x0001558e      0x4c1 build\components\finsh\finsh_compiler.o
- .debug_line    0x00015a4f       0xe9 build\components\finsh\finsh_error.o
- .debug_line    0x00015b38      0x200 build\components\finsh\finsh_heap.o
- .debug_line    0x00015d38      0x119 build\components\finsh\finsh_init.o
- .debug_line    0x00015e51      0x198 build\components\finsh\finsh_node.o
- .debug_line    0x00015fe9      0x4c2 build\components\finsh\finsh_ops.o
- .debug_line    0x000164ab      0x4c3 build\components\finsh\finsh_parser.o
- .debug_line    0x0001696e      0x198 build\components\finsh\finsh_var.o
- .debug_line    0x00016b06      0x135 build\components\finsh\finsh_vm.o
- .debug_line    0x00016c3b      0x3af build\components\finsh\finsh_token.o
- .debug_line    0x00016fea       0xaa build\components\libc\minilibc\ctype.o
- .debug_line    0x00017094       0xaa build\components\libc\minilibc\math.o
- .debug_line    0x0001713e      0x13e build\components\libc\minilibc\qsort.o
- .debug_line    0x0001727c       0xb2 build\components\libc\minilibc\rand.o
- .debug_line    0x0001732e      0x16a build\components\libc\minilibc\stdlib.o
- .debug_line    0x00017498      0x523 build\components\libc\minilibc\string.o
- .debug_line    0x000179bb      0x215 build\components\libc\minilibc\time.o
- .debug_line    0x00017bd0      0x320 build\components\rtgui\apps\calibration.o
- .debug_line    0x00017ef0       0xbc build\components\rtgui\common\asc16font.o
- .debug_line    0x00017fac      0x29e build\components\rtgui\common\blit.o
- .debug_line    0x0001824a       0xa4 build\components\rtgui\common\color.o
- .debug_line    0x000182ee      0x8cf build\components\rtgui\common\dc.o
- .debug_line    0x00018bbd      0x383 build\components\rtgui\common\dc_buffer.o
- .debug_line    0x00018f40      0x4e5 build\components\rtgui\common\dc_client.o
- .debug_line    0x00019425      0x3b5 build\components\rtgui\common\dc_hw.o
- .debug_line    0x000197da      0x33b build\components\rtgui\common\filerw.o
- .debug_line    0x00019b15      0x25b build\components\rtgui\common\font.o
- .debug_line    0x00019d70      0x264 build\components\rtgui\common\font_bmp.o
- .debug_line    0x00019fd4      0x238 build\components\rtgui\common\font_hz_bmp.o
- .debug_line    0x0001a20c      0x33a build\components\rtgui\common\framebuffer_driver.o
- .debug_line    0x0001a546       0xbb build\components\rtgui\common\hz16font.o
- .debug_line    0x0001a601      0x31c build\components\rtgui\common\image.o
- .debug_line    0x0001a91d      0x298 build\components\rtgui\common\image_hdc.o
- .debug_line    0x0001abb5      0x2f4 build\components\rtgui\common\pixel_driver.o
- .debug_line    0x0001aea9     0x11d7 build\components\rtgui\common\region.o
- .debug_line    0x0001c080      0x543 build\components\rtgui\common\rtgui_app.o
- .debug_line    0x0001c5c3      0x433 build\components\rtgui\common\rtgui_mv_model.o
- .debug_line    0x0001c9f6      0x232 build\components\rtgui\common\rtgui_object.o
- .debug_line    0x0001cc28      0x40c build\components\rtgui\common\rtgui_system.o
- .debug_line    0x0001d034      0x597 build\components\rtgui\common\rtgui_theme.o
- .debug_line    0x0001d5cb      0x187 build\components\rtgui\common\rtgui_xml.o
- .debug_line    0x0001d752      0x155 build\components\rtgui\server\driver.o
- .debug_line    0x0001d8a7      0x227 build\components\rtgui\server\mouse.o
- .debug_line    0x0001dace      0x351 build\components\rtgui\server\server.o
- .debug_line    0x0001de1f      0xae2 build\components\rtgui\server\topwin.o
- .debug_line    0x0001e901      0x28d build\components\rtgui\widgets\box.o
- .debug_line    0x0001eb8e      0x357 build\components\rtgui\widgets\button.o
- .debug_line    0x0001eee5      0x272 build\components\rtgui\widgets\checkbox.o
- .debug_line    0x0001f157      0x377 build\components\rtgui\widgets\combobox.o
- .debug_line    0x0001f4ce      0x471 build\components\rtgui\widgets\container.o
- .debug_line    0x0001f93f      0x2f7 build\components\rtgui\widgets\digfont.o
- .debug_line    0x0001fc36      0x2ba build\components\rtgui\widgets\digtube.o
- .debug_line    0x0001fef0      0xadc build\components\rtgui\widgets\edit.o
- .debug_line    0x000209cc      0x223 build\components\rtgui\widgets\label.o
- .debug_line    0x00020bef      0x3ac build\components\rtgui\widgets\listbox.o
- .debug_line    0x00020f9b      0x3e6 build\components\rtgui\widgets\listctrl.o
- .debug_line    0x00021381      0x34c build\components\rtgui\widgets\menu.o
- .debug_line    0x000216cd      0x1cf build\components\rtgui\widgets\mv_view.o
- .debug_line    0x0002189c      0x583 build\components\rtgui\widgets\notebook.o
- .debug_line    0x00021e1f      0x3d7 build\components\rtgui\widgets\plot.o
- .debug_line    0x000221f6      0x1bd build\components\rtgui\widgets\plot_curve.o
- .debug_line    0x000223b3      0x256 build\components\rtgui\widgets\progressbar.o
- .debug_line    0x00022609      0x2d6 build\components\rtgui\widgets\radiobox.o
- .debug_line    0x000228df      0x653 build\components\rtgui\widgets\scrollbar.o
- .debug_line    0x00022f32      0x359 build\components\rtgui\widgets\slider.o
- .debug_line    0x0002328b      0x1f3 build\components\rtgui\widgets\staticline.o
- .debug_line    0x0002347e      0x642 build\components\rtgui\widgets\textbox.o
- .debug_line    0x00023ac0      0x1cb build\components\rtgui\widgets\title.o
- .debug_line    0x00023c8b      0x7fe build\components\rtgui\widgets\widget.o
- .debug_line    0x00024489      0x508 build\components\rtgui\widgets\window.o
+ .debug_line    0x00000ced      0x286 build\drivers\board\stm32f4xx_it.o
+ .debug_line    0x00000f73      0x141 build\drivers\Clib\func.o
+ .debug_line    0x000010b4      0x423 build\drivers\LCD\ssd1289.o
+ .debug_line    0x000014d7      0x4d3 build\drivers\LCD\touch.o
+ .debug_line    0x000019aa      0x3b7 build\drivers\Rf\src\halSpi.o
+ .debug_line    0x00001d61      0x1e7 build\drivers\Rf\src\rf_app.o
+ .debug_line    0x00001f48      0x327 build\drivers\RTC\rtc.o
+ .debug_line    0x0000226f      0x22b build\drivers\SD\sd_lowlevel.o
+ .debug_line    0x0000249a      0x9bd build\drivers\SD\sdio_sd.o
+ .debug_line    0x00002e57      0x303 build\drivers\serial\serial.o
+ .debug_line    0x0000315a      0x21a build\drivers\serial\usart.o
+ .debug_line    0x00003374      0x2a9 build\gui_example\demo_application.o
+ .debug_line    0x0000361d      0x261 build\gui_example\demo_view.o
+ .debug_line    0x0000387e       0xdf build\gui_example\demo_xml.o
+ .debug_line    0x0000395d      0x2b3 build\gui_example\demo_view_benchmark.o
+ .debug_line    0x00003c10      0x285 build\gui_example\demo_view_dc.o
+ .debug_line    0x00003e95      0x24e build\gui_example\demo_view_dc_buffer.o
+ .debug_line    0x000040e3      0x2af build\gui_example\demo_view_animation.o
+ .debug_line    0x00004392      0x2e5 build\gui_example\demo_view_buffer_animation.o
+ .debug_line    0x00004677      0x292 build\gui_example\demo_view_instrument_panel.o
+ .debug_line    0x00004909      0x350 build\gui_example\demo_view_window.o
+ .debug_line    0x00004c59      0x223 build\gui_example\demo_view_label.o
+ .debug_line    0x00004e7c      0x223 build\gui_example\demo_view_button.o
+ .debug_line    0x0000509f      0x227 build\gui_example\demo_view_checkbox.o
+ .debug_line    0x000052c6      0x288 build\gui_example\demo_view_progressbar.o
+ .debug_line    0x0000554e      0x219 build\gui_example\demo_view_scrollbar.o
+ .debug_line    0x00005767      0x208 build\gui_example\demo_view_radiobox.o
+ .debug_line    0x0000596f      0x242 build\gui_example\demo_view_textbox.o
+ .debug_line    0x00005bb1      0x224 build\gui_example\demo_view_listbox.o
+ .debug_line    0x00005dd5      0x244 build\gui_example\demo_view_menu.o
+ .debug_line    0x00006019      0x267 build\gui_example\demo_view_listctrl.o
+ .debug_line    0x00006280      0x20a build\gui_example\demo_view_combobox.o
+ .debug_line    0x0000648a      0x217 build\gui_example\demo_view_slider.o
+ .debug_line    0x000066a1      0x20a build\gui_example\demo_view_notebook.o
+ .debug_line    0x000068ab      0x204 build\gui_example\demo_view_mywidget.o
+ .debug_line    0x00006aaf      0x2d2 build\gui_example\demo_view_edit.o
+ .debug_line    0x00006d81      0x39b build\gui_example\demo_view_bmp.o
+ .debug_line    0x0000711c      0x23e build\gui_example\demo_plot.o
+ .debug_line    0x0000735a      0x22d build\gui_example\mywidget.o
+ .debug_line    0x00007587      0x21f build\gui_example\demo_view_digtube.o
+ .debug_line    0x000077a6      0x18d build\Libraries\CMSIS\ST\STM32F4xx\Source\Templates\system_stm32f4xx.o
+ .debug_line    0x00007933      0x215 build\Libraries\STM32F4xx_StdPeriph_Driver\src\misc.o
+ .debug_line    0x00007b48      0xc34 build\Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_dma.o
+ .debug_line    0x0000877c      0x347 build\Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_exti.o
+ .debug_line    0x00008ac3      0x74f build\Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_fsmc.o
+ .debug_line    0x00009212      0x780 build\Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_gpio.o
+ .debug_line    0x00009992      0x2d8 build\Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_pwr.o
+ .debug_line    0x00009c6a      0x97b build\Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_rcc.o
+ .debug_line    0x0000a5e5      0xd79 build\Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_rtc.o
+ .debug_line    0x0000b35e      0x660 build\Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_sdio.o
+ .debug_line    0x0000b9be      0x805 build\Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_spi.o
+ .debug_line    0x0000c1c3      0x232 build\Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_syscfg.o
+ .debug_line    0x0000c3f5     0x21be build\Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_tim.o
+ .debug_line    0x0000e5b3      0x9ff build\Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_usart.o
+ .debug_line    0x0000efb2       0xa7 build\Libraries\CMSIS\ST\STM32F4xx\Source\Templates\gcc_ride7\startup_stm32f4xx.o
+ .debug_line    0x0000f059      0x21c build\my windows\gui_app.o
+ .debug_line    0x0000f275      0x386 build\my windows\my_view1.o
+ .debug_line    0x0000f5fb      0x344 build\my windows\my_view2.o
+ .debug_line    0x0000f93f      0x343 build\my windows\my_view3.o
+ .debug_line    0x0000fc82      0x350 build\my windows\my_view4.o
+ .debug_line    0x0000ffd2      0x350 build\my windows\my_view5.o
+ .debug_line    0x00010322       0xb8 build\src\clock.o
+ .debug_line    0x000103da      0x23f build\src\device.o
+ .debug_line    0x00010619      0x119 build\src\idle.o
+ .debug_line    0x00010732      0xb05 build\src\ipc.o
+ .debug_line    0x00011237       0x90 build\src\irq.o
+ .debug_line    0x000112c7      0x5a0 build\src\kservice.o
+ .debug_line    0x00011867      0x33a build\src\mem.o
+ .debug_line    0x00011ba1      0x271 build\src\mempool.o
+ .debug_line    0x00011e12      0x251 build\src\object.o
+ .debug_line    0x00012063      0x213 build\src\scheduler.o
+ .debug_line    0x00012276      0x33a build\src\thread.o
+ .debug_line    0x000125b0      0x3b7 build\src\timer.o
+ .debug_line    0x00012967       0xf1 build\libcpu\arm\cortex-m4\cpuport.o
+ .debug_line    0x00012a58       0xca build\libcpu\arm\cortex-m4\context_gcc.o
+ .debug_line    0x00012b22      0x26c build\components\dfs\src\dfs.o
+ .debug_line    0x00012d8e      0x2bb build\components\dfs\src\dfs_fs.o
+ .debug_line    0x00013049      0x2c5 build\components\dfs\src\dfs_file.o
+ .debug_line    0x0001330e      0x325 build\components\dfs\src\dfs_posix.o
+ .debug_line    0x00013633      0x4ac build\components\dfs\filesystems\elmfat\dfs_elm.o
+ .debug_line    0x00013adf     0x10a6 build\components\dfs\filesystems\elmfat\ff.o
+ .debug_line    0x00014b85      0x112 build\components\dfs\filesystems\elmfat\option\cc936.o
+ .debug_line    0x00014c97      0x32a build\components\finsh\shell.o
+ .debug_line    0x00014fc1       0xa7 build\components\finsh\symbol.o
+ .debug_line    0x00015068      0x525 build\components\finsh\cmd.o
+ .debug_line    0x0001558d      0x4c1 build\components\finsh\finsh_compiler.o
+ .debug_line    0x00015a4e       0xe9 build\components\finsh\finsh_error.o
+ .debug_line    0x00015b37      0x200 build\components\finsh\finsh_heap.o
+ .debug_line    0x00015d37      0x119 build\components\finsh\finsh_init.o
+ .debug_line    0x00015e50      0x198 build\components\finsh\finsh_node.o
+ .debug_line    0x00015fe8      0x4c2 build\components\finsh\finsh_ops.o
+ .debug_line    0x000164aa      0x4c3 build\components\finsh\finsh_parser.o
+ .debug_line    0x0001696d      0x198 build\components\finsh\finsh_var.o
+ .debug_line    0x00016b05      0x135 build\components\finsh\finsh_vm.o
+ .debug_line    0x00016c3a      0x3af build\components\finsh\finsh_token.o
+ .debug_line    0x00016fe9       0xaa build\components\libc\minilibc\ctype.o
+ .debug_line    0x00017093       0xaa build\components\libc\minilibc\math.o
+ .debug_line    0x0001713d      0x13e build\components\libc\minilibc\qsort.o
+ .debug_line    0x0001727b       0xb2 build\components\libc\minilibc\rand.o
+ .debug_line    0x0001732d      0x16a build\components\libc\minilibc\stdlib.o
+ .debug_line    0x00017497      0x523 build\components\libc\minilibc\string.o
+ .debug_line    0x000179ba      0x215 build\components\libc\minilibc\time.o
+ .debug_line    0x00017bcf      0x320 build\components\rtgui\apps\calibration.o
+ .debug_line    0x00017eef       0xbc build\components\rtgui\common\asc16font.o
+ .debug_line    0x00017fab      0x29e build\components\rtgui\common\blit.o
+ .debug_line    0x00018249       0xa4 build\components\rtgui\common\color.o
+ .debug_line    0x000182ed      0x8cf build\components\rtgui\common\dc.o
+ .debug_line    0x00018bbc      0x383 build\components\rtgui\common\dc_buffer.o
+ .debug_line    0x00018f3f      0x4e5 build\components\rtgui\common\dc_client.o
+ .debug_line    0x00019424      0x3b5 build\components\rtgui\common\dc_hw.o
+ .debug_line    0x000197d9      0x33b build\components\rtgui\common\filerw.o
+ .debug_line    0x00019b14      0x25b build\components\rtgui\common\font.o
+ .debug_line    0x00019d6f      0x264 build\components\rtgui\common\font_bmp.o
+ .debug_line    0x00019fd3      0x238 build\components\rtgui\common\font_hz_bmp.o
+ .debug_line    0x0001a20b      0x33a build\components\rtgui\common\framebuffer_driver.o
+ .debug_line    0x0001a545       0xbb build\components\rtgui\common\hz16font.o
+ .debug_line    0x0001a600      0x31c build\components\rtgui\common\image.o
+ .debug_line    0x0001a91c      0x298 build\components\rtgui\common\image_hdc.o
+ .debug_line    0x0001abb4      0x2f4 build\components\rtgui\common\pixel_driver.o
+ .debug_line    0x0001aea8     0x11d7 build\components\rtgui\common\region.o
+ .debug_line    0x0001c07f      0x543 build\components\rtgui\common\rtgui_app.o
+ .debug_line    0x0001c5c2      0x433 build\components\rtgui\common\rtgui_mv_model.o
+ .debug_line    0x0001c9f5      0x232 build\components\rtgui\common\rtgui_object.o
+ .debug_line    0x0001cc27      0x40c build\components\rtgui\common\rtgui_system.o
+ .debug_line    0x0001d033      0x597 build\components\rtgui\common\rtgui_theme.o
+ .debug_line    0x0001d5ca      0x187 build\components\rtgui\common\rtgui_xml.o
+ .debug_line    0x0001d751      0x155 build\components\rtgui\server\driver.o
+ .debug_line    0x0001d8a6      0x227 build\components\rtgui\server\mouse.o
+ .debug_line    0x0001dacd      0x351 build\components\rtgui\server\server.o
+ .debug_line    0x0001de1e      0xae2 build\components\rtgui\server\topwin.o
+ .debug_line    0x0001e900      0x28d build\components\rtgui\widgets\box.o
+ .debug_line    0x0001eb8d      0x357 build\components\rtgui\widgets\button.o
+ .debug_line    0x0001eee4      0x272 build\components\rtgui\widgets\checkbox.o
+ .debug_line    0x0001f156      0x377 build\components\rtgui\widgets\combobox.o
+ .debug_line    0x0001f4cd      0x471 build\components\rtgui\widgets\container.o
+ .debug_line    0x0001f93e      0x2f7 build\components\rtgui\widgets\digfont.o
+ .debug_line    0x0001fc35      0x2ba build\components\rtgui\widgets\digtube.o
+ .debug_line    0x0001feef      0xadc build\components\rtgui\widgets\edit.o
+ .debug_line    0x000209cb      0x223 build\components\rtgui\widgets\label.o
+ .debug_line    0x00020bee      0x3ac build\components\rtgui\widgets\listbox.o
+ .debug_line    0x00020f9a      0x3e6 build\components\rtgui\widgets\listctrl.o
+ .debug_line    0x00021380      0x34c build\components\rtgui\widgets\menu.o
+ .debug_line    0x000216cc      0x1cf build\components\rtgui\widgets\mv_view.o
+ .debug_line    0x0002189b      0x583 build\components\rtgui\widgets\notebook.o
+ .debug_line    0x00021e1e      0x3d7 build\components\rtgui\widgets\plot.o
+ .debug_line    0x000221f5      0x1bd build\components\rtgui\widgets\plot_curve.o
+ .debug_line    0x000223b2      0x256 build\components\rtgui\widgets\progressbar.o
+ .debug_line    0x00022608      0x2d6 build\components\rtgui\widgets\radiobox.o
+ .debug_line    0x000228de      0x653 build\components\rtgui\widgets\scrollbar.o
+ .debug_line    0x00022f31      0x359 build\components\rtgui\widgets\slider.o
+ .debug_line    0x0002328a      0x1f3 build\components\rtgui\widgets\staticline.o
+ .debug_line    0x0002347d      0x642 build\components\rtgui\widgets\textbox.o
+ .debug_line    0x00023abf      0x1cb build\components\rtgui\widgets\title.o
+ .debug_line    0x00023c8a      0x7fe build\components\rtgui\widgets\widget.o
+ .debug_line    0x00024488      0x508 build\components\rtgui\widgets\window.o
 
 .debug_frame    0x00000000     0xfb88
  *(.debug_frame)

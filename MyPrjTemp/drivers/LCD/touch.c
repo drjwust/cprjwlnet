@@ -3,7 +3,7 @@
 /*
  TOUCH INT: PA3
  */
-#define IS_TOUCH_UP()     GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_8)
+#define IS_TOUCH_UP()     GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_2)
 
 /*
  7  6 - 4  3      2     1-0
@@ -72,8 +72,8 @@ static void touch_int_cmd(FunctionalState NewState);
 #define X_WIDTH 240
 #define Y_WIDTH 320
 
-#define   CS_0()          GPIO_ResetBits(GPIOB,GPIO_Pin_9)
-#define   CS_1()          GPIO_SetBits(GPIOB,GPIO_Pin_9)
+#define   CS_0()          GPIO_ResetBits(GPIOB,GPIO_Pin_1)
+#define   CS_1()          GPIO_SetBits(GPIOB,GPIO_Pin_1)
 
 uint8_t SPI_WriteByte(unsigned char data)
 {
@@ -194,7 +194,7 @@ static void NVIC_Configuration(void)
 	NVIC_InitTypeDef NVIC_InitStructure;
 
 	/* Enable the EXTI0 Interrupt */
-	NVIC_InitStructure.NVIC_IRQChannel = EXTI9_5_IRQn;
+	NVIC_InitStructure.NVIC_IRQChannel = EXTI2_IRQn;
 	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1;
 	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
@@ -206,13 +206,13 @@ static void touch_int_cmd(FunctionalState NewState)
 	EXTI_InitTypeDef EXTI_InitStructure;
 
 	/* Configure  EXTI  */
-	EXTI_InitStructure.EXTI_Line = EXTI_Line8;
+	EXTI_InitStructure.EXTI_Line = EXTI_Line2;
 	EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;
 	EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Falling;
 
 	EXTI_InitStructure.EXTI_LineCmd = NewState;
 
-	EXTI_ClearITPendingBit(EXTI_Line8);
+	EXTI_ClearITPendingBit(EXTI_Line2);
 	EXTI_Init(&EXTI_InitStructure);
 }
 
@@ -224,7 +224,7 @@ static void EXTI_Configuration(void)
 		RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOB, ENABLE);
 		RCC_APB2PeriphClockCmd(RCC_APB2Periph_SYSCFG, ENABLE);
 
-		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8;
+		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_2;
 		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
         GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
         GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
@@ -232,7 +232,7 @@ static void EXTI_Configuration(void)
 		GPIO_Init(GPIOB, &GPIO_InitStructure);
 	}
 
-	SYSCFG_EXTILineConfig(EXTI_PortSourceGPIOB, EXTI_PinSource8);
+	SYSCFG_EXTILineConfig(EXTI_PortSourceGPIOB, EXTI_PinSource2);
 
 	/* Configure  EXTI  */
 	touch_int_cmd(ENABLE);
@@ -244,13 +244,13 @@ static rt_err_t rtgui_touch_init(rt_device_t dev)
 	NVIC_Configuration();
 	EXTI_Configuration();
 
-	/* PG15 touch CS */
+	/* PB1 touch CS */
 	{
 		GPIO_InitTypeDef GPIO_InitStructure;
 
 		RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOB, ENABLE);
 
-		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9;
+		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1;
 		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
 		GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
 		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
@@ -426,7 +426,7 @@ void Pen_IRQHandler(void)
 
 	rt_event_send(&touch->event, 1);
 
-	EXTI_ClearITPendingBit(EXTI_Line8);
+	EXTI_ClearITPendingBit(EXTI_Line2);
 }
 
 rt_err_t rtgui_touch_hw_init()

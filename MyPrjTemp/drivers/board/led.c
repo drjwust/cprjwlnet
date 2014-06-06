@@ -14,12 +14,12 @@
 #include <rtthread.h>
 #include <stm32f4xx_conf.h>
 
-#define led1_rcc                    RCC_AHB1Periph_GPIOB
-#define led1_gpio                   GPIOB
-#define led1_pin                    (GPIO_Pin_1)
+#define led1_rcc                    RCC_AHB1Periph_GPIOC
+#define led1_gpio                   GPIOC
+#define led1_pin                    (GPIO_Pin_0)
 
-#define led2_rcc                    RCC_AHB1Periph_GPIOB
-#define led2_gpio                   GPIOB
+#define led2_rcc                    RCC_AHB1Periph_GPIOA
+#define led2_gpio                   GPIOA
 #define led2_pin                    (GPIO_Pin_0)
 
 void rt_hw_led_init(void)
@@ -27,7 +27,7 @@ void rt_hw_led_init(void)
 	GPIO_InitTypeDef GPIO_InitStructure;
 
 	/* GPIOD Periph clock enable */
-	RCC_AHB1PeriphClockCmd(led1_rcc | led2_rcc | RCC_AHB1Periph_GPIOE, ENABLE);
+	RCC_AHB1PeriphClockCmd(led1_rcc | led2_rcc | RCC_AHB1Periph_GPIOD, ENABLE);
 
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
 	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
@@ -40,8 +40,8 @@ void rt_hw_led_init(void)
 	GPIO_InitStructure.GPIO_Pin = led2_pin;
 	GPIO_Init(led2_gpio, &GPIO_InitStructure);
 
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1;
-	GPIO_Init(GPIOE, &GPIO_InitStructure);
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_12;
+	GPIO_Init(GPIOD, &GPIO_InitStructure);
 }
 
 void rt_hw_led_set_state(uint8_t led,uint8_t state)
@@ -68,7 +68,7 @@ void rt_hw_led_off(rt_uint32_t n)
 		GPIO_SetBits(led2_gpio, led2_pin);
 		break;
 	case 3:
-		GPIO_ResetBits(GPIOE, GPIO_Pin_1);
+		GPIO_ResetBits(GPIOD, GPIO_Pin_12);
 		break;
 	}
 }
@@ -85,7 +85,7 @@ void rt_hw_led_on(rt_uint32_t n)
 		GPIO_ResetBits(led2_gpio, led2_pin);
 		break;
 	case 3:
-		GPIO_SetBits(GPIOE, GPIO_Pin_1);
+		GPIO_SetBits(GPIOD, GPIO_Pin_12);
 		break;
 	}
 }

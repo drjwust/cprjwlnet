@@ -90,18 +90,6 @@ const RF_SETTINGS rfSettings =
     0x0C    // PKTLEN    Packet length.
 //    0XFF	// PKTLEN    Packet length.
 };
-//*****************************************************************************************
-//函数名：delay(unsigned int s)
-//输入：时间
-//输出：无
-//功能描述：普通廷时,内部用
-//*****************************************************************************************
-static void delay(unsigned int s)
-{
-	unsigned int i;
-	for(i=0; i<s; i++);
-	for(i=0; i<s; i++);
-}
 
 
 //*****************************************************************************************
@@ -183,15 +171,7 @@ uint8_t halRfReceivePacket(uint8_t *rxBuffer, uint8_t *length)
     uint8_t packetLength;
 	uint8_t i=(*length)*4;  // 具体多少要根据datarate和length来决定
 
-//    halSpiStrobe(CCxxx0_SRX);		//进入接收状态
-//	delay(2);
-//	while (GDO0)
-//	{
-//		delay(2);
-//		--i;
-//		if(i<1)
-//		   return 0;
-//	}
+
     if ((halSpiReadStatus(CCxxx0_RXBYTES) & BYTES_IN_RXFIFO)) //如果接的字节数不为0
 	{
         packetLength = halSpiReadReg(CCxxx0_RXFIFO);//读出第一个字节，此字节为该帧数据长度

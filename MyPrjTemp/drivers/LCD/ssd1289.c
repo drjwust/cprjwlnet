@@ -504,9 +504,9 @@ void rt_hw_lcd_init(void)
 		GPIO_ResetBits(GPIOD, GPIO_Pin_3);
 		GPIO_SetBits(GPIOD, GPIO_Pin_3);
 
-		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1;
-		GPIO_Init(GPIOE, &GPIO_InitStructure);
-		GPIO_SetBits(GPIOE, GPIO_Pin_1);
+		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_12;
+		GPIO_Init(GPIOD, &GPIO_InitStructure);
+		GPIO_SetBits(GPIOD, GPIO_Pin_12);
 		/* wait for lcd reset */
 		rt_thread_delay(1);
 	}

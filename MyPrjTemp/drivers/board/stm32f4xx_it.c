@@ -329,6 +329,7 @@ void EXTI2_IRQHandler(void)
 	if (EXTI_GetFlagStatus(EXTI_Line2) == SET)	//
 	{
 		EXTI_ClearITPendingBit(EXTI_Line2);
+		Pen_IRQHandler();
 	}
 	rt_interrupt_leave();
 }
@@ -340,10 +341,6 @@ void EXTI9_5_IRQHandler(void)
 	{
 		EXTI_ClearITPendingBit(EXTI_Line6);
 		rt_sem_release(&rf_sem);
-	}
-	if (EXTI_GetFlagStatus(EXTI_Line8) == SET)	//
-	{
-		Pen_IRQHandler();
 	}
 	rt_interrupt_leave();
 }
