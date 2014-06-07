@@ -82,10 +82,10 @@
 		<project id="MyPrjTemp.null.1400191525" name="MyPrjTemp"/>
 	</storageModule>
 	<storageModule moduleId="refreshScope" versionNumber="2">
-		<configuration configurationName="Default"/>
 		<configuration configurationName="scons">
 			<resource resourceType="PROJECT" workspacePath="/sss"/>
 		</configuration>
+		<configuration configurationName="Default"/>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
 	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>

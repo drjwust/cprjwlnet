@@ -59,24 +59,7 @@ static void io_port_init(void)
 	}
 }
 
-void halWait(uint16_t timeout)
-{
-	do
-	{
-		timeout++;
-		timeout--;
-		timeout++;
-		timeout--;
-		timeout++;
-		timeout--;
-		timeout++;
-		timeout--;
-		timeout++;
-		timeout--;
-		timeout++;
-		timeout--;
-	} while (--timeout);
-}
+
 
 void SpiInit(void)
 {
@@ -234,13 +217,15 @@ void halSpiWriteBurstReg(uint8_t addr, uint8_t *buffer, uint8_t count)
 //输出：无
 //功能描述：SPI写命令
 //*****************************************************************************************
-void halSpiStrobe(uint8_t strobe)
+uint8_t halSpiStrobe(uint8_t strobe)
 {
+	uint8_t state;
 	RF_CSn(0);
 	while (RF_MISO())
 		;
-	SpiTxRxByte(strobe);		//写入命令
+	state = SpiTxRxByte(strobe);		//写入命令
 	RF_CSn(1);
+	return state;
 }
 
 //*****************************************************************************************

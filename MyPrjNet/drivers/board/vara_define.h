@@ -36,8 +36,7 @@ typedef struct node_list
 } NODE_LIST;
 
 typedef struct rf_packet{
-	uint16_t dst_addr;
-	uint16_t src_addr;
+	uint16_t packet_addr;
 	uint16_t temperature;
 	uint8_t state;
 }RF_DATA;
@@ -50,6 +49,7 @@ APP_EXT volatile NODE_LIST * NodeList;
 APP_EXT struct rt_event event_rf;
 APP_EXT struct rt_event rf_sem;
 APP_EXT volatile uint8_t RfState;
+APP_EXT volatile uint8_t RfGDOIntFlag;
 
 
 #define RFSTATE_IDLE	0

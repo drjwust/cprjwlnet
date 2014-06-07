@@ -243,54 +243,6 @@ void TIM7_IRQHandler(void)
 
 }
 
-//void EXTI9_5_IRQHandler(void)
-//{
-//	static int8_t channel, n, complete = 0;
-//	rt_interrupt_enter();
-//	if (EXTI_GetFlagStatus(EXTI_Line5) == SET)	//
-//	{
-//		EXTI_ClearITPendingBit(EXTI_Line5);
-//		//FIXME 取走ADC1的数据
-//		for (channel = 0; channel < 8; channel++)
-//		{
-//			AD_Sample[channel][n] = read16(ARM2_ADC_1_BASE);
-//		}
-//		complete++;
-//	}
-//	if (EXTI_GetFlagStatus(EXTI_Line6) == SET)	//
-//	{
-//		EXTI_ClearITPendingBit(EXTI_Line6);
-//		//FIXME 取走ADC2的数据
-//		for (channel = 8; channel < 15; channel++)
-//		{
-//			AD_Sample[channel][n] = read16(ARM2_ADC_1_BASE);
-//		}
-//		complete++;
-//	}
-//	if (EXTI_GetFlagStatus(EXTI_Line7) == SET)	//
-//	{
-//		EXTI_ClearITPendingBit(EXTI_Line7);
-//		//FIXME 取走ADC3的数据
-//		for (channel = 16; channel < 23; channel++)
-//		{
-//			AD_Sample[channel][n] = read16(ARM2_ADC_1_BASE);
-//		}
-//		complete++;
-//	}
-////	GPIO_WriteBit(GPIOA,GPIO_Pin_0,1 - GPIO_ReadOutputDataBit(GPIOA,GPIO_Pin_0));
-//
-//	if (complete == 3)
-//	{
-//		complete = 0;
-//		rt_hw_ad7606_end_sample();	//采样结束之后，使CONST变为低，为下一次转换做准备
-//		n++;
-//		if (n == 64)
-//			n = 0;
-////		GPIO_WriteBit(GPIOA, GPIO_Pin_0,1);
-////				);
-//	}
-//	rt_interrupt_leave();
-//}
 #ifdef RT_USING_UART6
 void DMA2_Stream6_IRQHandler(void)
 {
@@ -348,6 +300,7 @@ void EXTI9_5_IRQHandler(void)
 		}
 		else if (RfState == RFSTATE_TX)
 		{
+//			RfGDOIntFlag = 1;
 			rt_event_send(&event_rf, RFSTATE_TX);
 		}
 	}

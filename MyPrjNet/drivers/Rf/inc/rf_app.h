@@ -120,7 +120,7 @@ void Reset_CC1100(void);
 void Power_Up_Reset_CC1100(void);
 void halSpiWriteReg(uint8_t addr, uint8_t value);
 void halSpiWriteBurstReg(uint8_t addr, uint8_t *buffer, uint8_t count);
-void halSpiStrobe(uint8_t strobe);
+uint8_t halSpiStrobe(uint8_t strobe);
 uint8_t halSpiReadReg(uint8_t addr);
 void halSpiReadBurstReg(uint8_t addr, uint8_t *buffer, uint8_t count);
 uint8_t halSpiReadStatus(uint8_t addr);
@@ -133,7 +133,8 @@ void halRfTransmitEnable (void);
 void halRfSyncPinINTCmd(uint8_t state);
 void halRfRxModeOn(void);
 void halRfRxModeOff(void);
-void halRfWaitRSSIVaild(void);
+uint8_t Rf_WaitTxComplete(uint16_t t);
+void halRfPrepareToTx(uint8_t *txBuffer, uint8_t size);
 
 
 #endif /* RF_APP_H_ */

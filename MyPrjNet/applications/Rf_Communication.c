@@ -10,7 +10,8 @@
 #define RSSI_OFFSET 74
 
 uint8_t PaTabel[8] =
-{ 0x60, 0x60, 0x60, 0x60, 0x60, 0x60, 0x60, 0x60 };
+//{ 0x60, 0x60, 0x60, 0x60, 0x60, 0x60, 0x60, 0x60 };
+		{ 0xC2, 0XC2, 0xC2, 0XC2, 0xC2, 0XC2, 0xC2, 0XC2 };
 
 int8_t CalRssiValue(uint8_t rssi)
 {
@@ -30,6 +31,7 @@ int8_t CalRssiValue(uint8_t rssi)
 void rf_thread_entry(void *para)
 {
 	uint8_t leng = 0, state, filedata[200];
+	uint8_t rfbuffer[80];
 	uint8_t tf = 0, status[2];
 	uint32_t event;
 	RF_DATA* pRfData;
@@ -42,43 +44,54 @@ void rf_thread_entry(void *para)
 	halSpiWriteBurstReg(CCxxx0_PATABLE, PaTabel, 8);
 	halSpiReadStatus(CCxxx0_VERSION);
 
-	pRfData = rt_malloc(sizeof(RF_DATA));
+	pRfData = (RF_DATA*) rfbuffer;
 	while (1)
 	{
 		halRfRxModeOn();
 		rt_event_recv(&event_rf, RFSTATE_RX,
-				RT_EVENT_FLAG_AND | RT_EVENT_FLAG_CLEAR, RT_WAITING_FOREVER,
-				&event);
+		RT_EVENT_FLAG_AND | RT_EVENT_FLAG_CLEAR, RT_WAITING_FOREVER, &event);
 		RfState = RFSTATE_IDLE;
 		leng = halRfReceivePacket((uint8_t *) pRfData, status);
 		halRfRxModeOff();
-
-		if (pRfData->dst_addr == 1 )
+		if ((status[1] & 0X80) && leng)	//只有CRC检验成功才保存数据
 		{
-			node = pRfData->src_addr;
-			NodeList->node[node].temperature = pRfData->temperature;	//低10位数据为温度
-			NodeList->node[node].state = pRfData->state;
-			now = time(RT_NULL), tmp = localtime(&now);
-			rt_sprintf(filedata, "\n%d\t%d\t%d\t%d\t%d\t%d年%d月%d日\t%d:%d", node,
-					NodeList->node[node].temperature,
-					NodeList->node[node].state,
-					NodeList->node[node].relative_alarm_value,
-					NodeList->node[node].abs_alram_value, tmp->tm_year + 1900,
-					tmp->tm_mon + 1, tmp->tm_mday, tmp->tm_hour, tmp->tm_min);
-			leng = strlen(filedata);
-			fd = open("/data.dat", O_RDWR, 0);
-			lseek(fd, 0, DFS_SEEK_END);
-			write(fd, filedata, leng);
-			close(fd);
-			rt_kprintf(filedata);
-			if (pRfData->state != 0)
+			status[1] = 0;
+			//将节点发过来的数据保存在data.dat文件和内存中
+			node = pRfData->packet_addr;
+			//因为NodeList->node[]数据的大小是1024，所以超过时，说明数据不准确要丢掉
+			if (node < 1024)
 			{
-				NodeList->error_node[NodeList->error_num] =
-						&NodeList->node[node];
-				fd = open("/alarm.dat", O_RDWR, 0);
+				NodeList->node[node].temperature = pRfData->temperature;//低10位数据为温度
+				NodeList->node[node].state = pRfData->state;
+				now = time(RT_NULL), tmp = localtime(&now);
+				rt_sprintf(filedata, "\n%d\t%d\t%d\t%d\t%d\t%d年%d月%d日\t%d:%d",
+						node, NodeList->node[node].temperature,
+						NodeList->node[node].state,
+						NodeList->node[node].relative_alarm_value,
+						NodeList->node[node].abs_alram_value,
+						tmp->tm_year + 1900, tmp->tm_mon + 1, tmp->tm_mday,
+						tmp->tm_hour, tmp->tm_min);
+				leng = strlen(filedata);
+				fd = open("/data.dat", O_RDWR, 0);
 				lseek(fd, 0, DFS_SEEK_END);
 				write(fd, filedata, leng);
 				close(fd);
+				rt_kprintf(filedata);
+				//如果节点发生错误，则将节点的信息保存在alarm.dat文件中
+				if (pRfData->state != 0)
+				{
+					NodeList->error_node[NodeList->error_num] =
+							&NodeList->node[node];
+					fd = open("/alarm.dat", O_RDWR, 0);
+					lseek(fd, 0, DFS_SEEK_END);
+					write(fd, filedata, leng);
+					close(fd);
+				}
+				pRfData->temperature = NodeList->node[node].abs_alram_value;
+				pRfData->state = NodeList->node[node].relative_alarm_value;
+				halRfSendPacket((uint8_t *) pRfData, 6);
+				GPIO_WriteBit(GPIOA, GPIO_Pin_0,
+						1 - GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_0));
 			}
 		}
 	}

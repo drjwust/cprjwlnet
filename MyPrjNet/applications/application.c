@@ -103,10 +103,10 @@ void thread_init_entry(void* parameter)
 //GUI
 	while (1)
 	{
-		rt_hw_led_on(1);
+//		rt_hw_led_on(1);
 		rt_thread_delay(300);
-		rt_hw_led_off(1);
-		rt_thread_delay(300);
+//		rt_hw_led_off(1);
+//		rt_thread_delay(300);
 //		rt_kprintf("Are You OK?\n");
 	}
 }

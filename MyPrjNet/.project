@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>master and RF</name>
+	<name>MyPrjNet</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -115,7 +115,7 @@
 	<variableList>
 		<variable>
 			<name>RTT_ROOT</name>
-			<value>file:/E:/RT-Thread%201.2.0/</value>
+			<value>file:/H:/RT-Thread/</value>
 		</variable>
 	</variableList>
 </projectDescription>

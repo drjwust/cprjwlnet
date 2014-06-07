@@ -10,6 +10,11 @@
 #define PKTSTATUS_CCA	1 << 4
 #define PKTSTATUS_CS	1 << 6
 
+#define RF_PAPD_INT_FLAG_IS_SET()                 RfGDOIntFlag
+#define RF_CLEAR_PAPD_PIN_INT_FLAG()              (RfGDOIntFlag = 0)
+#define RF_CONFIG_GDO0_AS_PAPD_SIGNAL()           halSpiWriteReg(CCxxx0_IOCFG0, 27)
+#define RF_CONFIG_GDO0_AS_SYNC_SIGNAL()         halSpiWriteReg(CCxxx0_IOCFG0, 6)
+
 // RF_SETTINGS is a data structure which contains all relevant CCxxx0 registers
 typedef struct S_RF_SETTINGS
 {
@@ -72,8 +77,8 @@ const RF_SETTINGS rfSettings =
 		0x18,   // MCSM0     Main Radio Control State Machine configuration.
 		0x1D,   // FOCCFG    Frequency Offset Compensation Configuration.
 		0x1C,   // BSCFG     Bit synchronization Configuration.
-		0xC7,   // AGCCTRL2  AGC control.XXX C7 -> 0XFF
-		0x00,   // AGCCTRL1  AGC control. XXX 00->0X40
+		0xFF,   // AGCCTRL2  AGC control.XXX C7 -> 0XFF
+		0x40,   // AGCCTRL1  AGC control. XXX 00->0X40
 		0xB2,   // AGCCTRL0  AGC control.
 
 		0xEA,   // FSCAL3    Frequency synthesizer calibration.
@@ -93,20 +98,6 @@ const RF_SETTINGS rfSettings =
 		0x0C    // PKTLEN    Packet length.
 //    0XFF	// PKTLEN    Packet length.
 		};
-//*****************************************************************************************
-//函数名：delay(unsigned int s)
-//输入：时间
-//输出：无
-//功能描述：普通廷时,内部用
-//*****************************************************************************************
-static void delay(unsigned int s)
-{
-	unsigned int i;
-	for (i = 0; i < s; i++)
-		;
-	for (i = 0; i < s; i++)
-		;
-}
 
 //*****************************************************************************************
 //函数名：void halRfWriteRfSettings(RF_SETTINGS *pRfSettings)
@@ -156,6 +147,13 @@ void halRfWriteRfSettings(void)
 	halSpiWriteReg(CCxxx0_PKTLEN, rfSettings.PKTLEN);
 }
 
+void RF_STROBE_IDLE_AND_WAIT(void)
+{
+	halSpiStrobe( CCxxx0_SIDLE);
+	while (halSpiStrobe(CCxxx0_SNOP) & 0XF0)
+		;
+}
+
 //*****************************************************************************************
 //函数名：void halRfSendPacket(uint8_t *txBuffer, uint8_t size)
 //输入：发送的缓冲区，发送数据个数
@@ -167,9 +165,8 @@ void halRfSendPacket(uint8_t *txBuffer, uint8_t size)
 {
 	uint32_t event;
 	halRfTransmitEnable();
-	halSpiStrobe(CCxxx0_SFTX);	//清除Tx FIFO
-	halSpiWriteReg(CCxxx0_TXFIFO, size);
-	halSpiWriteBurstReg(CCxxx0_TXFIFO, txBuffer, size);	//写入要发送的数据
+	RF_STROBE_IDLE_AND_WAIT();
+	halRfPrepareToTx(txBuffer, size);
 	RfState = RFSTATE_TX;
 	halRfSyncPinINTCmd(ENABLE);	//开同步中断
 	halSpiStrobe(CCxxx0_STX);		//进入发送模式发送数据
@@ -186,6 +183,7 @@ uint8_t halRfReceivePacket(uint8_t *rxBuffer, uint8_t *status)
 	if ((halSpiReadStatus(CCxxx0_RXBYTES) & BYTES_IN_RXFIFO)) //如果接的字节数不为0
 	{
 		packetLength = halSpiReadReg(CCxxx0_RXFIFO); //读出第一个字节，此字节为该帧数据长度
+		if (packetLength != 6)	return 0;	//因为是固定数据包传输，所以这里接收长度不为6就返回
 		halSpiReadBurstReg(CCxxx0_RXFIFO, rxBuffer, packetLength); //读出所有接收到的数据
 
 		// Read the 2 appended status bytes (status[0] = RSSI, status[1] = LQI)
@@ -221,10 +219,16 @@ void halRfRxModeOff(void)
 {
 	/* disable receive interrupts */
 	halRfSyncPinINTCmd(DISABLE);
+
 	/* turn off radio */
-	halSpiStrobe(CCxxx0_SIDLE);	//进入空闲状态
+	RF_STROBE_IDLE_AND_WAIT();
+
 	/* flush the receive FIFO of any residual data */
 	halSpiStrobe( CCxxx0_SFRX);
+
+	RF_CLEAR_PAPD_PIN_INT_FLAG();
+
+	RfState = RFSTATE_IDLE;
 }
 
 void halRfPrepareToTx(uint8_t *txBuffer, uint8_t size)
@@ -234,73 +238,74 @@ void halRfPrepareToTx(uint8_t *txBuffer, uint8_t size)
 	halSpiWriteBurstReg(CCxxx0_TXFIFO, txBuffer, size);	//写入要发送的数据
 }
 
+/*
+ ********************************************************************************
+ 返回值： 1，发送失败；0，发送成功
+ ********************************************************************************
+ */
 uint8_t halRfTransmit(uint8_t *txBuffer, uint8_t size)
 {
-	uint8_t state = 0, i;
-	uint32_t event;
-	/* turn off radio */
-	halRfSyncPinINTCmd(DISABLE);	//关同步中断
-	rt_hw_led_on(2);
+	uint8_t ccaRetries = 4, returnValue = 0;
+	uint16_t timeout;
+
+	halRfRxModeOff();
+	halRfPrepareToTx(txBuffer, size);
+	ccaRetries = 4;
+	RF_CONFIG_GDO0_AS_PAPD_SIGNAL();
 	for (;;)
 	{
-		halSpiStrobe(CCxxx0_SIDLE);		//进入空闲状态
-		while (state != 0x01)	//检测是否进入空闲状态
+		halRfReceiveEnable();
+		halSpiStrobe(CCxxx0_SRX);
+		rt_delay_us(900);
+		RfGDOIntFlag = 0;
+		halRfSyncPinINTCmd(ENABLE);	//开同步中断
+		RfState = RFSTATE_TX;
+		halRfTransmitEnable();
+		halSpiStrobe(CCxxx0_STX);		//进入发送模式发送数据
+		rt_delay_us(30);
+		if (RfGDOIntFlag)
 		{
-			rt_delay_us(100);
-			state = halSpiReadStatus(CCxxx0_MARCSTATE);
+			RfGDOIntFlag = 0;
+			Rf_WaitTxComplete(3000);
+			break;
 		}
-		halSpiStrobe(CCxxx0_SFRX);	//清除RX FIFO
-		halRfPrepareToTx(txBuffer, size);	//写入数据到Tx FIFO
-		halRfReceiveEnable();			//使能接收LNA
-		RfState = RFSTATE_RX;
-		halSpiStrobe(CCxxx0_SRX);		//进入接收状态
-		while (state != 13 && state != 14 && state != 15)	//确定进入发送状态
+		else
 		{
-			rt_delay_us(60);
-			state = halSpiReadStatus(CCxxx0_MARCSTATE);
-		}
-		rt_delay_us(500);	//延时一定时间，等待Rx状态稳定
-//		for (;;)
-//		{
-//			state = halSpiReadStatus(CCxxx0_PKTSTATUS);
-//			if (state & PKTSTATUS_CCA)
-//			{
-//				rt_hw_led_on(2);
-//			}
-//			else
-//			{
-//				rt_hw_led_off(2);
-//				break;
-//			}
-//		}
-				//检测CCA和CS，数据发送前必须保证CCA = 1、CS=0，并且维持一定时间
-		for (i = 4; i > 0; i--)
-		{
-			state = halSpiReadStatus(CCxxx0_PKTSTATUS);
-			if ((state & PKTSTATUS_CS) && (state & PKTSTATUS_CCA) == 0)
+			halRfSyncPinINTCmd(DISABLE);	//关同步中断
+			/* turn off radio */
+			RF_STROBE_IDLE_AND_WAIT();
+			halSpiStrobe(CCxxx0_SFRX);	//清除Tx FIFO
+			if (ccaRetries != 0)
 			{
-				rt_thread_delay(2);	//如果CCA或者CS为1，则延时10ms，并重新检测CCA
+				rt_delay_us(1000);
+				halRfPrepareToTx(txBuffer, size);
+				ccaRetries--;
+			}
+			else
+			{
+				returnValue = 1;
 				break;
 			}
-			rt_delay_us(100);
 		}
-		if (i == 0)		//如果1ms内CCA和CS为0，说明满足发送的条件，退出for(;;)
-			break;
 	}
-	rt_hw_led_off(2);
-
-	RfState = RFSTATE_TX;
-	halRfTransmitEnable();
-	rt_event_recv(&event_rf, RFSTATE_TX,
-	RT_EVENT_FLAG_AND | RT_EVENT_FLAG_CLEAR, RT_WAITING_NO, &event);	//等待发送中断
-	halRfSyncPinINTCmd(ENABLE);	//开同步中断
-	halSpiStrobe(CCxxx0_STX);		//进入发送模式发送数据
-	state = rt_event_recv(&event_rf, RFSTATE_TX,
-	RT_EVENT_FLAG_AND | RT_EVENT_FLAG_CLEAR, 10, &event);		//等待发送中断
-	halRfSyncPinINTCmd(DISABLE);	//关同步中断
+	halRfSyncPinINTCmd(DISABLE);
+	RF_STROBE_IDLE_AND_WAIT();
+//	RF_CONFIG_GDO0_AS_SYNC_SIGNAL();
 	RfState = RFSTATE_IDLE;
-	if (state == RT_EOK)
-		return 1;
-	else
-		return 0;
+	return returnValue;
+}
+
+uint8_t Rf_WaitTxComplete(uint16_t t)
+{
+	uint8_t timeout = 0;
+	uint16_t count;
+
+	count = t / 16;
+	do
+	{
+		rt_delay_us(16);
+//		timeout = RfGDOIntFlag;
+		timeout = GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_7);
+	} while (!timeout && count--);
+	return timeout;
 }
