@@ -176,6 +176,21 @@ void halRfSendPacket(uint8_t *txBuffer, uint8_t size)
 	RfState = RFSTATE_IDLE;
 }
 
+int8_t RfCalRssiValue(uint8_t rssi)
+{
+	int16_t db;
+	if (rssi >= 128)
+	{
+		db = (int16_t) (rssi - 256.0) / 2 - RSSI_OFFSET;
+	}
+	else
+	{
+		db = (int16_t) (rssi / 2.0) - RSSI_OFFSET;
+	}
+
+	return db;
+}
+
 uint8_t halRfReceivePacket(uint8_t *rxBuffer, uint8_t *status)
 {
 	uint8_t packetLength;
@@ -183,7 +198,11 @@ uint8_t halRfReceivePacket(uint8_t *rxBuffer, uint8_t *status)
 	if ((halSpiReadStatus(CCxxx0_RXBYTES) & BYTES_IN_RXFIFO)) //如果接的字节数不为0
 	{
 		packetLength = halSpiReadReg(CCxxx0_RXFIFO); //读出第一个字节，此字节为该帧数据长度
-		if (packetLength != 6)	return 0;	//因为是固定数据包传输，所以这里接收长度不为6就返回
+		if (packetLength != 6)
+		{
+			halSpiStrobe(CCxxx0_SFRX);		//清洗接收缓冲区
+			return 0;	//因为是固定数据包传输，所以这里接收长度不为6就返回
+		}
 		halSpiReadBurstReg(CCxxx0_RXFIFO, rxBuffer, packetLength); //读出所有接收到的数据
 
 		// Read the 2 appended status bytes (status[0] = RSSI, status[1] = LQI)
@@ -305,7 +324,7 @@ uint8_t Rf_WaitTxComplete(uint16_t t)
 	{
 		rt_delay_us(16);
 //		timeout = RfGDOIntFlag;
-		timeout = GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_7);
+		timeout = GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_7);
 	} while (!timeout && count--);
 	return timeout;
 }

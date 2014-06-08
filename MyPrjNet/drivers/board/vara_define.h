@@ -21,7 +21,7 @@ typedef struct node_data
 	long address;
 	long name;
 	uint8_t state;
-	uint8_t signal_intensity;
+	int8_t signal_intensity;
 	uint8_t relative_alarm_value;
 	uint8_t abs_alram_value;
 } NODE_DATA;

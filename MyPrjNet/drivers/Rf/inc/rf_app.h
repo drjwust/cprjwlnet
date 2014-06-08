@@ -12,6 +12,7 @@
 #define RF_MISO()	GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_4)
 #define GDO0 		GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_7)
 
+#define RSSI_OFFSET 74
 
 #define WRITE_BURST     	0x40						//Á¬ÐøÐ´Èë
 #define READ_SINGLE     	0x80						//¶Á
@@ -21,6 +22,7 @@
 
 #define RSSI                0
 #define LQI                 1
+
 
 //*****************************************************************************************
 // CC1100 STROBE, CONTROL AND STATUS REGSITER
@@ -135,6 +137,7 @@ void halRfRxModeOn(void);
 void halRfRxModeOff(void);
 uint8_t Rf_WaitTxComplete(uint16_t t);
 void halRfPrepareToTx(uint8_t *txBuffer, uint8_t size);
+int8_t RfCalRssiValue(uint8_t rssi);
 
 
 #endif /* RF_APP_H_ */

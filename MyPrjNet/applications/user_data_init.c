@@ -95,7 +95,7 @@ void user_data_init(void)
 	}
 
 	fd = open("/data.dat", O_CREAT|O_RDWR, 0);
-	rt_sprintf(buffer,"节点\t温度\t状态\t相对报警温度\t绝对报警温度\t时间\n");
+	rt_sprintf(buffer,"节点\t温度\t状态\t信号强度\t相对报警温度\t绝对报警温度\t时间\n");
 	num = strlen(buffer);
 	write(fd,buffer,num);
 	rt_sprintf(buffer,"--------------------------------------------------------------\n");
@@ -104,7 +104,7 @@ void user_data_init(void)
 	close(fd);
 
 	fd = open("/alarm.dat", O_CREAT|O_RDWR, 0);
-	rt_sprintf(buffer,"节点\t温度\t状态\t相对报警温度\t绝对报警温度\t时间\n");
+	rt_sprintf(buffer,"节点\t温度\t状态\t信号强度\t相对报警温度\t绝对报警温度\t时间\n");
 	num = strlen(buffer);
 	write(fd,buffer,num);
 	rt_sprintf(buffer,"--------------------------------------------------------------\n");
