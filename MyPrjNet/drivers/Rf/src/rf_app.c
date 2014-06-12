@@ -63,8 +63,8 @@ const RF_SETTINGS rfSettings =
 		0x10,   // FREQ2     Frequency control word, high byte.
 		0xA7,   // FREQ1     Frequency control word, middle byte.
 		0x62,   // FREQ0     Frequency control word, low byte.
-		0x5B,   // MDMCFG4   Modem configuration.
-		0xF8,   // MDMCFG3   Modem configuration.
+		0x5B,   // MDMCFG4   Modem configuration. 5B->C8
+		0xF8,   // MDMCFG3   Modem configuration. F8->93
 		0x03,   // MDMCFG2   Modem configuration.
 		0x22,   // MDMCFG1   Modem configuration.
 		0xF8,   // MDMCFG0   Modem configuration.
@@ -105,6 +105,7 @@ const RF_SETTINGS rfSettings =
 //输出：无
 //功能描述：配置CC1100的寄存器
 //*****************************************************************************************
+#if 1
 void halRfWriteRfSettings(void)
 {
 
@@ -146,6 +147,52 @@ void halRfWriteRfSettings(void)
 	halSpiWriteReg(CCxxx0_ADDR, rfSettings.ADDR);
 	halSpiWriteReg(CCxxx0_PKTLEN, rfSettings.PKTLEN);
 }
+#else
+
+void halRfWriteRfSettings() //		//4.8k
+{
+
+	halSpiWriteReg(CCxxx0_FSCTRL1, 0x06);		//2.4k
+	halSpiWriteReg(CCxxx0_FSCTRL0, 0x00);
+	halSpiWriteReg(CCxxx0_FREQ2, 0x10);
+	halSpiWriteReg(CCxxx0_FREQ1, 0xB0);
+	halSpiWriteReg(CCxxx0_FREQ0, 0x71);
+
+
+	halSpiWriteReg(CCxxx0_MDMCFG4, 0xF6);
+	halSpiWriteReg(CCxxx0_MDMCFG3, 0x83);
+	halSpiWriteReg(CCxxx0_MDMCFG2, 0x03);	//2-fsk
+	halSpiWriteReg(CCxxx0_MDMCFG1, 0x22);
+	halSpiWriteReg(CCxxx0_MDMCFG0, 0xF8);
+	halSpiWriteReg(CCxxx0_CHANNR, 0x00);
+	halSpiWriteReg(CCxxx0_DEVIATN, 0x15);
+	halSpiWriteReg(CCxxx0_FREND1, 0x56);
+	halSpiWriteReg(CCxxx0_FREND0, 0x10);
+	halSpiWriteReg(CCxxx0_MCSM1, 0x00);//0X30
+	halSpiWriteReg(CCxxx0_MCSM0, 0x38);//0X18
+	halSpiWriteReg(CCxxx0_FOCCFG, 0x16);
+	halSpiWriteReg(CCxxx0_BSCFG, 0x6C);
+	halSpiWriteReg(CCxxx0_AGCCTRL2, 0x03);
+	halSpiWriteReg(CCxxx0_AGCCTRL0, 0x91);
+	halSpiWriteReg(CCxxx0_FSCAL3, 0xe9);
+	halSpiWriteReg(CCxxx0_FSCAL2, 0x2A);
+	halSpiWriteReg(CCxxx0_FSCAL0, 0x1F);
+	halSpiWriteReg(CCxxx0_FSTEST, 0x59);
+	halSpiWriteReg(CCxxx0_TEST2, 0x81);
+	halSpiWriteReg(CCxxx0_TEST1, 0x35);
+	halSpiWriteReg(CCxxx0_TEST0, 0x09);
+	halSpiWriteReg(CCxxx0_IOCFG2, 0x24);
+	halSpiWriteReg(CCxxx0_IOCFG0, 0x06);
+	halSpiWriteReg(CCxxx0_PKTCTRL1, 0x04);//CRC AUTOFLUSH;ADDRESS CHECK
+	halSpiWriteReg(CCxxx0_PKTCTRL0, 0x05);
+	halSpiWriteReg(CCxxx0_ADDR, 0x00);
+	halSpiWriteReg(CCxxx0_PKTLEN, 0xFF);
+//	halSpiWriteReg(CCxxx0_FIFOTHR,0x27);
+//	if(halSpiReadReg(CCxxx0_MDMCFG3)!=0x83) systemerr=1;
+//	else systemerr=0;
+}
+#endif
+
 
 void RF_STROBE_IDLE_AND_WAIT(void)
 {
