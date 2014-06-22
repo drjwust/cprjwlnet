@@ -48,7 +48,8 @@ void rf_thread_entry(void *para)
 			{
 				NodeList->node[node].temperature = pRfData->temperature;//低10位数据为温度
 				NodeList->node[node].state = pRfData->state;
-				NodeList->node[node].signal_intensity = RfCalRssiValue(status[0]);
+//				接收机的灵敏度为RSSI > -105，因此信号的RSSI + 105刚好可以用百分比来表示信号强度
+				NodeList->node[node].signal_intensity = RfCalRssiValue(status[0]) + 105;
 //				NodeList->node[node].signal_intensity = status[1] & 0X7F,
 				now = time(RT_NULL), tmp = localtime(&now);
 				rt_sprintf(filedata, "\n%d\t%d\t%d\t%d\t%d\t%d\t%d年%d月%d日\t%d:%d",

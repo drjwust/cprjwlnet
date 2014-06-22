@@ -63,8 +63,8 @@ const RF_SETTINGS rfSettings =
 		0x10,   // FREQ2     Frequency control word, high byte.
 		0xA7,   // FREQ1     Frequency control word, middle byte.
 		0x62,   // FREQ0     Frequency control word, low byte.
-		0x5B,   // MDMCFG4   Modem configuration. 5B->C8
-		0xF8,   // MDMCFG3   Modem configuration. F8->93
+		0xC8,   // MDMCFG4   Modem configuration. 5B->C8
+		0x83,   // MDMCFG3   Modem configuration. F8->83
 		0x03,   // MDMCFG2   Modem configuration.
 		0x22,   // MDMCFG1   Modem configuration.
 		0xF8,   // MDMCFG0   Modem configuration.
