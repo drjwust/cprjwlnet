@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wc-entries
+   xmlns="svn:">
+<entry
+   repos="https://win-dkeqb6bf8hd/svn/PrjWirelessNet"
+   name=""
+   revision="3"
+   last-author="dian"
+   url="https://win-dkeqb6bf8hd/svn/PrjWirelessNet/trunk/MyPrj/Libraries/CMSIS/ST/STM32F4xx/Source/Templates"
+   committed-rev="3"
+   kind="dir"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="TASKING"
+   kind="dir"/>
+<entry
+   name="TrueSTUDIO"
+   kind="dir"/>
+<entry
+   name="arm"
+   kind="dir"/>
+<entry
+   name="gcc_ride7"
+   kind="dir"/>
+<entry
+   name="iar"
+   kind="dir"/>
+<entry
+   name="system_stm32f4xx.c"
+   checksum="40cb857228a37b45d13182cade3c6c2e"
+   last-author="dian"
+   text-time="2014-02-18T03:25:36.589000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+</wc-entries>

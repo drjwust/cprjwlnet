@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wc-entries
+   xmlns="svn:">
+<entry
+   repos="https://win-dkeqb6bf8hd/svn/PrjWirelessNet"
+   name=""
+   revision="3"
+   last-author="dian"
+   url="https://win-dkeqb6bf8hd/svn/PrjWirelessNet/trunk/MyPrj/Libraries/STM32F4xx_StdPeriph_Driver/inc"
+   committed-rev="3"
+   kind="dir"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="misc.h"
+   checksum="97912460c22a8abcfd94bf5421f3670f"
+   last-author="dian"
+   text-time="2014-02-18T03:25:36.624000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="stm32f4xx_adc.h"
+   checksum="9118571a3fa56907035fba8003f9869a"
+   last-author="dian"
+   text-time="2014-02-18T03:25:36.626000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="stm32f4xx_can.h"
+   checksum="2452b14ff42ab15edfdf7bb1f1cef4cf"
+   last-author="dian"
+   text-time="2014-02-18T03:25:36.628000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="stm32f4xx_crc.h"
+   checksum="7d0ea8b01dfae4503aece1adab5c7d22"
+   last-author="dian"
+   text-time="2014-02-18T03:25:36.630000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="stm32f4xx_cryp.h"
+   checksum="5c6f31406469468d71eb1b947c717b0b"
+   last-author="dian"
+   text-time="2014-02-18T03:25:36.631000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="stm32f4xx_dac.h"
+   checksum="6ea9c915da05e2f118fa899f9e2f5611"
+   last-author="dian"
+   text-time="2014-02-18T03:25:36.633000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="stm32f4xx_dbgmcu.h"
+   checksum="5f374fe4892a01563f73f8767eb582b9"
+   last-author="dian"
+   text-time="2014-02-18T03:25:36.634000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="stm32f4xx_dcmi.h"
+   checksum="998d7c79fbf8fd81d57ff92c1f10c24c"
+   last-author="dian"
+   text-time="2014-02-18T03:25:36.636000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="stm32f4xx_dma.h"
+   checksum="e3e9784a185fff5117171f85f8e27d3c"
+   last-author="dian"
+   text-time="2014-02-18T03:25:36.638000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="stm32f4xx_exti.h"
+   checksum="c0a08eb50bcce66f42d57ce2496c8eaa"
+   last-author="dian"
+   text-time="2014-02-18T03:25:36.639000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="stm32f4xx_flash.h"
+   checksum="2cbaa95a8e400ba1f472fcc372660116"
+   last-author="dian"
+   text-time="2014-02-18T03:25:36.641000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="stm32f4xx_fsmc.h"
+   checksum="09641f137719abaa8d68b9bde931ce9d"
+   last-author="dian"
+   text-time="2014-02-18T03:25:36.643000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="stm32f4xx_gpio.h"
+   checksum="d3de2be5ad119a54b22dba78294b17db"
+   last-author="dian"
+   text-time="2014-02-18T03:25:36.645000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="stm32f4xx_hash.h"
+   checksum="32832c8518cfd9e5dbc76191549d9646"
+   last-author="dian"
+   text-time="2014-02-18T03:25:36.646000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="stm32f4xx_i2c.h"
+   checksum="eba6b376db29aa93847d65f71e695448"
+   last-author="dian"
+   text-time="2014-02-18T03:25:36.649000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="stm32f4xx_iwdg.h"
+   checksum="7e67e45e46800e4bd0b70229cf311ef8"
+   last-author="dian"
+   text-time="2014-02-18T03:25:36.650000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="stm32f4xx_pwr.h"
+   checksum="ed72d7439271d7b91e29df5da90231db"
+   last-author="dian"
+   text-time="2014-02-18T03:25:36.652000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="stm32f4xx_rcc.h"
+   checksum="4de18b5f9a7f03a1e520668ec30a0042"
+   last-author="dian"
+   text-time="2014-02-18T03:25:36.654000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="stm32f4xx_rng.h"
+   checksum="f5ce62fdc34c1bda39b2dc64bb26462c"
+   last-author="dian"
+   text-time="2014-02-18T03:25:36.656000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="stm32f4xx_rtc.h"
+   checksum="e841bf4f1d236b82f2a6dba691f01b73"
+   last-author="dian"
+   text-time="2014-02-18T03:25:36.658000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="stm32f4xx_sdio.h"
+   checksum="ac4211546976c8f1ccb785256ec1d6d1"
+   last-author="dian"
+   text-time="2014-02-18T03:25:36.659000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="stm32f4xx_spi.h"
+   checksum="89f9da006eca814c908e58da8f8368bc"
+   last-author="dian"
+   text-time="2014-02-18T03:25:36.661000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="stm32f4xx_syscfg.h"
+   checksum="52eddf9a7f6c9d395c2e60a3b95b6798"
+   last-author="dian"
+   text-time="2014-02-18T03:25:36.663000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="stm32f4xx_tim.h"
+   checksum="db95994de2601f27d6d960929b159ec2"
+   last-author="dian"
+   text-time="2014-02-18T03:25:36.665000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="stm32f4xx_usart.h"
+   checksum="022e7b1f2a2da33d03dd84bac94af7dd"
+   last-author="dian"
+   text-time="2014-02-18T03:25:36.667000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="stm32f4xx_wwdg.h"
+   checksum="82bfd5dc6a42445e5686bead2d232a4c"
+   last-author="dian"
+   text-time="2014-02-18T03:25:36.668000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+</wc-entries>

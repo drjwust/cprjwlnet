@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wc-entries
+   xmlns="svn:">
+<entry
+   repos="https://win-dkeqb6bf8hd/svn/PrjWirelessNet"
+   name=""
+   revision="10"
+   last-author="dian"
+   url="https://win-dkeqb6bf8hd/svn/PrjWirelessNet/trunk/MyPrj/my%20windows"
+   committed-rev="10"
+   kind="dir"
+   committed-date="2014-03-31T13:32:51.218000Z"/>
+<entry
+   name="SConscript"
+   revision="11"
+   checksum="d838ebc99a354f67027f2a1c4853011e"
+   last-author="dian"
+   text-time="2014-03-31T09:21:19.978000Z"
+   committed-rev="11"
+   kind="file"
+   committed-date="2014-03-31T13:32:52.386000Z"/>
+<entry
+   name="gui_app.c"
+   revision="15"
+   checksum="2b668082ea35d380ac5f4006668514c5"
+   last-author="dian"
+   text-time="2014-04-05T08:43:31.060000Z"
+   committed-rev="15"
+   kind="file"
+   committed-date="2014-04-05T13:56:19.391000Z"/>
+<entry
+   name="main_view.c"
+   revision="12"
+   kind="file"
+   deleted="true"/>
+<entry
+   name="my_panel1.c"
+   revision="14"
+   kind="file"
+   deleted="true"/>
+<entry
+   name="my_panel2.c"
+   revision="14"
+   kind="file"
+   deleted="true"/>
+<entry
+   name="my_view.h"
+   revision="23"
+   checksum="de03f72b6ea8448ee00236cc2695814b"
+   last-author="dian"
+   text-time="2014-04-10T00:10:31.369000Z"
+   committed-rev="23"
+   kind="file"
+   committed-date="2014-04-10T01:54:31.972000Z"/>
+<entry
+   name="my_view1.c"
+   revision="18"
+   checksum="00cffaa95662fbb3caa7328ea2cfcf7a"
+   last-author="dian"
+   committed-rev="18"
+   text-time="2014-04-07T13:07:02.873000Z"
+   kind="file"
+   committed-date="2014-04-07T13:07:02.873000Z"/>
+<entry
+   name="my_view2.c"
+   revision="20"
+   checksum="10f123f432a51b5fea4ff676557a21e5"
+   last-author="dian"
+   committed-rev="20"
+   text-time="2014-04-09T00:24:06.053000Z"
+   kind="file"
+   committed-date="2014-04-09T00:25:23.258000Z"/>
+<entry
+   name="my_view3.c"
+   revision="20"
+   checksum="3cb894136ae2fa4bb384d266cd4e011c"
+   last-author="dian"
+   committed-rev="20"
+   text-time="2014-04-09T00:24:07.445000Z"
+   kind="file"
+   committed-date="2014-04-09T00:25:23.258000Z"/>
+<entry
+   name="my_view4.c"
+   revision="23"
+   checksum="db7e27c654db120df73f9e050d01a88d"
+   last-author="dian"
+   committed-rev="23"
+   text-time="2014-04-10T01:51:30.447000Z"
+   kind="file"
+   committed-date="2014-04-10T01:54:31.972000Z"/>
+<entry
+   name="my_view5.c"
+   revision="23"
+   checksum="d1f0e14c01ea20a9bc90ba5101a80dfe"
+   last-author="dian"
+   committed-rev="23"
+   text-time="2014-04-10T01:52:23.759000Z"
+   kind="file"
+   committed-date="2014-04-10T01:54:31.972000Z"/>
+<entry
+   name="view_listctrl.c"
+   revision="12"
+   kind="file"
+   deleted="true"/>
+</wc-entries>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wc-entries
+   xmlns="svn:">
+<entry
+   repos="https://win-dkeqb6bf8hd/svn/PrjWirelessNet"
+   name=""
+   revision="3"
+   last-author="dian"
+   url="https://win-dkeqb6bf8hd/svn/PrjWirelessNet/trunk/MyPrj/drivers/Rf/src"
+   committed-rev="3"
+   kind="dir"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="halSpi.c"
+   checksum="0e2f9e7883fc521712c005eb0ddac4a4"
+   last-author="dian"
+   text-time="2014-03-27T02:43:03.398000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="rf_app.c"
+   checksum="177c3970fc169e66b70c36c28d61c961"
+   last-author="dian"
+   text-time="2014-03-28T07:09:27.040000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+</wc-entries>

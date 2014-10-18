@@ -134,7 +134,7 @@ rtgui_container_t *my_view3(void)
 		rtgui_container_add_child(container, RTGUI_WIDGET(line));
 	}
 	{
-		rect.x1 = 0,rect.x2 = 59;
+		rect.x1 = 0, rect.x2 = 47;
 		rect.y1 = 0;
 		rect.y2 = rect.y1 + 20;
 		rtgui_rect_moveto(&rect, 0, 45);
@@ -145,21 +145,32 @@ rtgui_container_t *my_view3(void)
 		rtgui_container_add_child(container, RTGUI_WIDGET(label));
 	}
 	{
-		rect.x1 = 0,rect.x2 = 59;
+		rect.x1 = 0, rect.x2 = 47;
 		rect.y1 = 0;
 		rect.y2 = rect.y1 + 20;
-		rtgui_rect_moveto(&rect, 60, 45);
-		label = rtgui_label_create("温度");
+		rtgui_rect_moveto(&rect, 48, 45);
+		label = rtgui_label_create("环境");
 		RTGUI_WIDGET_TEXTALIGN(label) = RTGUI_ALIGN_CENTER_HORIZONTAL;	//中心对齐
 		rtgui_widget_set_rect(RTGUI_WIDGET(label), &rect);
 		/* container是一个container控件，调用add_child方法添加这个label控件 */
 		rtgui_container_add_child(container, RTGUI_WIDGET(label));
 	}
 	{
-		rect.x1 = 0,rect.x2 = 59;
+		rect.x1 = 0, rect.x2 = 47;
 		rect.y1 = 0;
 		rect.y2 = rect.y1 + 20;
-		rtgui_rect_moveto(&rect, 120, 45);
+		rtgui_rect_moveto(&rect, 96, 45);
+		label = rtgui_label_create("母排");
+		RTGUI_WIDGET_TEXTALIGN(label) = RTGUI_ALIGN_CENTER_HORIZONTAL;	//中心对齐
+		rtgui_widget_set_rect(RTGUI_WIDGET(label), &rect);
+		/* container是一个container控件，调用add_child方法添加这个label控件 */
+		rtgui_container_add_child(container, RTGUI_WIDGET(label));
+	}
+	{
+		rect.x1 = 0, rect.x2 = 47;
+		rect.y1 = 0;
+		rect.y2 = rect.y1 + 20;
+		rtgui_rect_moveto(&rect, 144, 45);
 		label = rtgui_label_create("状态");
 		RTGUI_WIDGET_TEXTALIGN(label) = RTGUI_ALIGN_CENTER_HORIZONTAL;	//中心对齐
 		rtgui_widget_set_rect(RTGUI_WIDGET(label), &rect);
@@ -167,10 +178,10 @@ rtgui_container_t *my_view3(void)
 		rtgui_container_add_child(container, RTGUI_WIDGET(label));
 	}
 	{
-		rect.x1 = 0,rect.x2 = 59;
+		rect.x1 = 0, rect.x2 = 47;
 		rect.y1 = 0;
 		rect.y2 = rect.y1 + 20;
-		rtgui_rect_moveto(&rect, 180, 45);
+		rtgui_rect_moveto(&rect, 192, 45);
 		label = rtgui_label_create("信号");
 		RTGUI_WIDGET_TEXTALIGN(label) = RTGUI_ALIGN_CENTER_HORIZONTAL;	//中心对齐
 		rtgui_widget_set_rect(RTGUI_WIDGET(label), &rect);

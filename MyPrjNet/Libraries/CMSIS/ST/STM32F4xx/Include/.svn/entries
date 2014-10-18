@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wc-entries
+   xmlns="svn:">
+<entry
+   repos="https://win-dkeqb6bf8hd/svn/PrjWirelessNet"
+   name=""
+   revision="3"
+   last-author="dian"
+   url="https://win-dkeqb6bf8hd/svn/PrjWirelessNet/trunk/MyPrj/Libraries/CMSIS/ST/STM32F4xx/Include"
+   committed-rev="3"
+   kind="dir"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="stm32f4xx.h"
+   checksum="1574285aa1adc94a502c6d6a862c3ee8"
+   last-author="dian"
+   text-time="2014-02-18T03:25:36.551000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="system_stm32f4xx.h"
+   checksum="89173138dc0d0f35ae29db391f4da822"
+   last-author="dian"
+   text-time="2014-02-18T03:25:36.566000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+</wc-entries>

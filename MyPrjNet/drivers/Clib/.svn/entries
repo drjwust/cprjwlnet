@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wc-entries
+   xmlns="svn:">
+<entry
+   repos="https://win-dkeqb6bf8hd/svn/PrjWirelessNet"
+   name=""
+   revision="3"
+   last-author="dian"
+   url="https://win-dkeqb6bf8hd/svn/PrjWirelessNet/trunk/MyPrj/drivers/Clib"
+   committed-rev="3"
+   kind="dir"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="SConscript"
+   checksum="e49e4e1c46a4572ebd2f3bdadcce339b"
+   last-author="dian"
+   committed-rev="3"
+   text-time="2014-02-14T07:19:13.771000Z"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="func.c"
+   revision="22"
+   checksum="58e5eb81e08bff1eca94e7c053fdb614"
+   last-author="dian"
+   committed-rev="22"
+   text-time="2014-04-09T11:21:04.035000Z"
+   kind="file"
+   committed-date="2014-04-09T13:48:39.913000Z"/>
+<entry
+   name="func.h"
+   revision="22"
+   checksum="d8787c24f9b0405e3a56ed6591656eb6"
+   last-author="dian"
+   committed-rev="22"
+   text-time="2014-04-09T11:20:12.262000Z"
+   kind="file"
+   committed-date="2014-04-09T13:48:39.913000Z"/>
+</wc-entries>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wc-entries
+   xmlns="svn:">
+<entry
+   name=""
+   repos="https://win-dkeqb6bf8hd/svn/PrjWirelessNet"
+   revision="3"
+   last-author="dian"
+   url="https://win-dkeqb6bf8hd/svn/PrjWirelessNet/trunk/MyPrj/drivers/board"
+   committed-rev="3"
+   kind="dir"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="SConscript"
+   checksum="d838ebc99a354f67027f2a1c4853011e"
+   last-author="dian"
+   text-time="2014-02-14T07:19:12.637000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="board.c"
+   revision="16"
+   checksum="465bb1487fb451ba263a294848d9014e"
+   last-author="dian"
+   text-time="2014-04-07T02:00:11.620000Z"
+   committed-rev="16"
+   kind="file"
+   committed-date="2014-04-07T10:57:32.983000Z"/>
+<entry
+   name="board.h"
+   checksum="32614964f47cfb5ff0c7f0b70cdbfc0a"
+   last-author="dian"
+   text-time="2014-01-20T04:13:35.831000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="includes.h"
+   revision="22"
+   checksum="a76a6756333bcce6c232b86cbc9a61a9"
+   last-author="dian"
+   text-time="2014-04-09T06:55:14.318000Z"
+   committed-rev="22"
+   kind="file"
+   committed-date="2014-04-09T13:48:39.913000Z"/>
+<entry
+   name="led.c"
+   checksum="d3ad67b200cfe2b6da89cc4fc4c47fd6"
+   last-author="dian"
+   text-time="2014-03-19T11:29:05.649000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="led.h"
+   checksum="c965a437f3212a522209443485a1ebb2"
+   last-author="dian"
+   text-time="2013-07-07T07:43:42.342000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="stm32f4xx_conf.h"
+   checksum="82aff400e2bfd20e1975220c8d421126"
+   last-author="dian"
+   text-time="2014-03-03T08:13:05.210000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="stm32f4xx_it.c"
+   checksum="870922c6b63f7c596a81d42f3f08b713"
+   last-author="dian"
+   text-time="2014-01-20T07:55:41.153000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="vara_define.h"
+   revision="23"
+   checksum="50ce0139cf093a05422e06c3a327b7f8"
+   last-author="dian"
+   text-time="2014-04-10T01:33:09.569000Z"
+   committed-rev="23"
+   kind="file"
+   committed-date="2014-04-10T01:54:31.972000Z"/>
+</wc-entries>

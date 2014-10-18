@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wc-entries
+   xmlns="svn:">
+<entry
+   repos="https://win-dkeqb6bf8hd/svn/PrjWirelessNet"
+   name=""
+   revision="3"
+   last-author="dian"
+   url="https://win-dkeqb6bf8hd/svn/PrjWirelessNet/trunk/MyPrj/drivers/Rf/inc"
+   committed-rev="3"
+   kind="dir"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="rf_app.h"
+   revision="7"
+   checksum="6abe7b2bd7a78f06298c9dd994e9c86f"
+   last-author="dian"
+   committed-rev="7"
+   text-time="2014-03-30T01:37:53.429000Z"
+   kind="file"
+   committed-date="2014-03-30T09:38:13.633000Z"/>
+</wc-entries>

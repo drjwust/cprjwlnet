@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wc-entries
+   xmlns="svn:">
+<entry
+   repos="https://win-dkeqb6bf8hd/svn/PrjWirelessNet"
+   name=""
+   revision="3"
+   last-author="dian"
+   url="https://win-dkeqb6bf8hd/svn/PrjWirelessNet/trunk/MyPrj/drivers/serial"
+   committed-rev="3"
+   kind="dir"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="SConscript"
+   checksum="b7cd8f0538e751e4c65905b6b7801803"
+   last-author="dian"
+   committed-rev="3"
+   text-time="2014-02-14T03:07:58.358000Z"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="serial.c"
+   checksum="a8b56d619484be4dc5571f5bb37692a8"
+   last-author="dian"
+   committed-rev="3"
+   text-time="2013-10-12T14:13:49.618000Z"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="serial.h"
+   checksum="7f5142f40e41f9cb7662b7e30f770817"
+   last-author="dian"
+   committed-rev="3"
+   text-time="2013-12-11T05:40:10.422000Z"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="usart.c"
+   revision="8"
+   checksum="df0c23f012138fa4e8f9d6a122875563"
+   last-author="dian"
+   committed-rev="8"
+   text-time="2014-03-31T03:11:20.078000Z"
+   kind="file"
+   committed-date="2014-03-31T07:01:30.800000Z"/>
+<entry
+   name="usart.h"
+   checksum="29210f2789ec1481c2426c418151a340"
+   last-author="dian"
+   committed-rev="3"
+   text-time="2013-12-18T03:20:45.741000Z"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+</wc-entries>

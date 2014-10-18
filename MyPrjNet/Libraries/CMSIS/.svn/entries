@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wc-entries
+   xmlns="svn:">
+<entry
+   repos="https://win-dkeqb6bf8hd/svn/PrjWirelessNet"
+   name=""
+   revision="3"
+   last-author="dian"
+   url="https://win-dkeqb6bf8hd/svn/PrjWirelessNet/trunk/MyPrj/Libraries/CMSIS"
+   committed-rev="3"
+   kind="dir"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="CMSIS END USER LICENCE AGREEMENT.pdf"
+   checksum="77268946c2a1be1850605285497107b1"
+   last-author="dian"
+   text-time="2014-02-18T03:25:35.810000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"
+   prop-time="2014-03-29T02:13:20.236000Z"/>
+<entry
+   name="DSP_Lib"
+   kind="dir"/>
+<entry
+   name="Include"
+   kind="dir"/>
+<entry
+   name="README.txt"
+   checksum="8efe175ad87cde57fd5bb4ee27f6a06f"
+   last-author="dian"
+   text-time="2014-02-18T03:25:36.463000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="ST"
+   kind="dir"/>
+<entry
+   name="index.htm"
+   checksum="cc48a8aa23c80a2e5e758004ad1d595b"
+   last-author="dian"
+   text-time="2014-02-18T03:25:36.462000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+</wc-entries>

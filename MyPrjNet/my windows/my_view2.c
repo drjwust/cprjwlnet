@@ -173,6 +173,8 @@ rtgui_container_t *my_view2(void)
 		rtgui_container_add_child(container, RTGUI_WIDGET(label));
 	}
 
+
+
 	/* 获得视图的位置信息 */
 	rect.x1 = 5;
 	rect.x2 = 235;

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wc-entries
+   xmlns="svn:">
+<entry
+   repos="https://win-dkeqb6bf8hd/svn/PrjWirelessNet"
+   name=""
+   revision="3"
+   last-author="dian"
+   url="https://win-dkeqb6bf8hd/svn/PrjWirelessNet/trunk/MyPrj/drivers/LCD"
+   committed-rev="3"
+   kind="dir"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="SConscript"
+   checksum="89cb87cbaa137d506c0ec2067eb76507"
+   last-author="dian"
+   committed-rev="3"
+   text-time="2014-02-14T07:12:14.156000Z"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="ssd1289.c"
+   checksum="34cef30236816d005fdbda85973076e6"
+   last-author="dian"
+   committed-rev="3"
+   text-time="2014-03-20T13:26:16.320000Z"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="ssd1289.h"
+   checksum="40252ba84a4288ace9c8118e4d078d61"
+   last-author="dian"
+   committed-rev="3"
+   text-time="2014-03-06T05:38:48.632000Z"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="touch.c"
+   revision="9"
+   checksum="b103fcb13bc38071b09608a9ab85e475"
+   last-author="dian"
+   committed-rev="9"
+   text-time="2014-03-31T10:23:26.775000Z"
+   kind="file"
+   committed-date="2014-03-31T13:32:03.181000Z"/>
+<entry
+   name="touch.h"
+   revision="7"
+   checksum="50dc3506ca804f9b2a1647a403fcffb5"
+   last-author="dian"
+   committed-rev="7"
+   text-time="2014-03-30T03:55:58.053000Z"
+   kind="file"
+   committed-date="2014-03-30T09:38:13.633000Z"/>
+</wc-entries>

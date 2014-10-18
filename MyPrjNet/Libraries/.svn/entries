@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wc-entries
+   xmlns="svn:">
+<entry
+   name=""
+   repos="https://win-dkeqb6bf8hd/svn/PrjWirelessNet"
+   revision="3"
+   last-author="dian"
+   url="https://win-dkeqb6bf8hd/svn/PrjWirelessNet/trunk/MyPrj/Libraries"
+   committed-rev="3"
+   kind="dir"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="CMSIS"
+   kind="dir"/>
+<entry
+   name="SConscript"
+   checksum="f30c781231752abfe046cfda28978396"
+   last-author="dian"
+   text-time="2014-02-18T03:25:36.599000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="STM32F4xx_StdPeriph_Driver"
+   kind="dir"/>
+</wc-entries>

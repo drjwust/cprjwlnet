@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wc-entries
+   xmlns="svn:">
+<entry
+   repos="https://win-dkeqb6bf8hd/svn/PrjWirelessNet"
+   name=""
+   revision="3"
+   last-author="dian"
+   url="https://win-dkeqb6bf8hd/svn/PrjWirelessNet/trunk/MyPrj/Libraries/CMSIS/DSP_Lib/Source/ARM"
+   committed-rev="3"
+   kind="dir"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="arm_cortexM0x_math.uvopt"
+   checksum="9e1878707903bce49edd818662caedad"
+   last-author="dian"
+   text-time="2014-02-18T03:25:35.842000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="arm_cortexM0x_math.uvproj"
+   checksum="d8c4f3d1426824a73e843d4757402daf"
+   last-author="dian"
+   text-time="2014-02-18T03:25:35.846000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="arm_cortexM3x_math.uvopt"
+   checksum="7eb5fa9a69fa03ba8f2696ca7d52c87a"
+   last-author="dian"
+   text-time="2014-02-18T03:25:35.849000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="arm_cortexM3x_math.uvproj"
+   checksum="f40682b5476f4ede071433525fe0aec2"
+   last-author="dian"
+   text-time="2014-02-18T03:25:35.852000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="arm_cortexM4x_math.uvopt"
+   checksum="c71e7c93f4329822f61985659b4d5d81"
+   last-author="dian"
+   text-time="2014-02-18T03:25:35.856000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="arm_cortexM4x_math.uvproj"
+   checksum="86267cd3364a5915ee2d7132a102c16e"
+   last-author="dian"
+   text-time="2014-02-18T03:25:35.861000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="arm_cortexMx_math_Build.bat"
+   checksum="6f0481b34ea90843937decd69c47c6c6"
+   last-author="dian"
+   text-time="2014-02-18T03:25:35.873000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="intermediateFiles"
+   kind="dir"/>
+</wc-entries>

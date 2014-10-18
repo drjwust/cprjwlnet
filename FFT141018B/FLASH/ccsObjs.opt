@@ -1,0 +1,1 @@
+"./sources/F28335B_main.obj" "./sources/DSP2833x_PieVect.obj" "./sources/DSP2833x_PieCtrl.obj" "./sources/DSP2833x_GlobalVariableDefs.obj" "./sources/DSP2833x_DefaultIsr.obj" "./sources/DSP2833x_CodeStartBranch.obj" "./sources/DSP2833x_Adc.obj" "./sources/DSP2833x_ADC_cal.obj" -l"libc.a" "../28335_FLASH_lnk.cmd" "../DSP2833x_Headers_nonBIOS.cmd" 

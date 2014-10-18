@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wc-entries
+   xmlns="svn:">
+<entry
+   name=""
+   repos="https://win-dkeqb6bf8hd/svn/PrjWirelessNet"
+   revision="3"
+   last-author="dian"
+   url="https://win-dkeqb6bf8hd/svn/PrjWirelessNet/trunk/MyPrj/Libraries/CMSIS/DSP_Lib/Source/MatrixFunctions"
+   committed-rev="3"
+   kind="dir"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="arm_mat_add_f32.c"
+   checksum="2b74017ddf1193f99d6c7f24f2bbcc5d"
+   last-author="dian"
+   text-time="2014-02-18T03:25:36.241000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="arm_mat_add_q15.c"
+   checksum="9255a84853c7f1f38874e68cc699051e"
+   last-author="dian"
+   text-time="2014-02-18T03:25:36.242000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="arm_mat_add_q31.c"
+   checksum="8f837283a930e1fd5aefcdd20d260495"
+   last-author="dian"
+   text-time="2014-02-18T03:25:36.243000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="arm_mat_init_f32.c"
+   checksum="7de96f2484b403656e1397db098becd7"
+   last-author="dian"
+   text-time="2014-02-18T03:25:36.245000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="arm_mat_init_q15.c"
+   checksum="d716848104a2ca1a5012ed74f7de42a0"
+   last-author="dian"
+   text-time="2014-02-18T03:25:36.246000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="arm_mat_init_q31.c"
+   checksum="adea8f630df261b6712c2341a234ad2f"
+   last-author="dian"
+   text-time="2014-02-18T03:25:36.247000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="arm_mat_inverse_f32.c"
+   checksum="ec64e5c01e64e71c78d29bfa721bfd20"
+   last-author="dian"
+   text-time="2014-02-18T03:25:36.248000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="arm_mat_mult_f32.c"
+   checksum="63aee6da2d3ef322370d05f922b616f2"
+   last-author="dian"
+   text-time="2014-02-18T03:25:36.250000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="arm_mat_mult_fast_q15.c"
+   checksum="3ac5fd573363e8be558d0be9a94accfb"
+   last-author="dian"
+   text-time="2014-02-18T03:25:36.251000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="arm_mat_mult_fast_q31.c"
+   checksum="0bed358e8a697a06f72af28c5785fefc"
+   last-author="dian"
+   text-time="2014-02-18T03:25:36.252000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="arm_mat_mult_q15.c"
+   checksum="d597dd5b98524d477bb264df84fea210"
+   last-author="dian"
+   text-time="2014-02-18T03:25:36.253000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="arm_mat_mult_q31.c"
+   checksum="51255cfc3b84dbb3e6986afad8649265"
+   last-author="dian"
+   text-time="2014-02-18T03:25:36.255000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="arm_mat_scale_f32.c"
+   checksum="2e5fafb228b3d2980c461f25797b8a32"
+   last-author="dian"
+   text-time="2014-02-18T03:25:36.256000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="arm_mat_scale_q15.c"
+   checksum="00136cefb65529a2b23d98503a47f563"
+   last-author="dian"
+   text-time="2014-02-18T03:25:36.257000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="arm_mat_scale_q31.c"
+   checksum="420fdaaaaf8c4912f0d840f7fc8e58b8"
+   last-author="dian"
+   text-time="2014-02-18T03:25:36.258000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="arm_mat_sub_f32.c"
+   checksum="65acff3772f11f345ed3f342d4c455b1"
+   last-author="dian"
+   text-time="2014-02-18T03:25:36.259000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="arm_mat_sub_q15.c"
+   checksum="698edc248ebdc78b288e7ca1911cee8d"
+   last-author="dian"
+   text-time="2014-02-18T03:25:36.260000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="arm_mat_sub_q31.c"
+   checksum="59584116cc24ff792eeea5c50d32e530"
+   last-author="dian"
+   text-time="2014-02-18T03:25:36.261000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="arm_mat_trans_f32.c"
+   checksum="177c3a143a30ec92625bbb42007a4ed6"
+   last-author="dian"
+   text-time="2014-02-18T03:25:36.262000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="arm_mat_trans_q15.c"
+   checksum="891b6504560ec2e081b7f35b30a6f235"
+   last-author="dian"
+   text-time="2014-02-18T03:25:36.264000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="arm_mat_trans_q31.c"
+   checksum="32ba61c054f7951ad798c4cb94bfeca8"
+   last-author="dian"
+   text-time="2014-02-18T03:25:36.265000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+</wc-entries>

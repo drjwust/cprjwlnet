@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wc-entries
+   xmlns="svn:">
+<entry
+   repos="https://win-dkeqb6bf8hd/svn/PrjWirelessNet"
+   name=""
+   revision="3"
+   last-author="dian"
+   url="https://win-dkeqb6bf8hd/svn/PrjWirelessNet/trunk/MyPrj/Libraries/CMSIS/Include"
+   committed-rev="3"
+   kind="dir"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="arm_common_tables.h"
+   checksum="d2c3dc5ed48f11e349a164555f02d893"
+   last-author="dian"
+   text-time="2014-02-18T03:25:36.398000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="arm_math.h"
+   checksum="551c44a40ef7b3b3631d96cd6d40b9c0"
+   last-author="dian"
+   text-time="2014-02-18T03:25:36.402000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="core_cm0.h"
+   checksum="78b839dbe63bc4fc7ee87f7ccfc9828a"
+   last-author="dian"
+   text-time="2014-02-18T03:25:36.404000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="core_cm3.h"
+   checksum="83a6c0b4e24daa5a0b5659c4db5fb16b"
+   last-author="dian"
+   text-time="2014-02-18T03:25:36.417000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="core_cm4.h"
+   checksum="39fe682aceab87d3963a5ce892a6984d"
+   last-author="dian"
+   text-time="2014-02-18T03:25:36.432000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="core_cm4_simd.h"
+   checksum="0603b1f6817839b6e90b57c5b069a4dd"
+   last-author="dian"
+   text-time="2014-02-18T03:25:36.435000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="core_cmFunc.h"
+   checksum="81a84f3f0861369a90561f7e816a9709"
+   last-author="dian"
+   text-time="2014-02-18T03:25:36.437000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="core_cmInstr.h"
+   checksum="4296bed8d7139db2d36c303781cf706e"
+   last-author="dian"
+   text-time="2014-02-18T03:25:36.446000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+</wc-entries>

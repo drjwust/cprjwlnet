@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wc-entries
+   xmlns="svn:">
+<entry
+   repos="https://win-dkeqb6bf8hd/svn/PrjWirelessNet"
+   name=""
+   revision="3"
+   last-author="dian"
+   url="https://win-dkeqb6bf8hd/svn/PrjWirelessNet/trunk/MyPrj/drivers"
+   committed-rev="3"
+   kind="dir"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="Clib"
+   kind="dir"/>
+<entry
+   name="LCD"
+   kind="dir"/>
+<entry
+   name="RTC"
+   kind="dir"/>
+<entry
+   name="Rf"
+   kind="dir"/>
+<entry
+   name="SConscript"
+   checksum="199e1b3db1047147568fa094e474d7a2"
+   last-author="dian"
+   text-time="2014-02-14T03:11:48.060000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="SD"
+   kind="dir"/>
+<entry
+   name="board"
+   kind="dir"/>
+<entry
+   name="serial"
+   kind="dir"/>
+</wc-entries>

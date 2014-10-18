@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wc-entries
+   xmlns="svn:">
+<entry
+   repos="https://win-dkeqb6bf8hd/svn/PrjWirelessNet"
+   name=""
+   revision="3"
+   last-author="dian"
+   url="https://win-dkeqb6bf8hd/svn/PrjWirelessNet/trunk/MyPrj/Libraries/CMSIS/DSP_Lib/Source/ControllerFunctions"
+   committed-rev="3"
+   kind="dir"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="arm_pid_init_f32.c"
+   checksum="87ad6b7d852c8c2f6ebd3bfd43028db1"
+   last-author="dian"
+   text-time="2014-02-18T03:25:35.990000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="arm_pid_init_q15.c"
+   checksum="14f9e05c8cc69a6b2ca6cbaf6a98f2d8"
+   last-author="dian"
+   text-time="2014-02-18T03:25:35.991000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="arm_pid_init_q31.c"
+   checksum="0b7f0f8fa544bc9c6d490a928e80e16f"
+   last-author="dian"
+   text-time="2014-02-18T03:25:35.993000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="arm_pid_reset_f32.c"
+   checksum="29cd12cf24174822db6ea3e59c8485c7"
+   last-author="dian"
+   text-time="2014-02-18T03:25:35.994000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="arm_pid_reset_q15.c"
+   checksum="8e4361acf991d9db0b456d498cc243c2"
+   last-author="dian"
+   text-time="2014-02-18T03:25:35.995000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="arm_pid_reset_q31.c"
+   checksum="00cc4375eeba98c95ac4891c612742e2"
+   last-author="dian"
+   text-time="2014-02-18T03:25:35.996000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="arm_sin_cos_f32.c"
+   checksum="eee1f3c0e9dcf0c8a8d5628ccd527ff2"
+   last-author="dian"
+   text-time="2014-02-18T03:25:36.025000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="arm_sin_cos_q31.c"
+   checksum="4b0ec1157db84abbcd3cd5c7d027ceed"
+   last-author="dian"
+   text-time="2014-02-18T03:25:36.027000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+</wc-entries>

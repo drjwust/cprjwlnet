@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wc-entries
+   xmlns="svn:">
+<entry
+   name=""
+   repos="https://win-dkeqb6bf8hd/svn/PrjWirelessNet"
+   revision="3"
+   last-author="dian"
+   url="https://win-dkeqb6bf8hd/svn/PrjWirelessNet/trunk/MyPrj/Libraries/CMSIS/DSP_Lib/Source"
+   committed-rev="3"
+   kind="dir"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="ARM"
+   kind="dir"/>
+<entry
+   name="BasicMathFunctions"
+   kind="dir"/>
+<entry
+   name="CommonTables"
+   kind="dir"/>
+<entry
+   name="ComplexMathFunctions"
+   kind="dir"/>
+<entry
+   name="ControllerFunctions"
+   kind="dir"/>
+<entry
+   name="FastMathFunctions"
+   kind="dir"/>
+<entry
+   name="FilteringFunctions"
+   kind="dir"/>
+<entry
+   name="MatrixFunctions"
+   kind="dir"/>
+<entry
+   name="StatisticsFunctions"
+   kind="dir"/>
+<entry
+   name="SupportFunctions"
+   kind="dir"/>
+<entry
+   name="TransformFunctions"
+   kind="dir"/>
+</wc-entries>

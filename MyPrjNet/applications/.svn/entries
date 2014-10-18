@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wc-entries
+   xmlns="svn:">
+<entry
+   name=""
+   repos="https://win-dkeqb6bf8hd/svn/PrjWirelessNet"
+   revision="3"
+   last-author="dian"
+   url="https://win-dkeqb6bf8hd/svn/PrjWirelessNet/trunk/MyPrj/applications"
+   committed-rev="3"
+   kind="dir"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="Rf_Communication.c"
+   revision="25"
+   checksum="bcbb390207fd200768d644b0f853a1ea"
+   last-author="dian"
+   text-time="2014-04-11T00:44:56.593000Z"
+   committed-rev="25"
+   kind="file"
+   committed-date="2014-04-11T01:09:03.621000Z"/>
+<entry
+   name="SConscript"
+   checksum="b8d4e1efacf8597bf41a181e8a4e2a70"
+   last-author="dian"
+   text-time="2014-02-18T03:25:29.563000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="app.h"
+   checksum="93b8d0e325f1cfc3229e0ac7f5ad75d6"
+   last-author="dian"
+   text-time="2014-03-24T03:02:13.858000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="application.c"
+   revision="22"
+   checksum="6438281bd6ea1145c52e79060aab29a4"
+   last-author="dian"
+   text-time="2014-04-09T00:36:43.553000Z"
+   committed-rev="22"
+   kind="file"
+   committed-date="2014-04-09T13:48:39.913000Z"/>
+<entry
+   name="startup.c"
+   checksum="6e699a3bf1c21693a2cf0aa37e59bfd3"
+   last-author="dian"
+   text-time="2014-03-03T08:22:38.173000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="user_data_init.c"
+   revision="24"
+   checksum="aaf356ba04f4dce255eca95180eb880d"
+   last-author="dian"
+   text-time="2014-04-10T02:10:42.715000Z"
+   committed-rev="24"
+   kind="file"
+   committed-date="2014-04-10T02:22:30.973000Z"/>
+</wc-entries>

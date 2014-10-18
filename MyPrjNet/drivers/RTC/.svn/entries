@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wc-entries
+   xmlns="svn:">
+<entry
+   name=""
+   repos="https://win-dkeqb6bf8hd/svn/PrjWirelessNet"
+   revision="3"
+   last-author="dian"
+   url="https://win-dkeqb6bf8hd/svn/PrjWirelessNet/trunk/MyPrj/drivers/RTC"
+   committed-rev="3"
+   kind="dir"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="SConscript"
+   checksum="679c2051e96b5475597911b94fc3de13"
+   last-author="dian"
+   text-time="2014-02-14T07:30:02.039000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="rtc.c"
+   checksum="c67958674272b9d7141469120ee4a5b1"
+   last-author="dian"
+   text-time="2014-02-12T12:40:03.087000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="rtc.h"
+   checksum="0f130d04486fb6687c3251305b6d5963"
+   last-author="dian"
+   text-time="2014-02-12T12:35:32.217000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+</wc-entries>

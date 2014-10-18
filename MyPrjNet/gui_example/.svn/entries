@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wc-entries
+   xmlns="svn:">
+<entry
+   name=""
+   repos="https://win-dkeqb6bf8hd/svn/PrjWirelessNet"
+   revision="5"
+   last-author="dian"
+   url="https://win-dkeqb6bf8hd/svn/PrjWirelessNet/trunk/MyPrj/gui_example"
+   committed-rev="5"
+   kind="dir"
+   committed-date="2014-03-29T23:39:12.464000Z"/>
+<entry
+   name="SConscript"
+   revision="22"
+   checksum="0429ef26826d5d64c9607af8da2f2231"
+   last-author="dian"
+   text-time="2014-04-09T00:43:53.910000Z"
+   committed-rev="22"
+   kind="file"
+   committed-date="2014-04-09T13:48:39.913000Z"/>
+<entry
+   name="demo_application.c"
+   revision="13"
+   checksum="6f91420ed888d379429c9c51f1c973c6"
+   last-author="dian"
+   text-time="2014-04-02T01:09:55.013000Z"
+   committed-rev="13"
+   kind="file"
+   committed-date="2014-04-03T07:53:52.022000Z"/>
+<entry
+   name="demo_fnview.c"
+   revision="6"
+   checksum="a0dc9fda8b9a2ccef4e005c2ea469f75"
+   last-author="dian"
+   text-time="2014-03-29T23:36:14.072000Z"
+   committed-rev="6"
+   kind="file"
+   committed-date="2014-03-29T23:39:47.769000Z"/>
+<entry
+   name="demo_listview.c"
+   revision="6"
+   checksum="0c79189d3bb2a4db632448e00f7c70c6"
+   last-author="dian"
+   text-time="2014-03-29T23:36:14.076000Z"
+   committed-rev="6"
+   kind="file"
+   committed-date="2014-03-29T23:39:47.769000Z"/>
+<entry
+   name="demo_listview_icon.c"
+   revision="6"
+   checksum="df131253a9bcf66e28d49801b9a3a30f"
+   last-author="dian"
+   text-time="2014-03-29T23:36:14.100000Z"
+   committed-rev="6"
+   kind="file"
+   committed-date="2014-03-29T23:39:47.769000Z"/>
+<entry
+   name="demo_panel.c"
+   revision="6"
+   checksum="53aebbf5e332abaa1182a48cbe6b4d1a"
+   last-author="dian"
+   text-time="2014-03-29T23:36:14.101000Z"
+   committed-rev="6"
+   kind="file"
+   committed-date="2014-03-29T23:39:47.769000Z"/>
+<entry
+   name="demo_panel_single.c"
+   revision="6"
+   checksum="3ca5c9d9b6e247eca6c8c21041ff82e2"
+   last-author="dian"
+   text-time="2014-03-29T23:36:14.102000Z"
+   committed-rev="6"
+   kind="file"
+   committed-date="2014-03-29T23:39:47.769000Z"/>
+<entry
+   name="demo_plot.c"
+   revision="6"
+   checksum="4b2ad2e4099983690781f8694daed5f3"
+   last-author="dian"
+   text-time="2014-03-29T23:36:14.108000Z"
+   committed-rev="6"
+   kind="file"
+   committed-date="2014-03-29T23:39:47.769000Z"/>
+<entry
+   name="demo_simple_workbench.c"
+   revision="6"
+   checksum="111bbbe5176981923fa4d1d4efbeee4b"
+   last-author="dian"
+   text-time="2014-03-29T23:36:14.113000Z"
+   committed-rev="6"
+   kind="file"
+   committed-date="2014-03-29T23:39:47.769000Z"/>
+<entry
+   name="demo_view.c"
+   revision="14"
+   checksum="057ba98cf54c4f101568595036a81104"
+   last-author="dian"
+   text-time="2014-04-03T10:27:02.746000Z"
+   committed-rev="14"
+   kind="file"
+   committed-date="2014-04-03T13:30:47.736000Z"/>
+<entry
+   name="demo_view.h"
+   revision="6"
+   checksum="d907816a0364ad0d2926d3343659a5cd"
+   last-author="dian"
+   text-time="2014-03-29T23:36:14.130000Z"
+   committed-rev="6"
+   kind="file"
+   committed-date="2014-03-29T23:39:47.769000Z"/>
+<entry
+   name="demo_view_animation.c"
+   revision="6"
+   checksum="ca4fd1638791426a384484d1e420404b"
+   last-author="dian"
+   text-time="2014-03-29T23:36:14.141000Z"
+   committed-rev="6"
+   kind="file"
+   committed-date="2014-03-29T23:39:47.769000Z"/>
+<entry
+   name="demo_view_benchmark.c"
+   revision="6"
+   checksum="5840dcf87f0aa1e0498ea85fc3d5d811"
+   last-author="dian"
+   text-time="2014-03-29T23:36:14.143000Z"
+   committed-rev="6"
+   kind="file"
+   committed-date="2014-03-29T23:39:47.769000Z"/>
+<entry
+   name="demo_view_bmp.c"
+   revision="6"
+   checksum="0e56d9d867084ae15f6ca12573047d86"
+   last-author="dian"
+   text-time="2014-03-29T23:36:14.152000Z"
+   committed-rev="6"
+   kind="file"
+   committed-date="2014-03-29T23:39:47.769000Z"/>
+<entry
+   name="demo_view_box.c"
+   revision="6"
+   checksum="a08ace98c4120c689773859402d32745"
+   last-author="dian"
+   text-time="2014-03-29T23:36:14.164000Z"
+   committed-rev="6"
+   kind="file"
+   committed-date="2014-03-29T23:39:47.769000Z"/>
+<entry
+   name="demo_view_buffer_animation.c"
+   revision="6"
+   checksum="8689492afa6c75c99fb8a0ce4a3ff3ac"
+   last-author="dian"
+   text-time="2014-03-29T23:36:14.173000Z"
+   committed-rev="6"
+   kind="file"
+   committed-date="2014-03-29T23:39:47.769000Z"/>
+<entry
+   name="demo_view_button.c"
+   revision="6"
+   checksum="709b00fb0492b7a2e923c2a62bbd4dd1"
+   last-author="dian"
+   text-time="2014-03-29T23:36:14.174000Z"
+   committed-rev="6"
+   kind="file"
+   committed-date="2014-03-29T23:39:47.769000Z"/>
+<entry
+   name="demo_view_checkbox.c"
+   revision="6"
+   checksum="b71698862ee64ef995e5254c1a2901b4"
+   last-author="dian"
+   text-time="2014-03-29T23:36:14.187000Z"
+   committed-rev="6"
+   kind="file"
+   committed-date="2014-03-29T23:39:47.769000Z"/>
+<entry
+   name="demo_view_combobox.c"
+   revision="6"
+   checksum="d398d2af8ca367c39da73b5cd21f1cb1"
+   last-author="dian"
+   text-time="2014-03-29T23:36:14.190000Z"
+   committed-rev="6"
+   kind="file"
+   committed-date="2014-03-29T23:39:47.769000Z"/>
+<entry
+   name="demo_view_dc.c"
+   revision="6"
+   checksum="927195e01db72909578cb1020e9c2e65"
+   last-author="dian"
+   text-time="2014-03-29T23:36:14.204000Z"
+   committed-rev="6"
+   kind="file"
+   committed-date="2014-03-29T23:39:47.769000Z"/>
+<entry
+   name="demo_view_dc_buffer.c"
+   revision="6"
+   checksum="ef6c1abba76b0ddd77ffb7dfbfab1473"
+   last-author="dian"
+   text-time="2014-03-29T23:36:14.216000Z"
+   committed-rev="6"
+   kind="file"
+   committed-date="2014-03-29T23:39:47.769000Z"/>
+<entry
+   name="demo_view_digtube.c"
+   revision="6"
+   checksum="4df8862b426402106dc8b0e3a505939f"
+   last-author="dian"
+   text-time="2014-03-29T23:36:14.230000Z"
+   committed-rev="6"
+   kind="file"
+   committed-date="2014-03-29T23:39:47.769000Z"/>
+<entry
+   name="demo_view_edit.c"
+   revision="6"
+   checksum="6af71918c027696b9c4c7e97008826e8"
+   last-author="dian"
+   text-time="2014-03-29T23:36:14.239000Z"
+   committed-rev="6"
+   kind="file"
+   committed-date="2014-03-29T23:39:47.769000Z"/>
+<entry
+   name="demo_view_image.c"
+   revision="6"
+   checksum="ddc6799854e859ee0943fceff9c9a7d0"
+   last-author="dian"
+   text-time="2014-03-29T23:36:14.244000Z"
+   committed-rev="6"
+   kind="file"
+   committed-date="2014-03-29T23:39:47.769000Z"/>
+<entry
+   name="demo_view_instrument_panel.c"
+   revision="6"
+   checksum="7c234e1a63e95cb0212f2b8c334024bf"
+   last-author="dian"
+   text-time="2014-03-29T23:36:14.245000Z"
+   committed-rev="6"
+   kind="file"
+   committed-date="2014-03-29T23:39:47.769000Z"/>
+<entry
+   name="demo_view_label.c"
+   revision="6"
+   checksum="31a57651ddfa54ced7ac43e41acc939e"
+   last-author="dian"
+   text-time="2014-03-29T23:36:14.249000Z"
+   committed-rev="6"
+   kind="file"
+   committed-date="2014-03-29T23:39:47.769000Z"/>
+<entry
+   name="demo_view_listbox.c"
+   revision="6"
+   checksum="e9ec4af4880c3daa26d164cf40b6fd60"
+   last-author="dian"
+   text-time="2014-03-29T23:36:14.263000Z"
+   committed-rev="6"
+   kind="file"
+   committed-date="2014-03-29T23:39:47.769000Z"/>
+<entry
+   name="demo_view_listctrl.c"
+   revision="6"
+   checksum="360b2f79d857a30fd13f40321813da47"
+   last-author="dian"
+   text-time="2014-03-29T23:36:14.276000Z"
+   committed-rev="6"
+   kind="file"
+   committed-date="2014-03-29T23:39:47.769000Z"/>
+<entry
+   name="demo_view_menu.c"
+   revision="6"
+   checksum="f5edd13377c494b794be5f5aafec22c6"
+   last-author="dian"
+   text-time="2014-03-29T23:36:14.277000Z"
+   committed-rev="6"
+   kind="file"
+   committed-date="2014-03-29T23:39:47.769000Z"/>
+<entry
+   name="demo_view_module.c"
+   revision="6"
+   checksum="f5254f1d90d2b1c0ef3c08ac3c7eb6e1"
+   last-author="dian"
+   text-time="2014-03-29T23:36:14.279000Z"
+   committed-rev="6"
+   kind="file"
+   committed-date="2014-03-29T23:39:47.769000Z"/>
+<entry
+   name="demo_view_mywidget.c"
+   revision="6"
+   checksum="7661547910111a8c724761dbd57778f4"
+   last-author="dian"
+   text-time="2014-03-29T23:36:14.294000Z"
+   committed-rev="6"
+   kind="file"
+   committed-date="2014-03-29T23:39:47.769000Z"/>
+<entry
+   name="demo_view_notebook.c"
+   revision="6"
+   checksum="b29ad07ea7aafb1b446b46acd7b632b6"
+   last-author="dian"
+   text-time="2014-03-29T23:36:14.299000Z"
+   committed-rev="6"
+   kind="file"
+   committed-date="2014-03-29T23:39:47.769000Z"/>
+<entry
+   name="demo_view_progressbar.c"
+   revision="6"
+   checksum="ecfd431d06099d4a6ec328169344ac4e"
+   last-author="dian"
+   text-time="2014-03-29T23:36:14.307000Z"
+   committed-rev="6"
+   kind="file"
+   committed-date="2014-03-29T23:39:47.769000Z"/>
+<entry
+   name="demo_view_radiobox.c"
+   revision="6"
+   checksum="57477db303a0c8be0f29336732e1d65d"
+   last-author="dian"
+   text-time="2014-03-29T23:36:14.318000Z"
+   committed-rev="6"
+   kind="file"
+   committed-date="2014-03-29T23:39:47.769000Z"/>
+<entry
+   name="demo_view_scrollbar.c"
+   revision="6"
+   checksum="c67733bb5d2ca7c7e0f2b0ac96a4725b"
+   last-author="dian"
+   text-time="2014-03-29T23:36:14.331000Z"
+   committed-rev="6"
+   kind="file"
+   committed-date="2014-03-29T23:39:47.769000Z"/>
+<entry
+   name="demo_view_slider.c"
+   revision="6"
+   checksum="b3232a7cc4aa3c017a258e5506ff032f"
+   last-author="dian"
+   text-time="2014-03-29T23:36:14.333000Z"
+   committed-rev="6"
+   kind="file"
+   committed-date="2014-03-29T23:39:47.769000Z"/>
+<entry
+   name="demo_view_textbox.c"
+   revision="6"
+   checksum="cee3db7884a12c36180792517c524715"
+   last-author="dian"
+   text-time="2014-03-29T23:36:14.334000Z"
+   committed-rev="6"
+   kind="file"
+   committed-date="2014-03-29T23:39:47.769000Z"/>
+<entry
+   name="demo_view_ttf.c"
+   revision="6"
+   checksum="a1b88f65cd8e48e4b0ce89dd0a2d5d40"
+   last-author="dian"
+   text-time="2014-03-29T23:36:14.336000Z"
+   committed-rev="6"
+   kind="file"
+   committed-date="2014-03-29T23:39:47.769000Z"/>
+<entry
+   name="demo_view_window.c"
+   revision="13"
+   checksum="6754cab321c514fc6a04e39a6ab8df5b"
+   last-author="dian"
+   text-time="2014-04-03T03:01:31.054000Z"
+   committed-rev="13"
+   kind="file"
+   committed-date="2014-04-03T07:53:52.022000Z"/>
+<entry
+   name="demo_xml.c"
+   revision="6"
+   checksum="5539e306db1dae3425e8e457be763140"
+   last-author="dian"
+   text-time="2014-03-29T23:36:14.363000Z"
+   committed-rev="6"
+   kind="file"
+   committed-date="2014-03-29T23:39:47.769000Z"/>
+<entry
+   name="mywidget.c"
+   revision="6"
+   checksum="3a1dc20f24a67404f3c297aff4a03ffe"
+   last-author="dian"
+   text-time="2014-03-29T23:36:14.374000Z"
+   committed-rev="6"
+   kind="file"
+   committed-date="2014-03-29T23:39:47.769000Z"/>
+<entry
+   name="mywidget.h"
+   revision="6"
+   checksum="ea7ca684843a2b0ca47d6eb518659e92"
+   last-author="dian"
+   text-time="2014-03-29T23:36:14.386000Z"
+   committed-rev="6"
+   kind="file"
+   committed-date="2014-03-29T23:39:47.769000Z"/>
+<entry
+   name="play.hdh"
+   revision="6"
+   checksum="1863696d0dd2bbfbd4eee75a81996c65"
+   last-author="dian"
+   text-time="2014-03-29T23:36:14.387000Z"
+   committed-rev="6"
+   kind="file"
+   committed-date="2014-03-29T23:39:47.769000Z"/>
+<entry
+   name="stop.hdh"
+   revision="6"
+   checksum="e501bd4cb71c645a952f0955d3c93179"
+   last-author="dian"
+   text-time="2014-03-29T23:36:14.389000Z"
+   committed-rev="6"
+   kind="file"
+   committed-date="2014-03-29T23:39:47.769000Z"/>
+</wc-entries>

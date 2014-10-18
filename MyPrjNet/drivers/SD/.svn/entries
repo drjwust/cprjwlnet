@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wc-entries
+   xmlns="svn:">
+<entry
+   name=""
+   repos="https://win-dkeqb6bf8hd/svn/PrjWirelessNet"
+   revision="3"
+   last-author="dian"
+   url="https://win-dkeqb6bf8hd/svn/PrjWirelessNet/trunk/MyPrj/drivers/SD"
+   committed-rev="3"
+   kind="dir"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="SConscript"
+   checksum="59d28cc96e602c847d6c84c7a25a0894"
+   last-author="dian"
+   text-time="2014-02-14T03:08:01.239000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+<entry
+   name="sd_lowlevel.c"
+   revision="18"
+   checksum="530781b425876f72087de2abbf658035"
+   last-author="dian"
+   text-time="2014-04-07T11:52:13.392000Z"
+   committed-rev="18"
+   kind="file"
+   committed-date="2014-04-07T13:07:02.873000Z"/>
+<entry
+   name="sd_lowlevel.h"
+   revision="18"
+   checksum="e8cf05a1ffb48ea32ca83f714dea1973"
+   last-author="dian"
+   text-time="2014-04-07T11:53:01.956000Z"
+   committed-rev="18"
+   kind="file"
+   committed-date="2014-04-07T13:07:02.873000Z"/>
+<entry
+   name="sdio_sd.c"
+   revision="19"
+   checksum="2546ad48bf9648fe3711aa9edecfe5d5"
+   last-author="dian"
+   text-time="2014-04-08T12:32:06.978000Z"
+   committed-rev="19"
+   kind="file"
+   committed-date="2014-04-08T13:47:19.149000Z"/>
+<entry
+   name="sdio_sd.h"
+   checksum="0d306b2c37ea0573528254e055fc9fd4"
+   last-author="dian"
+   text-time="2014-01-20T03:34:33.614000Z"
+   committed-rev="3"
+   kind="file"
+   committed-date="2014-03-29T02:20:56.734000Z"/>
+</wc-entries>
