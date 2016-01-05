@@ -12,7 +12,7 @@ int main(void) {
 	ExtIO_Init();
 	ExtDA_Init();
 
-//	LED_Blinky(48);
+	LED_Blinky(48);
 	for(;;);
 	return 0;
 }

@@ -1,7 +1,7 @@
 # FIXED
 
 main.obj: ../main.c
-main.obj: X:/Code_Workspace/PrjInverter/inc/includes.h
+main.obj: J:/MyGit/PrjInverter/inc/includes.h
 main.obj: D:/ti/controlSUITE/device_support/F2837xD/v160/F2837xD_common/include/F28x_Project.h
 main.obj: D:/ti/controlSUITE/device_support/F2837xD/v160/F2837xD_common/include/F2837xD_Cla_typedefs.h
 main.obj: D:/ti/controlSUITE/device_support/F2837xD/v160/F2837xD_headers/include/F2837xD_device.h
@@ -61,23 +61,23 @@ main.obj: D:/ti/controlSUITE/device_support/F2837xD/v160/F2837xD_common/include/
 main.obj: D:/ti/controlSUITE/device_support/F2837xD/v160/F2837xD_common/include/F2837xD_Dma_defines.h
 main.obj: D:/ti/controlSUITE/device_support/F2837xD/v160/F2837xD_common/include/F2837xD_SysCtrl_defines.h
 main.obj: D:/ti/controlSUITE/device_support/F2837xD/v160/F2837xD_common/include/F2837xD_Upp_defines.h
-main.obj: X:/Code_Workspace/PrjInverter/src/dsp/dsp.h
+main.obj: J:/MyGit/PrjInverter/src/dsp/dsp.h
 main.obj: C:/ti/ccsv6/tools/compiler/ti-cgt-c2000_6.4.9/include/string.h
 main.obj: C:/ti/ccsv6/tools/compiler/ti-cgt-c2000_6.4.9/include/math.h
-main.obj: X:/Code_Workspace/PrjInverter/lib/inc/fpu_vector.h
-main.obj: X:/Code_Workspace/PrjInverter/lib/inc/fpu_types.h
+main.obj: J:/MyGit/PrjInverter/lib/inc/fpu_vector.h
+main.obj: J:/MyGit/PrjInverter/lib/inc/fpu_types.h
 main.obj: C:/ti/ccsv6/tools/compiler/ti-cgt-c2000_6.4.9/include/float.h
-main.obj: X:/Code_Workspace/PrjInverter/inc/APF_Define.h
-main.obj: X:/Code_Workspace/PrjInverter/inc/APF_Variables.h
-main.obj: X:/Code_Workspace/PrjInverter/inc/includes.h
-main.obj: X:/Code_Workspace/PrjInverter/inc/filter_init.h
-main.obj: X:/Code_Workspace/PrjInverter/inc/apf.h
-main.obj: X:/Code_Workspace/PrjInverter/inc/bsp.h
-main.obj: X:/Code_Workspace/PrjInverter/inc/pinmux.h
-main.obj: X:/Code_Workspace/PrjInverter/lib/inc/C28x_FPU_FastRTS.h
+main.obj: J:/MyGit/PrjInverter/inc/APF_Define.h
+main.obj: J:/MyGit/PrjInverter/inc/APF_Variables.h
+main.obj: J:/MyGit/PrjInverter/inc/includes.h
+main.obj: J:/MyGit/PrjInverter/inc/filter_init.h
+main.obj: J:/MyGit/PrjInverter/inc/apf.h
+main.obj: J:/MyGit/PrjInverter/inc/bsp.h
+main.obj: J:/MyGit/PrjInverter/inc/pinmux.h
+main.obj: J:/MyGit/PrjInverter/lib/inc/C28x_FPU_FastRTS.h
 
 ../main.c: 
-X:/Code_Workspace/PrjInverter/inc/includes.h: 
+J:/MyGit/PrjInverter/inc/includes.h: 
 D:/ti/controlSUITE/device_support/F2837xD/v160/F2837xD_common/include/F28x_Project.h: 
 D:/ti/controlSUITE/device_support/F2837xD/v160/F2837xD_common/include/F2837xD_Cla_typedefs.h: 
 D:/ti/controlSUITE/device_support/F2837xD/v160/F2837xD_headers/include/F2837xD_device.h: 
@@ -137,17 +137,17 @@ D:/ti/controlSUITE/device_support/F2837xD/v160/F2837xD_common/include/F2837xD_Pi
 D:/ti/controlSUITE/device_support/F2837xD/v160/F2837xD_common/include/F2837xD_Dma_defines.h: 
 D:/ti/controlSUITE/device_support/F2837xD/v160/F2837xD_common/include/F2837xD_SysCtrl_defines.h: 
 D:/ti/controlSUITE/device_support/F2837xD/v160/F2837xD_common/include/F2837xD_Upp_defines.h: 
-X:/Code_Workspace/PrjInverter/src/dsp/dsp.h: 
+J:/MyGit/PrjInverter/src/dsp/dsp.h: 
 C:/ti/ccsv6/tools/compiler/ti-cgt-c2000_6.4.9/include/string.h: 
 C:/ti/ccsv6/tools/compiler/ti-cgt-c2000_6.4.9/include/math.h: 
-X:/Code_Workspace/PrjInverter/lib/inc/fpu_vector.h: 
-X:/Code_Workspace/PrjInverter/lib/inc/fpu_types.h: 
+J:/MyGit/PrjInverter/lib/inc/fpu_vector.h: 
+J:/MyGit/PrjInverter/lib/inc/fpu_types.h: 
 C:/ti/ccsv6/tools/compiler/ti-cgt-c2000_6.4.9/include/float.h: 
-X:/Code_Workspace/PrjInverter/inc/APF_Define.h: 
-X:/Code_Workspace/PrjInverter/inc/APF_Variables.h: 
-X:/Code_Workspace/PrjInverter/inc/includes.h: 
-X:/Code_Workspace/PrjInverter/inc/filter_init.h: 
-X:/Code_Workspace/PrjInverter/inc/apf.h: 
-X:/Code_Workspace/PrjInverter/inc/bsp.h: 
-X:/Code_Workspace/PrjInverter/inc/pinmux.h: 
-X:/Code_Workspace/PrjInverter/lib/inc/C28x_FPU_FastRTS.h: 
+J:/MyGit/PrjInverter/inc/APF_Define.h: 
+J:/MyGit/PrjInverter/inc/APF_Variables.h: 
+J:/MyGit/PrjInverter/inc/includes.h: 
+J:/MyGit/PrjInverter/inc/filter_init.h: 
+J:/MyGit/PrjInverter/inc/apf.h: 
+J:/MyGit/PrjInverter/inc/bsp.h: 
+J:/MyGit/PrjInverter/inc/pinmux.h: 
+J:/MyGit/PrjInverter/lib/inc/C28x_FPU_FastRTS.h: 

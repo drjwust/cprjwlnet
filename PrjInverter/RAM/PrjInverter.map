@@ -1,10 +1,10 @@
 ******************************************************************************
              TMS320C2000 Linker PC v6.4.9                      
 ******************************************************************************
->> Linked Sat Dec 05 21:02:06 2015
+>> Linked Tue Jan 05 18:47:58 2016
 
 OUTPUT FILE NAME:   <PrjInverter.out>
-ENTRY POINT SYMBOL: "_c_int00"  address: 00008763
+ENTRY POINT SYMBOL: "_c_int00"  address: 00008766
 
 
 MEMORY CONFIGURATION
@@ -14,7 +14,7 @@ MEMORY CONFIGURATION
 PAGE 0:
   BEGIN                 00000000   00000002  00000000  00000002  RWIX
   RAMM0                 00000122   000002de  000002de  00000000  RWIX
-  RAMLS0                00008000   00000800  000007fd  00000003  RWIX
+  RAMLS0                00008000   00000800  00000800  00000000  RWIX
   RAMLS1                00008800   00000800  000007ea  00000016  RWIX
   RAMLS2                00009000   00000800  0000028b  00000575  RWIX
   RAMLS3                00009800   00000800  000006a0  00000160  RWIX
@@ -162,13 +162,13 @@ ramfuncs   0    0000017e    00000004
                   00000182    0000024a     F2837xD_Gpio.obj (.text)
                   000003cc    00000034     rts2800_fpu32_fast_supplement.lib : sin_f32.obj (.text)
 
-.text.2    0    00008000    000007fd     
+.text.2    0    00008000    00000800     
                   00008000    000003b0     apf.obj (.text:retain)
                   000083b0    0000031e     F2837xD_Emif.obj (.text)
-                  000086ce    00000095     main.obj (.text)
-                  00008763    00000046     rts2800_fpu32.lib : boot.obj (.text)
-                  000087a9    0000002c     ext_da.obj (.text)
-                  000087d5    00000028     F2837xD_PieCtrl.obj (.text)
+                  000086ce    00000098     main.obj (.text)
+                  00008766    00000046     rts2800_fpu32.lib : boot.obj (.text)
+                  000087ac    0000002c     ext_da.obj (.text)
+                  000087d8    00000028     F2837xD_PieCtrl.obj (.text)
 
 .text.3    0    00008800    000007ea     
                   00008800    000002ce     bsp.obj (.text)
@@ -1029,10 +1029,10 @@ abs   ffffffff  .text
 1     00047800  _Emif2Regs                            
 1     00000d01  _EmuBMode                             
 1     00000d00  _EmuKey                               
-0     000087f4  _EnableInterrupts                     
-0     000087a9  _ExtDA_Init                           
-0     000087c9  _ExtDA_Output                         
-0     000086f0  _ExtIO_Init                           
+0     000087f7  _EnableInterrupts                     
+0     000087ac  _ExtDA_Init                           
+0     000087cc  _ExtDA_Output                         
+0     000086f3  _ExtIO_Init                           
 0     0000017e  _F28x_usDelay                         
 0     0000b528  _FLASH_CORRECTABLE_ERROR_ISR          
 0     0000b3fc  _FPU_OVERFLOW_ISR                     
@@ -1113,14 +1113,14 @@ abs   ffffffff  .text
 0     0000b759  _InitEpwmAll                          
 0     00000182  _InitGpio                             
 0     00008aff  _InitPeripheralClocks                 
-0     000087d5  _InitPieCtrl                          
+0     000087d8  _InitPieCtrl                          
 0     00008f5d  _InitPieVectTable                     
 0     00008ace  _InitSysCtrl                          
 0     00008bb7  _InitSysPll                           
 0     0000b74b  _InitTzGpio                           
 1     00007900  _InputXbarRegs                        
 1     00050000  _IpcRegs                              
-0     000086d7  _LED_Blinky                           
+0     000086da  _LED_Blinky                           
 0     0000b230  _MCBSPA_RX_ISR                        
 0     0000b23a  _MCBSPA_TX_ISR                        
 0     0000b244  _MCBSPB_RX_ISR                        
@@ -1243,7 +1243,7 @@ abs   ffffffff  ___text__
 1     00000400  __stack                               
 1     0000ad40  __unlock                              
 0     00008f9e  _abort                                
-0     00008763  _c_int00                              
+0     00008766  _c_int00                              
 0     00008fa0  _exit                                 
 0     000086ce  _main                                 
 0     00008fe4  _memset_fast                          
@@ -1307,13 +1307,13 @@ page  address   name
 0     00008645  _setup_emif2_pinmux_sdram_16bit       
 0     00008679  _setup_emif1_pinmux_sdram_32bit       
 0     000086ce  _main                                 
-0     000086d7  _LED_Blinky                           
-0     000086f0  _ExtIO_Init                           
-0     00008763  _c_int00                              
-0     000087a9  _ExtDA_Init                           
-0     000087c9  _ExtDA_Output                         
-0     000087d5  _InitPieCtrl                          
-0     000087f4  _EnableInterrupts                     
+0     000086da  _LED_Blinky                           
+0     000086f3  _ExtIO_Init                           
+0     00008766  _c_int00                              
+0     000087ac  _ExtDA_Init                           
+0     000087cc  _ExtDA_Output                         
+0     000087d8  _InitPieCtrl                          
+0     000087f7  _EnableInterrupts                     
 0     00008800  _BSP_Init                             
 0     00008874  _SetOC1Value                          
 0     0000888e  _SetOC2Value                          
