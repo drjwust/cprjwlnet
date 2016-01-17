@@ -20,8 +20,11 @@
 #define POINT_NUM					(APF_SWITCH_FREQ / GID_FREQUENCE)
 #define APF_STATE_BIT_STOP			1	//APF启动停止标志位 0:APF启动
 #define APF_STATE_BIT_SWSTOP		2	//APF软停止标志位	1:APF停止
-#define APF_STATE_BIT_OC			4	//APF过流标志位		1:APF过流
-#define APF_STATE_BIT_OV			8	//APF直流母线过压标志位	1:APF过压
+#define APF_STATE_BIT_OC1			4	//APF过流标志位		1:APF过流
+#define APF_STATE_BIT_OC2			8	//APF过流标志位		1:APF过流
+#define APF_STATE_BIT_OV			16	//APF直流母线过压标志位	1:APF过压
+#define APF_STATE_BIT_IGBT_ERR		32	//APF变流器IGBT故障	1：IGBT故障
+#define APF_STATE_BIT_TEST			64	//测试IGBT
 
 
 #define DISABLE			0

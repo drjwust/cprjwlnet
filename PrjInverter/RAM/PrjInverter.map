@@ -1,10 +1,10 @@
 ******************************************************************************
              TMS320C2000 Linker PC v6.4.9                      
 ******************************************************************************
->> Linked Tue Jan 05 18:47:58 2016
+>> Linked Sun Jan 17 14:27:47 2016
 
 OUTPUT FILE NAME:   <PrjInverter.out>
-ENTRY POINT SYMBOL: "_c_int00"  address: 00008766
+ENTRY POINT SYMBOL: "_c_int00"  address: 00008774
 
 
 MEMORY CONFIGURATION
@@ -12,11 +12,11 @@ MEMORY CONFIGURATION
          name            origin    length      used     unused   attr    fill
 ----------------------  --------  ---------  --------  --------  ----  --------
 PAGE 0:
-  BEGIN                 00000000   00000002  00000000  00000002  RWIX
+  BEGIN                 00000000   00000002  00000002  00000000  RWIX
   RAMM0                 00000122   000002de  000002de  00000000  RWIX
-  RAMLS0                00008000   00000800  00000800  00000000  RWIX
-  RAMLS1                00008800   00000800  000007ea  00000016  RWIX
-  RAMLS2                00009000   00000800  0000028b  00000575  RWIX
+  RAMLS0                00008000   00000800  000007ff  00000001  RWIX
+  RAMLS1                00008800   00000800  00000800  00000000  RWIX
+  RAMLS2                00009000   00000800  00000337  000004c9  RWIX
   RAMLS3                00009800   00000800  000006a0  00000160  RWIX
   RAMLS4                0000a000   00000800  00000000  00000800  RWIX
   RAMD0                 0000b000   00000800  000007ff  00000001  RWIX
@@ -147,6 +147,10 @@ SECTION ALLOCATION MAP
  output                                  attributes/
 section   page    origin      length       input sections
 --------  ----  ----------  ----------   ----------------
+codestart 
+*          0    00000000    00000002     
+                  00000000    00000002     F2837xD_CodeStartBranch.obj (codestart)
+
 .cinit     0    00000122    0000005c     
                   00000122    0000003c     bsp.obj (.cinit)
                   0000015e    0000000a     apf.obj (.cinit)
@@ -160,30 +164,31 @@ ramfuncs   0    0000017e    00000004
 
 .text.1    0    00000182    0000027e     
                   00000182    0000024a     F2837xD_Gpio.obj (.text)
-                  000003cc    00000034     rts2800_fpu32_fast_supplement.lib : sin_f32.obj (.text)
+                  000003cc    00000034     ext_da.obj (.text)
 
-.text.2    0    00008000    00000800     
-                  00008000    000003b0     apf.obj (.text:retain)
-                  000083b0    0000031e     F2837xD_Emif.obj (.text)
-                  000086ce    00000098     main.obj (.text)
-                  00008766    00000046     rts2800_fpu32.lib : boot.obj (.text)
-                  000087ac    0000002c     ext_da.obj (.text)
-                  000087d8    00000028     F2837xD_PieCtrl.obj (.text)
+.text.2    0    00008000    000007ff     
+                  00008000    00000456     apf.obj (.text:retain)
+                  00008456    0000031e     F2837xD_Emif.obj (.text)
+                  00008774    00000046     rts2800_fpu32.lib : boot.obj (.text)
+                  000087ba    00000034     rts2800_fpu32_fast_supplement.lib : sin_f32.obj (.text)
+                  000087ee    0000000b     rts2800_fpu32.lib : u_div.obj (.text)
+                  000087f9    00000006     c28x_fpu_dsp_library.lib : memset_fast.obj (.text)
 
-.text.3    0    00008800    000007ea     
+.text.3    0    00008800    00000800     
                   00008800    000002ce     bsp.obj (.text)
                   00008ace    000002b4     F2837xD_SysCtrl.obj (.text)
                   00008d82    000001db     apf.obj (.text)
-                  00008f5d    00000028     F2837xD_PieVect.obj (.text)
-                  00008f85    00000019     rts2800_fpu32.lib : args_main.obj (.text)
-                  00008f9e    00000019                       : exit.obj (.text)
-                  00008fb7    00000019     rts2800_fpu32_fast_supplement.lib : div_f32.obj (.text)
-                  00008fd0    0000000b     rts2800_fpu32.lib : u_div.obj (.text)
-                  00008fdb    00000009                       : _lock.obj (.text)
-                  00008fe4    00000006     c28x_fpu_dsp_library.lib : memset_fast.obj (.text)
+                  00008f5d    000000a3     main.obj (.text)
 
-.text.4    0    00009000    0000028b     
+.text.4    0    00009000    00000337     
                   00009000    0000028b     F2837xD_Adc.obj (.text)
+                  0000928b    00000028     F2837xD_PieCtrl.obj (.text)
+                  000092b3    00000028     F2837xD_PieVect.obj (.text)
+                  000092db    00000019     rts2800_fpu32.lib : args_main.obj (.text)
+                  000092f4    00000019                       : exit.obj (.text)
+                  0000930d    00000019     rts2800_fpu32_fast_supplement.lib : div_f32.obj (.text)
+                  00009326    00000009     rts2800_fpu32.lib : _lock.obj (.text)
+                  0000932f    00000008     F2837xD_CodeStartBranch.obj (.text)
 
 FPUmathTables 
 *          0    00009800    000006a0     
@@ -862,10 +867,10 @@ GLOBAL SYMBOLS: SORTED ALPHABETICALLY BY Name
 page  address   name                                  
 ----  -------   ----                                  
 abs   ffffffff  .text                                 
-0     00008f9e  C$$EXIT                               
-0     00008fb7  FS$$DIV                               
-0     00008fd0  U$$DIV                                
-0     00008fd5  U$$MOD                                
+0     000092f4  C$$EXIT                               
+0     0000930d  FS$$DIV                               
+0     000087ee  U$$DIV                                
+0     000087f3  U$$MOD                                
 0     0000b0be  _ADCA1_ISR                            
 0     0000b33e  _ADCA2_ISR                            
 0     0000b348  _ADCA3_ISR                            
@@ -890,10 +895,10 @@ abs   ffffffff  .text
 0     00008e4b  _APF_Init                             
 0     0000803d  _APF_Main                             
 1     0000a802  _APF_State                            
-0     000083e9  _ASync_cs2_config                     
-0     00008489  _ASync_cs3_config                     
-0     000084db  _ASync_cs4_config                     
-0     000083c6  _ASync_wait_config                    
+0     0000848f  _ASync_cs2_config                     
+0     0000852f  _ASync_cs3_config                     
+0     00008581  _ASync_cs4_config                     
+0     0000846c  _ASync_wait_config                    
 0     0000b546  _AUX_PLL_SLIP_ISR                     
 1     0005f4c0  _AccessProtectionRegs                 
 0     00009000  _AdcSetMode                           
@@ -1022,17 +1027,17 @@ abs   ffffffff  .text
 1     00005140  _EQep2Regs                            
 1     00005180  _EQep3Regs                            
 1     0005f480  _Emif1ConfigRegs                      
-0     000083b0  _Emif1Initialize                      
+0     00008456  _Emif1Initialize                      
 1     00047000  _Emif1Regs                            
 1     0005f4a0  _Emif2ConfigRegs                      
-0     000083bb  _Emif2Initialize                      
+0     00008461  _Emif2Initialize                      
 1     00047800  _Emif2Regs                            
 1     00000d01  _EmuBMode                             
 1     00000d00  _EmuKey                               
-0     000087f7  _EnableInterrupts                     
-0     000087ac  _ExtDA_Init                           
-0     000087cc  _ExtDA_Output                         
-0     000086f3  _ExtIO_Init                           
+0     000092aa  _EnableInterrupts                     
+0     000003cc  _ExtDA_Init                           
+0     000003ec  _ExtDA_Output                         
+0     00008f8d  _ExtIO_Init                           
 0     0000017e  _F28x_usDelay                         
 0     0000b528  _FLASH_CORRECTABLE_ERROR_ISR          
 0     0000b3fc  _FPU_OVERFLOW_ISR                     
@@ -1113,14 +1118,14 @@ abs   ffffffff  .text
 0     0000b759  _InitEpwmAll                          
 0     00000182  _InitGpio                             
 0     00008aff  _InitPeripheralClocks                 
-0     000087d8  _InitPieCtrl                          
-0     00008f5d  _InitPieVectTable                     
+0     0000928b  _InitPieCtrl                          
+0     000092b3  _InitPieVectTable                     
 0     00008ace  _InitSysCtrl                          
 0     00008bb7  _InitSysPll                           
 0     0000b74b  _InitTzGpio                           
 1     00007900  _InputXbarRegs                        
 1     00050000  _IpcRegs                              
-0     000086da  _LED_Blinky                           
+0     00008f66  _LED_Blinky                           
 0     0000b230  _MCBSPA_RX_ISR                        
 0     0000b23a  _MCBSPA_TX_ISR                        
 0     0000b244  _MCBSPB_RX_ISR                        
@@ -1235,18 +1240,18 @@ abs   ffffffff  ___c_args__
 abs   ffffffff  ___etext__                            
 abs   ffffffff  ___pinit__                            
 abs   ffffffff  ___text__                             
-0     00008f85  __args_main                           
+0     000092db  __args_main                           
 1     0000ad3e  __lock                                
-0     00008fe3  __nop                                 
-0     00008fdf  __register_lock                       
-0     00008fdb  __register_unlock                     
+0     0000932e  __nop                                 
+0     0000932a  __register_lock                       
+0     00009326  __register_unlock                     
 1     00000400  __stack                               
 1     0000ad40  __unlock                              
-0     00008f9e  _abort                                
-0     00008766  _c_int00                              
-0     00008fa0  _exit                                 
-0     000086ce  _main                                 
-0     00008fe4  _memset_fast                          
+0     000092f4  _abort                                
+0     00008774  _c_int00                              
+0     000092f6  _exit                                 
+0     00008f5d  _main                                 
+0     000087f9  _memset_fast                          
 0     0000b774  _pid_init                             
 1     0000a8c0  _pid_instance_Ialfa                   
 1     0000a8a4  _pid_instance_Ibeta                   
@@ -1255,16 +1260,17 @@ abs   ffffffff  ___text__
 1     0000a8d2  _pid_instance_Udcn_q                  
 1     0000a880  _pid_instance_Udcp                    
 0     0000b7b1  _pid_reset                            
-0     0000852d  _setup_emif1_pinmux_async_16bit       
-0     00008567  _setup_emif1_pinmux_async_32bit       
-0     000085e5  _setup_emif1_pinmux_sdram_16bit       
-0     00008679  _setup_emif1_pinmux_sdram_32bit       
-0     000085b4  _setup_emif2_pinmux_async_16bit       
-0     00008645  _setup_emif2_pinmux_sdram_16bit       
-0     000003cc  _sin                                  
+0     000085d3  _setup_emif1_pinmux_async_16bit       
+0     0000860d  _setup_emif1_pinmux_async_32bit       
+0     0000868b  _setup_emif1_pinmux_sdram_16bit       
+0     0000871f  _setup_emif1_pinmux_sdram_32bit       
+0     0000865a  _setup_emif2_pinmux_async_16bit       
+0     000086eb  _setup_emif2_pinmux_sdram_16bit       
+0     000087ba  _sin                                  
 0     0000b7bc  _sincos                               
 abs   ffffffff  binit                                 
 0     00000122  cinit                                 
+0     00000000  code_start                            
 abs   ffffffff  etext                                 
 abs   ffffffff  pinit                                 
 
@@ -1273,6 +1279,7 @@ GLOBAL SYMBOLS: SORTED BY Symbol Address
 
 page  address   name                                  
 ----  -------   ----                                  
+0     00000000  code_start                            
 0     00000122  ___cinit__                            
 0     00000122  cinit                                 
 0     0000017e  _F28x_usDelay                         
@@ -1290,30 +1297,28 @@ page  address   name
 0     00000381  _GPIO_EnableUnbondedIOPullups         
 0     00000397  _GPIO_ReadPin                         
 0     000003ae  _GPIO_WritePin                        
-0     000003cc  _sin                                  
+0     000003cc  _ExtDA_Init                           
+0     000003ec  _ExtDA_Output                         
 0     00000ce0  _Cla1SoftIntRegs                      
 0     00008000  _FaultProcess                         
 0     0000803d  _APF_Main                             
-0     000083b0  _Emif1Initialize                      
-0     000083bb  _Emif2Initialize                      
-0     000083c6  _ASync_wait_config                    
-0     000083e9  _ASync_cs2_config                     
-0     00008489  _ASync_cs3_config                     
-0     000084db  _ASync_cs4_config                     
-0     0000852d  _setup_emif1_pinmux_async_16bit       
-0     00008567  _setup_emif1_pinmux_async_32bit       
-0     000085b4  _setup_emif2_pinmux_async_16bit       
-0     000085e5  _setup_emif1_pinmux_sdram_16bit       
-0     00008645  _setup_emif2_pinmux_sdram_16bit       
-0     00008679  _setup_emif1_pinmux_sdram_32bit       
-0     000086ce  _main                                 
-0     000086da  _LED_Blinky                           
-0     000086f3  _ExtIO_Init                           
-0     00008766  _c_int00                              
-0     000087ac  _ExtDA_Init                           
-0     000087cc  _ExtDA_Output                         
-0     000087d8  _InitPieCtrl                          
-0     000087f7  _EnableInterrupts                     
+0     00008456  _Emif1Initialize                      
+0     00008461  _Emif2Initialize                      
+0     0000846c  _ASync_wait_config                    
+0     0000848f  _ASync_cs2_config                     
+0     0000852f  _ASync_cs3_config                     
+0     00008581  _ASync_cs4_config                     
+0     000085d3  _setup_emif1_pinmux_async_16bit       
+0     0000860d  _setup_emif1_pinmux_async_32bit       
+0     0000865a  _setup_emif2_pinmux_async_16bit       
+0     0000868b  _setup_emif1_pinmux_sdram_16bit       
+0     000086eb  _setup_emif2_pinmux_sdram_16bit       
+0     0000871f  _setup_emif1_pinmux_sdram_32bit       
+0     00008774  _c_int00                              
+0     000087ba  _sin                                  
+0     000087ee  U$$DIV                                
+0     000087f3  U$$MOD                                
+0     000087f9  _memset_fast                          
 0     00008800  _BSP_Init                             
 0     00008874  _SetOC1Value                          
 0     0000888e  _SetOC2Value                          
@@ -1338,22 +1343,24 @@ page  address   name
 0     00008d4c  _HALT                                 
 0     00008d65  _HIB                                  
 0     00008e4b  _APF_Init                             
-0     00008f5d  _InitPieVectTable                     
-0     00008f85  __args_main                           
-0     00008f9e  C$$EXIT                               
-0     00008f9e  _abort                                
-0     00008fa0  _exit                                 
-0     00008fb7  FS$$DIV                               
-0     00008fd0  U$$DIV                                
-0     00008fd5  U$$MOD                                
-0     00008fdb  __register_unlock                     
-0     00008fdf  __register_lock                       
-0     00008fe3  __nop                                 
-0     00008fe4  _memset_fast                          
+0     00008f5d  _main                                 
+0     00008f66  _LED_Blinky                           
+0     00008f8d  _ExtIO_Init                           
 0     00009000  _AdcSetMode                           
 0     000090a3  _CalAdcINL                            
 0     000090dd  _SetupADC                             
 0     00009233  _InitADC                              
+0     0000928b  _InitPieCtrl                          
+0     000092aa  _EnableInterrupts                     
+0     000092b3  _InitPieVectTable                     
+0     000092db  __args_main                           
+0     000092f4  C$$EXIT                               
+0     000092f4  _abort                                
+0     000092f6  _exit                                 
+0     0000930d  FS$$DIV                               
+0     00009326  __register_unlock                     
+0     0000932a  __register_lock                       
+0     0000932e  __nop                                 
 0     00009800  _FPUsinTable                          
 0     00009900  _FPUcosTable                          
 0     00009c00  _FPUsinTableEnd                       
@@ -1680,4 +1687,4 @@ abs   ffffffff  binit
 abs   ffffffff  etext                                 
 abs   ffffffff  pinit                                 
 
-[406 symbols]
+[407 symbols]

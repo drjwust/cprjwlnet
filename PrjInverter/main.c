@@ -12,7 +12,7 @@ int main(void) {
 	ExtIO_Init();
 	ExtDA_Init();
 
-	LED_Blinky(48);
+//	LED_Blinky(48);
 	for(;;);
 	return 0;
 }
@@ -20,6 +20,10 @@ int main(void) {
 void LED_Blinky(char x) {
 	unsigned int i = 0;
 	for (;;) {
+		if (GPIO_ReadPin(54))
+			GPIO_WritePin(86,1);
+		else
+			GPIO_WritePin(86,0);
 		//
 		// Turn on LED
 		//

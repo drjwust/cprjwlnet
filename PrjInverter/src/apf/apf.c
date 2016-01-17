@@ -15,10 +15,14 @@ static float Iload_alfa, Iload_beta;
 static float Iapf_d, Iapf_q;
 static float UdcRampRef;
 
-static float GetPllAngle(void);
-static void Para_Init(void);
-static void PID_Init(void);
-static float GetPllAngle(void);
+static float
+GetPllAngle(void);
+static void
+Para_Init(void);
+static void
+PID_Init(void);
+static float
+GetPllAngle(void);
 
 interrupt void FaultProcess(void)
 {
@@ -63,14 +67,65 @@ interrupt void APF_Main(void)
 //	HarmonicDetection(Iload_a, Iload_b, &iha, &ihb);
 	GPIO_WritePin(58, 1);
 	/******************************检测APF是否有故障发生**************************************/
-	if (GPIO_ReadPin(1) == DISABLE)
+	if (GPIO_ReadPin(70) == DISABLE)
 	{
 		APF_State |= APF_STATE_BIT_OV;
 	}
-	if (GPIO_ReadPin(2) == DISABLE)
+	else
 	{
-		APF_State |= APF_STATE_BIT_OC;
+		APF_State &= ~ APF_STATE_BIT_OV;
 	}
+	if (GPIO_ReadPin(68) == DISABLE)
+	{
+		APF_State |= APF_STATE_BIT_OC1;
+	}
+	else
+	{
+		APF_State &= ~ APF_STATE_BIT_OC1;
+	}
+	if (GPIO_ReadPin(69) == DISABLE)
+	{
+		APF_State |= APF_STATE_BIT_OC2;
+	}
+	else
+	{
+		APF_State &= ~ APF_STATE_BIT_OC2;
+	}
+	if (GPIO_ReadPin(71) == DISABLE)
+	{
+		APF_State |= APF_STATE_BIT_IGBT_ERR;
+	}
+	else
+	{
+		APF_State &= ~ APF_STATE_BIT_IGBT_ERR;
+	}
+
+	/*****************检测APF是否启动运行或启动IGBT检查************************/
+	if (APF_STATE_BIT_STOP == APF_State || APF_STATE_BIT_SWSTOP == APF_State
+			|| APF_STATE_BIT_TEST == APF_State || 0 == APF_State)
+	{
+		if (GPIO_ReadPin(54) == SET)	//检查APF启动按钮是否按下
+		{
+			APF_State = 0;
+			GPIO_WritePin(48, 0);
+		}
+		else
+		{
+			APF_State = APF_STATE_BIT_STOP;
+			GPIO_WritePin(48, 1);
+		}
+		if (GPIO_ReadPin(53) == SET)	//检查APF是否启动IGBT检测
+		{
+			APF_State = APF_STATE_BIT_TEST;
+			GPIO_WritePin(41, 0);
+		}
+		else
+		{
+			APF_State = APF_STATE_BIT_STOP;
+			GPIO_WritePin(41, 1);
+		}
+	}
+
 	/*****************************根据APF的状态进行操作*************************************/
 	if (0 == APF_State)	//如果APF启动了
 	{
@@ -196,33 +251,27 @@ interrupt void APF_Main(void)
 		EPwm7Regs.CMPA.bit.CMPA = temp_b;
 		EPwm8Regs.CMPA.bit.CMPA = temp_c;
 
-//		/* Main Output Enable */
-//		EPwm2Regs.AQCSFRC.bit.CSFA = 0;	//输出不强制
-//		EPwm3Regs.AQCSFRC.bit.CSFA = 0;
-//		EPwm4Regs.AQCSFRC.bit.CSFA = 0;
-//		EPwm6Regs.AQCSFRC.bit.CSFA = 0;
-//		EPwm7Regs.AQCSFRC.bit.CSFA = 0;
-//		EPwm8Regs.AQCSFRC.bit.CSFA = 0;
+		/* Main Output Enable */
+		EPwm2Regs.AQCSFRC.bit.CSFA = 0;	//输出不强制
+		EPwm3Regs.AQCSFRC.bit.CSFA = 0;
+		EPwm4Regs.AQCSFRC.bit.CSFA = 0;
+		EPwm6Regs.AQCSFRC.bit.CSFA = 0;
+		EPwm7Regs.AQCSFRC.bit.CSFA = 0;
+		EPwm8Regs.AQCSFRC.bit.CSFA = 0;
 
 	}
 	else
 	{
-		if ((APF_State & APF_STATE_BIT_STOP) == 0)	//可以防止重复执行初始化
+		if (APF_State == APF_STATE_BIT_STOP)	//可以防止重复执行初始化
 		{
-			APF_State |= APF_STATE_BIT_STOP;
+//			APF_State |= APF_STATE_BIT_STOP;	//TODO 请改过来，防止这一段代码重复执行
 			/* Main Output Disable */
-//			EPwm2Regs.AQCSFRC.bit.CSFA = 1;	//输出连续强制为低
-//			EPwm3Regs.AQCSFRC.bit.CSFA = 1;
-//			EPwm4Regs.AQCSFRC.bit.CSFA = 1;
-//			EPwm6Regs.AQCSFRC.bit.CSFA = 1;
-//			EPwm7Regs.AQCSFRC.bit.CSFA = 1;
-//			EPwm8Regs.AQCSFRC.bit.CSFA = 1;
-			EPwm2Regs.CMPA.bit.CMPA = 400;
-			EPwm3Regs.CMPA.bit.CMPA = 500;
-			EPwm4Regs.CMPA.bit.CMPA = 600;
-			EPwm6Regs.CMPA.bit.CMPA = 100;
-			EPwm7Regs.CMPA.bit.CMPA = 200;
-			EPwm8Regs.CMPA.bit.CMPA = 300;
+			EPwm2Regs.AQCSFRC.bit.CSFA = 1;	//输出连续强制为低
+			EPwm3Regs.AQCSFRC.bit.CSFA = 1;
+			EPwm4Regs.AQCSFRC.bit.CSFA = 1;
+			EPwm6Regs.AQCSFRC.bit.CSFA = 1;
+			EPwm7Regs.AQCSFRC.bit.CSFA = 1;
+			EPwm8Regs.AQCSFRC.bit.CSFA = 1;
 
 			pid_reset(&pid_instance_Udcp);
 			pid_reset(&pid_instance_Udcn_d);
@@ -230,8 +279,25 @@ interrupt void APF_Main(void)
 			pid_reset(&pid_instance_Ialfa);
 			pid_reset(&pid_instance_Ibeta);
 
-//			memset_fast(RpBuffer[0], 0, POINT_NUM * 2);
-//			memset_fast(RpBuffer[1], 0, POINT_NUM * 2);
+//	  memset_fast (RpBuffer[0], 0, POINT_NUM * 2);
+//	  memset_fast (RpBuffer[1], 0, POINT_NUM * 2);
+		}
+		else if (APF_STATE_BIT_TEST == APF_State)
+		{
+			/* Main Output Enable */
+			EPwm2Regs.AQCSFRC.bit.CSFA = 0;	//输出不强制
+			EPwm3Regs.AQCSFRC.bit.CSFA = 0;
+			EPwm4Regs.AQCSFRC.bit.CSFA = 0;
+			EPwm6Regs.AQCSFRC.bit.CSFA = 0;
+			EPwm7Regs.AQCSFRC.bit.CSFA = 0;
+			EPwm8Regs.AQCSFRC.bit.CSFA = 0;
+
+			EPwm2Regs.CMPA.bit.CMPA = 400;
+			EPwm3Regs.CMPA.bit.CMPA = 500;
+			EPwm4Regs.CMPA.bit.CMPA = 600;
+			EPwm6Regs.CMPA.bit.CMPA = 100;
+			EPwm7Regs.CMPA.bit.CMPA = 200;
+			EPwm8Regs.CMPA.bit.CMPA = 300;
 		}
 		UdcRampRef = Udc_average;
 		compensatepercentage = 0;
@@ -239,14 +305,18 @@ interrupt void APF_Main(void)
 	PointCnt = (PointCnt + 1) % POINT_NUM;
 	GPIO_WritePin(58, 0);	//查看事个控制程序的中断时间
 
+	//过压过流保护
 	DacaRegs.DACVALS.bit.DACVALS = Iapf_a + 2048;
 	DacbRegs.DACVALS.bit.DACVALS = Iapf_b + 2048;
 	DaccRegs.DACVALS.bit.DACVALS = Upcc_ab + 2048;
 	i += 10;
-	ExtDA_Output(0,i%8000);
-	ExtDA_Output(4,i%8000);
-//	ExtDA_Output(2,i++%2000);
-//	ExtDA_Output(3,i++%1000);
+	ExtDA_Output(0, i % 1280 + 4096);
+//	ExtDA_Output(1,i%(1280*2) + 4096);
+//	ExtDA_Output(2,i%(1280*3) + 4096);
+//	ExtDA_Output(3,i%4000 + 4096);
+//	ExtDA_Output(4,i%5000 + 4096);
+//	ExtDA_Output(5,i++%2000);
+//	ExtDA_Output(6,i++%1000);
 //	ExtDA_Output(1,Iapf_b+4096);
 
 	AdcaRegs.ADCINTFLGCLR.bit.ADCINT1 = 1; //clear INT1 flag
