@@ -1,60 +1,159 @@
-#ifndef _FPU_FILTER_H_
-#define _FPU_FILTER_H_
-//#############################################################################
-//! \file   include/fpu_filter.h
-//!
-//! \brief  Prototypes and Definitions for the C28x FPU Library
-//! \author Vishal Coelho
-//! \date   n/a
+//###########################################################################
+//  This software is licensed for use with Texas Instruments C28x
+//  family DSCs.  This license was provided to you prior to installing
+//  the software.  You may review this license by consulting a copy of
+//  the agreement in the doc directory of this library.
+// ------------------------------------------------------------------------
+//          Copyright (C) 2010 Texas Instruments, Incorporated.
+//                          All Rights Reserved.
+// ==========================================================================
 //
-//  Group: 			C2000
-//  Target Family:	F2837x
+// FILE:   FPU.h
 //
-// Copyright (C) 2015 Texas Instruments Incorporated - http://www.ti.com/ 
-// ALL RIGHTS RESERVED 
-//#############################################################################
-//$TI Release: C28x Floating Point Unit Library V1.50.00.00 $
-//$Release Date: Jun 2, 2015 $
-//#############################################################################
+// TITLE:  Prototypes and Definitions for the C28x FPU Library
+//
+//###########################################################################
+// $TI Release: C28x Floating Point Unit Library V1.31 $
+// $Release Date: Sep 10, 2012 $
+//###########################################################################
 
-//*****************************************************************************
-// includes
-//*****************************************************************************
-#include "fpu_types.h"
+#ifndef C28X_FPU_LIB_H
+#define C28X_FPU_LIB_H
 
-//!
-//! \defgroup fpu_filter FIR Filters
-
-//!
-//! \addtogroup fpu_filter
-// @{ 
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-//*****************************************************************************
-// defines
-//*****************************************************************************
-#define NULL    0
+//-----------------------------------------------------------------------------
+// Standard C28x Data Types
+//-----------------------------------------------------------------------------
 
-//*****************************************************************************
-// typedefs
-//*****************************************************************************
-//! Structure for the Finite Impulse Response Filter
+
+#ifndef DSP28_DATA_TYPES
+#define DSP28_DATA_TYPES
+typedef int                 int16;
+typedef long                int32;
+typedef long long           int64;
+typedef unsigned int        Uint16;
+typedef unsigned long       Uint32;
+typedef unsigned long long  Uint64;
+typedef float               float32;
+typedef long double         float64;
+#endif
+
+
+//-----------------------------------------------------------------------------
+// Float32 Definitions and Prototypes
+//-----------------------------------------------------------------------------
+
+typedef struct {
+  float32  *InBuf;
+  float32  *OutBuf;
+  float32  *CosSinBuf;
+  float32  *MagBuf;
+  float32  *PhaseBuf;
+  Uint16   FFTSize;
+  Uint16   FFTStages;
+} RFFT_F32_STRUCT;
+
+typedef struct {
+  Uint16   *InBuf;
+  void	   *Tail;
+} RFFT_ADC_F32_STRUCT;
+
+typedef struct {
+	float32 dat[2];
+} complex_float;
+
+typedef struct {
+	float32	*InPtr;
+	float32	*OutPtr;
+	float32	*CoefPtr;
+	float32	*CurrentInPtr;
+	float32	*CurrentOutPtr;
+	Uint16	Stages;
+	Uint16  FFTSize;
+}CFFT_F32_STRUCT;
+
+
+extern void CFFT_f32(CFFT_F32_STRUCT *);    			// Complex FFT
+extern void CFFT_f32u(CFFT_F32_STRUCT *); 				// Complex FFT, unaligned input
+extern void CFFT_f32_sincostable(CFFT_F32_STRUCT *);	// Twiddle Factor Generation
+extern void CFFT_f32_mag(CFFT_F32_STRUCT *);			// Complex FFT, magnitude
+extern void CFFT_f32s_mag(CFFT_F32_STRUCT *);			// Complex FFT, scaled magnitude
+extern void CFFT_f32_phase(CFFT_F32_STRUCT *);			// Complex FFT,	phase
+extern void ICFFT_f32(CFFT_F32_STRUCT *);				// Inverse Complex FFT, aligned input
+
+extern void RFFT_f32(RFFT_F32_STRUCT *);                // Real FFT, aligned input
+extern void RFFT_f32u(RFFT_F32_STRUCT *);               // Real FFT, unaligned input
+extern void RFFT_adc_f32(RFFT_ADC_F32_STRUCT *);        // Real FFT with adc input, aligned input
+extern void RFFT_adc_f32u(RFFT_ADC_F32_STRUCT *);		// Real FFT with adc input, unaligned input
+extern void RFFT_f32_mag(RFFT_F32_STRUCT *);            // Real FFT, magnitude
+extern void RFFT_f32s_mag(RFFT_F32_STRUCT *);           // Real FFT, sclaed magnitude
+extern void RFFT_f32_phase(RFFT_F32_STRUCT *);          // Real FFT, phase
+extern void RFFT_f32_sincostable(RFFT_F32_STRUCT *);    // Real FFT, twiddle calculation
+
+extern void abs_SP_CV(float32 *, const complex_float *, const Uint16);
+extern void abs_SP_CV_2(float32 *, const complex_float *, const Uint16);
+extern void add_SP_CSxCV(complex_float *, const complex_float *, const complex_float, const Uint16);
+extern void add_SP_CVxCV(complex_float *, const complex_float *, const complex_float *, const Uint16);
+extern void iabs_SP_CV(float32 *, const complex_float *, const Uint16);
+extern void iabs_SP_CV_2(float32 *, const complex_float *, const Uint16);
+extern Uint16 maxidx_SP_RV_2(float32 *, Uint16);
+extern complex_float mean_SP_CV_2(const complex_float *, const Uint16);
+extern float32 median_noreorder_SP_RV(const float32 *, Uint16);
+extern float32 median_SP_RV(float32 *, Uint16);
+extern void memcpy_fast(void *, const void *, Uint16);
+extern void memset_fast(void*, int16, Uint16);
+extern complex_float mpy_SP_CSxCS(complex_float, complex_float);
+extern void mpy_SP_CVxCV(complex_float *, const complex_float *, const complex_float *, const Uint16);
+extern void mpy_SP_CVxCVC(complex_float *, const complex_float *, const complex_float *, const Uint16);
+extern void mpy_SP_RSxRV_2(float32 *, const float32 *, const float32, const Uint16);
+extern void mpy_SP_RSxRVxRV_2(float32 *, const float32 *, const float32 *, const float32, const Uint16);
+extern void mpy_SP_RVxCV(complex_float *, const complex_float *, const float32 *, const Uint16);
+extern void mpy_SP_RVxRV_2(float32 *, const float32 *, const float32 *, const Uint16);
+extern void qsort_SP_RV(void *, Uint16);
+extern float32 rnd_SP_RS(float32);
+extern void sub_SP_CSxCV(complex_float *, const complex_float *, const complex_float, const Uint16);
+extern void sub_SP_CVxCV(complex_float *, const complex_float *, const complex_float *, const Uint16);
+
+inline static float32 __ffsqrtf(float32 x)
+{
+    float32 dst,tmp2, tmp3;
+
+    dst = __eisqrtf32(x);
+    tmp2 = x * 0.5;
+    tmp3 = dst * dst;
+    tmp3 = tmp3 * tmp2;
+    tmp3 = 1.5 - tmp3;
+    dst = dst * tmp3;
+    tmp3 = dst * tmp2;
+    tmp3 = dst * tmp3;
+    tmp3 = 1.5 - tmp3;
+    dst = dst * tmp3;
+    dst = x * dst;
+    return dst;
+}
+
+#define NULL    0
+ 
+  
+//-----------------------------------------------------------------------------
+//Define the structure of the FIRFILT_GEN Filter Module 
+//-----------------------------------------------------------------------------
 typedef struct { 
-    float *coeff_ptr;        //!<  Pointer to Filter coefficient
-    float *dbuffer_ptr;      //!<  Delay buffer pointer
-    int	cbindex;			 //!<  Circular Buffer Index
-    int order;               //!<  Order of the Filter
-    float input;             //!<  Latest Input sample
-    float output;            //!<  Filter Output
-    void (*init)(void *);    //!<  Pointer to Initialization function
-    void (*calc)(void *);    //!<  Pointer to the calculation function
+    float *coeff_ptr;        /* Pointer to Filter coefficient */
+    float *dbuffer_ptr;      /* Delay buffer ptr              */
+    int	cbindex;			 /* Circular Buffer Index         */
+    int order;               /* Order of the Filter           */
+    float input;             /* Latest Input sample           */ 
+    float output;            /* Filter Output                 */
+    void (*init)(void *);    /* Ptr to Init funtion           */
+    void (*calc)(void *);    /* Ptr to calc fn                */  
     }FIR_FP;
 
-//! Handle to the Filter Structure Object
-typedef FIR_FP 	*FIR_FP_Handle;
+typedef FIR_FP 	*FIR_FP_handle; 							//Define a Handles for the Filter Modules
 
 
 #define FIR_FP_DEFAULTS { (float *)NULL, \
@@ -66,59 +165,21 @@ typedef FIR_FP 	*FIR_FP_Handle;
              (void (*)(void *))FIR_FP_init,\
              (void (*)(void *))FIR_FP_calc}    
 
-//*****************************************************************************
-// function prototypes
-//*****************************************************************************
-//! \brief Finite Impulse Response Filter.
-//!
-//! This routine implements the non-recursive difference equation of an
-//! all-zero filter (FIR), of order N. All the coefficients of all-zero filter
-//! are assumed to be less than 1 in magnitude.
-//! \param hndFIR_FP Handle to the FIR_FP object
-//! \attention
-//! -# The delay and coefficients buffer must be aligned to a minimum of 
-//! 2 x (order + 1) words.
-//! For example, if the filter order is 31, it will have 32 taps or 
-//! coefficients each a 32-bit floating point value. A minimum of 
-//! (2 * 32) = 64 words will need to be allocated for the delay and 
-//! coefficients buffer.
-//! -# To align the buffer, use the DATA_SECTION pragma to assign the buffer to
-//! a code section and then align the buffer to the proper offset in the linker
-//! command file. In the code example the buffer is assigned to the \b firldb 
-//! section while the coefficients are assigned to the \b coefffilt section.
-//! -# This routine requires the --c2xlp_src_compatible option to be enabled 
-//! in the file specific properties
-extern void FIR_FP_calc(FIR_FP_Handle hndFIR_FP);
+extern void FIR_FP_calc(void *);
+extern void FIR_FP_init(void *);
 
-//! \brief Finite Impulse Response Filter Initialization.
-//!
-//! Zeros out the delay line 
-//! \param hndFIR_FP Handle to the FIR_FP object
-//! \attention
-//! -# The delay and coefficients buffer must be aligned to a minimum of 
-//! 2 x (order + 1) words.
-//! For example, if the filter order is 31, it will have 32 taps or 
-//! coefficients each a 32-bit floating point value. A minimum of (2 * 32) = 64 
-//! words will need to be allocated for the delay and coefficients buffer.
-//! -# The delay buffer needs to be aligned to word boundary of 2 * number of 
-//! taps
-//! -# To align the buffer, use the DATA_SECTION pragma to assign the buffer to
-//! a code section and then align the buffer to the proper offset in the linker
-//! command file. In the code example the buffer is assigned to the \b firldb
-//! section while the coefficients are assigned to the \b coefffilt section.
-extern void FIR_FP_init(FIR_FP_Handle hndFIR_FP);
-
-// @} //addtogroup
+extern void FIR_FP_calc_c(FIR_FP *);
+extern void FIR_FP_init_c(FIR_FP *);
 
 /*********** Sample FIR Co-efficients **************************/
 
 /* 5th order LPF co-efficients for FIR_FP module	*/
-#define FIR_FP_LPF6 {\
-  -0.08057276905, 0.1966465116, 0.4776741266, 0.4776741266, 0.1966465116,\
+#define FIR_FP_LPF6{\
+  -0.08057276905,   0.1966465116,   0.4776741266,   0.4776741266,   0.1966465116,\
   -0.08057276905}
 
 /* 31st order LPF co-efficients for FIR_FP module	*/	
-#define FIR_FP_LPF32 {\
+#define FIR_FP_LPF32{\
   -0.0009375925292,-0.001849809778, 0.002820055233, 0.003732349491,-0.005677098874,\
   -0.007562109735,  0.01061980333,  0.01369810477, -0.01852593757, -0.02375750057,\
    0.03181955963,  0.04181841016, -0.05826609582, -0.08511561155,   0.1475527734,\
@@ -129,20 +190,15 @@ extern void FIR_FP_init(FIR_FP_Handle hndFIR_FP);
 
 /* 50th order LPF co-efficients for FIR_FP module	*/
 #define FIR_FP_LPF50 {\
-  -0.0007520393119,-0.003496379592,-0.002576870145,-0.002954199212,-0.001902273274, \
-  7.578533405e-05, 0.002921634587, 0.006043223664, 0.008603606373, 0.009631498717,  \
-   0.008286305703, 0.004132356495,-0.002609857591,  -0.0109326588, -0.01908121072,  \
-   -0.02479325049, -0.02570373565,    -0.01984559,-0.006156369112,  0.01515351236,  \
-    0.04245631397,  0.07283417881,   0.1024993882,   0.1274179369,   0.1440151036,  \
-     0.1498377919,   0.1440151036,   0.1274179369,   0.1024993882,  0.07283417881,  \
-    0.04245631397,  0.01515351236,-0.006156369112,    -0.01984559, -0.02570373565,  \
-   -0.02479325049, -0.01908121072,  -0.0109326588,-0.002609857591, 0.004132356495,  \
-   0.008286305703, 0.009631498717, 0.008603606373, 0.006043223664, 0.002921634587,  \
-  7.578533405e-05,-0.001902273274,-0.002954199212,-0.002576870145,-0.003496379592,  \
-  -0.0007520393119}
+	1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,\
+	1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,\
+	1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,\
+	1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,\
+	1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,\
+	1.0}
 
 /* 63rd order LPF co-efficients for FIR_FP module	*/	
-#define FIR_FP_LPF64 {\
+#define FIR_FP_LPF64{\
     0.0128396498, 0.002229209524, 0.001987809548, 0.001418562024,0.0005116602406,\
    -0.0007191105396,-0.002233661246,-0.003967377357,-0.005827924237,-0.007696942892,\
    -0.009434565902,  -0.0108908657, -0.01190613955, -0.01232818887, -0.01201683283,\
@@ -159,7 +215,7 @@ extern void FIR_FP_init(FIR_FP_Handle hndFIR_FP);
 	
 	
 /* 127th order LPF co-efficients for FIR_FP module	*/	
-#define FIR_FP_LPF128 {\
+#define FIR_FP_LPF128{\
   -5.036197308e-007,-8.415498996e-006,-1.034940033e-005,-5.885554401e-006,\
    9.191019672e-006,2.868542833e-005,3.739785097e-005,1.950809019e-005,-2.699213837e-005,\
   -8.004013944e-005,-9.904401668e-005,-4.961189916e-005,6.434905663e-005,\
@@ -190,7 +246,7 @@ extern void FIR_FP_init(FIR_FP_Handle hndFIR_FP);
 
 
 /* 255th order LPF co-efficients for FIR_FP module*/
-#define FIR_FP_LPF256 {\
+#define FIR_FP_LPF256{\
  -1.80824869e-010,-8.315279021e-010,-1.350614176e-009,-8.081277314e-010,\
   1.887117351e-009,6.140868702e-009,8.732807366e-009,4.66826533e-009,-8.818096475e-009,\
  -2.704159563e-008,-3.596992215e-008,-1.852767539e-008,3.084824485e-008,\
@@ -246,7 +302,7 @@ extern void FIR_FP_init(FIR_FP_Handle hndFIR_FP);
  -8.081277314e-010,-1.350614176e-009,-8.315279021e-010,-1.80824869e-010}
 
 /* 511th order LPF co-efficients for FIR_FP module	*/	
-#define FIR_FP_LPF512 {\
+#define FIR_FP_LPF512{\
    0.001536677242,-0.0003126577358,-0.0003662098607,-0.0004262450675,-0.0004455255694,\
   -0.000398971024,-0.0002846919233,-0.000135702925,2.40697068e-006,7.971248851e-005,\
    7.27102597e-005,-1.486802466e-005,-0.0001417729945,-0.0002547842741,-0.0002992405789,\
@@ -351,11 +407,17 @@ extern void FIR_FP_init(FIR_FP_Handle hndFIR_FP);
   -0.0002846919233,-0.000398971024,-0.0004455255694,-0.0004262450675,-0.0003662098607,\
   -0.0003126577358, 0.001536677242}
 
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+
 #ifdef __cplusplus
 }
 #endif /* extern "C" */
 
-#endif   // - end of _FPU_FILTER_H_
+#endif   // - end of C28X_FPU_LIB_H
 
-// End of File
+//===========================================================================
+// End of file.
+//===========================================================================
 

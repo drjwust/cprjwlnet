@@ -24,8 +24,8 @@
 #include "filter_init.h"
 #include "apf.h"
 #include <bsp.h>
-#include <pinmux.h>
 #include <C28x_FPU_FastRTS.h>
+#include <FPU.h>
 
 //#include <2837xDI2C_eeprom.h>
 //#include <xdc/std.h>

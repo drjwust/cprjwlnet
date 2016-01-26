@@ -2,7 +2,6 @@
 #define _DSP_CTRL_H
 #include "string.h"
 #include "math.h"
-#include "fpu_vector.h"
 
 #ifndef PI
 #define PI					3.14159265358979f

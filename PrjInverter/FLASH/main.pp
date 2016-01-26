@@ -64,17 +64,14 @@ main.obj: D:/ti/controlSUITE/device_support/F2837xD/v160/F2837xD_common/include/
 main.obj: J:/MyGit/PrjInverter/src/dsp/dsp.h
 main.obj: C:/ti/ccsv6/tools/compiler/ti-cgt-c2000_6.4.9/include/string.h
 main.obj: C:/ti/ccsv6/tools/compiler/ti-cgt-c2000_6.4.9/include/math.h
-main.obj: J:/MyGit/PrjInverter/lib/inc/fpu_vector.h
-main.obj: J:/MyGit/PrjInverter/lib/inc/fpu_types.h
-main.obj: C:/ti/ccsv6/tools/compiler/ti-cgt-c2000_6.4.9/include/float.h
 main.obj: J:/MyGit/PrjInverter/inc/APF_Define.h
 main.obj: J:/MyGit/PrjInverter/inc/APF_Variables.h
 main.obj: J:/MyGit/PrjInverter/inc/includes.h
 main.obj: J:/MyGit/PrjInverter/inc/filter_init.h
 main.obj: J:/MyGit/PrjInverter/inc/apf.h
 main.obj: J:/MyGit/PrjInverter/inc/bsp.h
-main.obj: J:/MyGit/PrjInverter/inc/pinmux.h
 main.obj: J:/MyGit/PrjInverter/lib/inc/C28x_FPU_FastRTS.h
+main.obj: J:/MyGit/PrjInverter/lib/inc/FPU.h
 
 ../main.c: 
 J:/MyGit/PrjInverter/inc/includes.h: 
@@ -140,14 +137,11 @@ D:/ti/controlSUITE/device_support/F2837xD/v160/F2837xD_common/include/F2837xD_Up
 J:/MyGit/PrjInverter/src/dsp/dsp.h: 
 C:/ti/ccsv6/tools/compiler/ti-cgt-c2000_6.4.9/include/string.h: 
 C:/ti/ccsv6/tools/compiler/ti-cgt-c2000_6.4.9/include/math.h: 
-J:/MyGit/PrjInverter/lib/inc/fpu_vector.h: 
-J:/MyGit/PrjInverter/lib/inc/fpu_types.h: 
-C:/ti/ccsv6/tools/compiler/ti-cgt-c2000_6.4.9/include/float.h: 
 J:/MyGit/PrjInverter/inc/APF_Define.h: 
 J:/MyGit/PrjInverter/inc/APF_Variables.h: 
 J:/MyGit/PrjInverter/inc/includes.h: 
 J:/MyGit/PrjInverter/inc/filter_init.h: 
 J:/MyGit/PrjInverter/inc/apf.h: 
 J:/MyGit/PrjInverter/inc/bsp.h: 
-J:/MyGit/PrjInverter/inc/pinmux.h: 
 J:/MyGit/PrjInverter/lib/inc/C28x_FPU_FastRTS.h: 
+J:/MyGit/PrjInverter/lib/inc/FPU.h: 

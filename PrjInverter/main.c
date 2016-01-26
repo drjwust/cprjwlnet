@@ -5,7 +5,8 @@
 void LED_Blinky(char x);
 void ExtIO_Init(void);
 
-int main(void) {
+int main(void)
+{
 
 	APF_Init();
 	BSP_Init();
@@ -13,17 +14,20 @@ int main(void) {
 	ExtDA_Init();
 
 //	LED_Blinky(48);
-	for(;;);
+	for (;;)
+		;
 	return 0;
 }
 
-void LED_Blinky(char x) {
+void LED_Blinky(char x)
+{
 	unsigned int i = 0;
-	for (;;) {
+	for (;;)
+	{
 		if (GPIO_ReadPin(54))
-			GPIO_WritePin(86,1);
+			GPIO_WritePin(86, 1);
 		else
-			GPIO_WritePin(86,0);
+			GPIO_WritePin(86, 0);
 		//
 		// Turn on LED
 		//
@@ -46,7 +50,8 @@ void LED_Blinky(char x) {
 	}
 }
 
-void ExtIO_Init(void) {
+void ExtIO_Init(void)
+{
 
 	//Output setup
 	GPIO_SetupPinMux(41, GPIO_MUX_CPU1, 0);	//D33

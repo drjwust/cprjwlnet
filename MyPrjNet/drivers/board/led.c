@@ -42,6 +42,7 @@ void rt_hw_led_init(void)
 
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_12;
 	GPIO_Init(GPIOD, &GPIO_InitStructure);
+
 }
 
 void rt_hw_led_set_state(uint8_t led,uint8_t state)

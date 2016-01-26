@@ -15,24 +15,20 @@ static float Iload_alfa, Iload_beta;
 static float Iapf_d, Iapf_q;
 static float UdcRampRef;
 
-static float
-GetPllAngle(void);
-static void
-Para_Init(void);
-static void
-PID_Init(void);
-static float
-GetPllAngle(void);
+static float GetPllAngle(void);
+static void Para_Init(void);
+static void PID_Init(void);
+static float GetPllAngle(void);
 
 interrupt void FaultProcess(void)
 {
 
-	EPwm2Regs.AQCSFRC.bit.CSFA = 1;	//输出连续强制为低
-	EPwm3Regs.AQCSFRC.bit.CSFA = 1;
-	EPwm4Regs.AQCSFRC.bit.CSFA = 1;
-	EPwm6Regs.AQCSFRC.bit.CSFA = 1;
-	EPwm7Regs.AQCSFRC.bit.CSFA = 1;
-	EPwm8Regs.AQCSFRC.bit.CSFA = 1;
+	EPwm2Regs.AQCSFRC.all = 5;	//AB的输出连续强制为低
+	EPwm3Regs.AQCSFRC.all = 5;
+	EPwm4Regs.AQCSFRC.all = 5;
+	EPwm6Regs.AQCSFRC.all = 5;
+	EPwm7Regs.AQCSFRC.all = 5;
+	EPwm8Regs.AQCSFRC.all = 5;
 
 	EALLOW;
 	EPwm2Regs.TZCLR.bit.CBC = 1;
@@ -118,11 +114,13 @@ interrupt void APF_Main(void)
 		{
 			APF_State = APF_STATE_BIT_TEST;
 			GPIO_WritePin(41, 0);
+			GPIO_WritePin(87, 1);	//TODO	实际使用时要删掉此行代码
 		}
 		else
 		{
 			APF_State = APF_STATE_BIT_STOP;
 			GPIO_WritePin(41, 1);
+			GPIO_WritePin(87, 0);
 		}
 	}
 
@@ -252,12 +250,12 @@ interrupt void APF_Main(void)
 		EPwm8Regs.CMPA.bit.CMPA = temp_c;
 
 		/* Main Output Enable */
-		EPwm2Regs.AQCSFRC.bit.CSFA = 0;	//输出不强制
-		EPwm3Regs.AQCSFRC.bit.CSFA = 0;
-		EPwm4Regs.AQCSFRC.bit.CSFA = 0;
-		EPwm6Regs.AQCSFRC.bit.CSFA = 0;
-		EPwm7Regs.AQCSFRC.bit.CSFA = 0;
-		EPwm8Regs.AQCSFRC.bit.CSFA = 0;
+		EPwm2Regs.AQCSFRC.all = 0;	//输出不强制
+		EPwm3Regs.AQCSFRC.all = 0;
+		EPwm4Regs.AQCSFRC.all = 0;
+		EPwm6Regs.AQCSFRC.all = 0;
+		EPwm7Regs.AQCSFRC.all = 0;
+		EPwm8Regs.AQCSFRC.all = 0;
 
 	}
 	else
@@ -266,12 +264,12 @@ interrupt void APF_Main(void)
 		{
 //			APF_State |= APF_STATE_BIT_STOP;	//TODO 请改过来，防止这一段代码重复执行
 			/* Main Output Disable */
-			EPwm2Regs.AQCSFRC.bit.CSFA = 1;	//输出连续强制为低
-			EPwm3Regs.AQCSFRC.bit.CSFA = 1;
-			EPwm4Regs.AQCSFRC.bit.CSFA = 1;
-			EPwm6Regs.AQCSFRC.bit.CSFA = 1;
-			EPwm7Regs.AQCSFRC.bit.CSFA = 1;
-			EPwm8Regs.AQCSFRC.bit.CSFA = 1;
+			EPwm2Regs.AQCSFRC.all = 5;	//AB的输出连续强制为低
+			EPwm3Regs.AQCSFRC.all = 5;
+			EPwm4Regs.AQCSFRC.all = 5;
+			EPwm6Regs.AQCSFRC.all = 5;
+			EPwm7Regs.AQCSFRC.all = 5;
+			EPwm8Regs.AQCSFRC.all = 5;
 
 			pid_reset(&pid_instance_Udcp);
 			pid_reset(&pid_instance_Udcn_d);
@@ -292,12 +290,12 @@ interrupt void APF_Main(void)
 			EPwm7Regs.AQCSFRC.bit.CSFA = 0;
 			EPwm8Regs.AQCSFRC.bit.CSFA = 0;
 
-			EPwm2Regs.CMPA.bit.CMPA = 400;
-			EPwm3Regs.CMPA.bit.CMPA = 500;
-			EPwm4Regs.CMPA.bit.CMPA = 600;
-			EPwm6Regs.CMPA.bit.CMPA = 100;
-			EPwm7Regs.CMPA.bit.CMPA = 200;
-			EPwm8Regs.CMPA.bit.CMPA = 300;
+			EPwm2Regs.CMPA.bit.CMPA = 500;
+			EPwm3Regs.CMPA.bit.CMPA = 1000;
+			EPwm4Regs.CMPA.bit.CMPA = 1500;
+			EPwm6Regs.CMPA.bit.CMPA = 500;
+			EPwm7Regs.CMPA.bit.CMPA = 1000;
+			EPwm8Regs.CMPA.bit.CMPA = 1500;
 		}
 		UdcRampRef = Udc_average;
 		compensatepercentage = 0;
