@@ -12,6 +12,9 @@ int main(void)
 	BSP_Init();
 	ExtIO_Init();
 	ExtDA_Init();
+	SetOC1Value(10);
+	SetOC2Value(10);
+	SetOVValue(50);
 
 //	LED_Blinky(48);
 	for (;;)

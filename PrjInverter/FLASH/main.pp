@@ -72,6 +72,7 @@ main.obj: J:/MyGit/PrjInverter/inc/apf.h
 main.obj: J:/MyGit/PrjInverter/inc/bsp.h
 main.obj: J:/MyGit/PrjInverter/lib/inc/C28x_FPU_FastRTS.h
 main.obj: J:/MyGit/PrjInverter/lib/inc/FPU.h
+main.obj: J:/MyGit/PrjInverter/inc/ex_da.h
 
 ../main.c: 
 J:/MyGit/PrjInverter/inc/includes.h: 
@@ -145,3 +146,4 @@ J:/MyGit/PrjInverter/inc/apf.h:
 J:/MyGit/PrjInverter/inc/bsp.h: 
 J:/MyGit/PrjInverter/lib/inc/C28x_FPU_FastRTS.h: 
 J:/MyGit/PrjInverter/lib/inc/FPU.h: 
+J:/MyGit/PrjInverter/inc/ex_da.h: 

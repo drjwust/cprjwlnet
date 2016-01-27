@@ -26,6 +26,7 @@
 #include <bsp.h>
 #include <C28x_FPU_FastRTS.h>
 #include <FPU.h>
+#include <ex_da.h>
 
 //#include <2837xDI2C_eeprom.h>
 //#include <xdc/std.h>

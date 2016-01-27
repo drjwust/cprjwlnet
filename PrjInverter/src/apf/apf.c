@@ -14,6 +14,7 @@ static float Iload_alfa, Iload_beta;
 /* 两相旋转坐标系下变量 *******************************************************/
 static float Iapf_d, Iapf_q;
 static float UdcRampRef;
+//static float graph_data[500];
 
 static float GetPllAngle(void);
 static void Para_Init(void);
@@ -103,24 +104,22 @@ interrupt void APF_Main(void)
 		if (GPIO_ReadPin(54) == SET)	//检查APF启动按钮是否按下
 		{
 			APF_State = 0;
-			GPIO_WritePin(48, 0);
+			GPIO_WritePin(GPIO_LED33, 0);
 		}
 		else
 		{
 			APF_State = APF_STATE_BIT_STOP;
-			GPIO_WritePin(48, 1);
+			GPIO_WritePin(GPIO_LED33, 1);
 		}
 		if (GPIO_ReadPin(53) == SET)	//检查APF是否启动IGBT检测
 		{
 			APF_State = APF_STATE_BIT_TEST;
-			GPIO_WritePin(41, 0);
-			GPIO_WritePin(87, 1);	//TODO	实际使用时要删掉此行代码
+			GPIO_WritePin(GPIO_LED34, 0);
 		}
 		else
 		{
 			APF_State = APF_STATE_BIT_STOP;
-			GPIO_WritePin(41, 1);
-			GPIO_WritePin(87, 0);
+			GPIO_WritePin(GPIO_LED34, 1);
 		}
 	}
 
@@ -307,15 +306,19 @@ interrupt void APF_Main(void)
 	DacaRegs.DACVALS.bit.DACVALS = Iapf_a + 2048;
 	DacbRegs.DACVALS.bit.DACVALS = Iapf_b + 2048;
 	DaccRegs.DACVALS.bit.DACVALS = Upcc_ab + 2048;
-	i += 10;
-	ExtDA_Output(0, i % 1280 + 4096);
-//	ExtDA_Output(1,i%(1280*2) + 4096);
-//	ExtDA_Output(2,i%(1280*3) + 4096);
-//	ExtDA_Output(3,i%4000 + 4096);
-//	ExtDA_Output(4,i%5000 + 4096);
-//	ExtDA_Output(5,i++%2000);
-//	ExtDA_Output(6,i++%1000);
-//	ExtDA_Output(1,Iapf_b+4096);
+
+//	graph_data[i] = VectorAngle;
+	i++;
+//	if (i >= 500)
+//		i = 0;
+	ExtDA_Output(0, VectorAngle * 100 + 4096);
+	ExtDA_Output(1, VectorAngle * 200+ 4096);
+	ExtDA_Output(2,VectorAngle * 400 + 4096);
+	ExtDA_Output(3,1000* sin(VectorAngle) + 4096);
+	ExtDA_Output(4,2000* sin(VectorAngle) + 4096);
+	ExtDA_Output(5,3000* sin(VectorAngle) + 4096);
+	ExtDA_Output(6,4000* sin(VectorAngle) + 4096);
+	ExtDA_Output(7,4000* cos(VectorAngle) + 4096);
 
 	AdcaRegs.ADCINTFLGCLR.bit.ADCINT1 = 1; //clear INT1 flag
 	PieCtrlRegs.PIEACK.all = PIEACK_GROUP1;

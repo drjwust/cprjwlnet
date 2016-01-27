@@ -48,8 +48,9 @@ void ExtDA_Init(void)
 
 void ExtDA_Output(char channel, int value)
 {
-	GPIO_WritePin(32, 0);
-	*((int* )ASRAM_CS4_START_ADDR + channel) = value;
-	GPIO_WritePin(32, 1);
+//	GPIO_WritePin(32,0);
+	*((Uint16* )ASRAM_CS4_START_ADDR + channel*2) = value;
+//	DELAY_US(10);
+//	GPIO_WritePin(32,1);
 }
 

@@ -8,8 +8,7 @@
 #ifndef INC_EX_DA_H_
 #define INC_EX_DA_H_
 
-#define
-
 void ExtDA_Init(void);
+void ExtDA_Output(char channel, int value);
 
 #endif /* INC_EX_DA_H_ */
