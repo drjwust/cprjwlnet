@@ -338,13 +338,12 @@ void InitEPwm2()
 	EPwm2Regs.CMPA.bit.CMPA = 1000;     // Set compare A value
 //	EPwm2Regs.CMPB.bit.CMPB = 1000;     // Set compare B value
 
-    // Set actions
-    EPwm2Regs.AQCTLA.bit.CAU = AQ_SET;            // Set PWM2A on Zero
-    EPwm2Regs.AQCTLA.bit.CAD = AQ_CLEAR;
+	// Set actions
+	EPwm2Regs.AQCTLA.bit.CAU = AQ_SET;            // Set PWM2A on Zero
+	EPwm2Regs.AQCTLA.bit.CAD = AQ_CLEAR;
 
-    EPwm2Regs.AQCTLB.bit.CAU = AQ_CLEAR;          // Set PWM2A on Zero
-    EPwm2Regs.AQCTLB.bit.CAD = AQ_SET;
-
+	EPwm2Regs.AQCTLB.bit.CAU = AQ_CLEAR;          // Set PWM2A on Zero
+	EPwm2Regs.AQCTLB.bit.CAD = AQ_SET;
 
 	// Active Low PWMs - Setup Deadband
 	EPwm2Regs.DBCTL.bit.OUT_MODE = DB_FULL_ENABLE;
@@ -395,6 +394,16 @@ void InitEPwmx(volatile struct EPWM_REGS *EPwmxRegs)
 	EPwmxRegs->DBCTL.bit.IN_MODE = DBA_ALL;
 	EPwmxRegs->DBRED = 2000 / 5;	//4us的死区时间
 	EPwmxRegs->DBFED = 2000 / 5;
+
+	EALLOW;
+//	EPwmxRegs->TZSEL.bit.OSHT1 = TZ_ENABLE;			//TZ1 to EPWM1
+//	EPwmxRegs->TZSEL.bit.OSHT2 = TZ_ENABLE;         //TZ2 to EPWM1
+//	EPwm1Regs.TZSEL.bit.OSHT3 = TZ_ENABLE;          //TZ3 to EPWM1
+//	EPwm1Regs.TZSEL.bit.OSHT5 = TZ_ENABLE;
+	EPwmxRegs->TZCTL.bit.TZA = TZ_FORCE_LO;//Force A,B Output low or high使PWM封锁后输出为低。
+	EPwmxRegs->TZCTL.bit.TZB = TZ_FORCE_LO;
+//	EPwmxRegs->TZCTL2.bit.ETZE = 1;
+	EDIS;
 
 	// Interrupt where we will change the Compare Values
 	EPwmxRegs->ETSEL.bit.INTSEL = ET_CTR_ZERO;     // Select INT on Zero event

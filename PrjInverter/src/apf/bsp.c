@@ -140,9 +140,9 @@ void SetOVValue(float u) {
 }
 
 void ADValueConvert(void) {
-	static float cali_i1a = 0.5, cali_i1b = 0.5;
+	static float cali_i1a = 0.05462, cali_i1b = 0.05462;
 	static float cali_i2a = 0.05462, cali_i2b = 0.05462;
-	static float cali_u1a = 1, cali_u1b = 1;
+	static float cali_u1a = 0.437, cali_u1b = 0.437;
 	static float cali_u2a = 0.437, cali_u2b = 0.437;
 	static float cali_udca = 0.6447, cali_udcb = 0.6447, cali_udcc = 0.6447, cali_udcd = 1;//直流母线电压增益校正系数
 
@@ -186,11 +186,11 @@ void ADValueConvert(void) {
 
 	u1a = (u1a - u1a0) * cali_u1a;
 	u1b = (u1b - u1b0) * cali_u1b;
-	u1c = -u1a - u1b;
+//	u1c = -u1a - u1b;
 
 	u2a = (u2a - u2a0) * cali_u2a;
 	u2b = (u2b - u2b0) * cali_u2b;
-	u2c = -u2a - u2b;
+//	u2c = -u2a - u2b;
 
 	udca = udca * cali_udca;
 	udcb = udcb * cali_udcb;
@@ -200,7 +200,7 @@ void ADValueConvert(void) {
 
 	Upcc_ab = u2a;
 	Upcc_bc = u2b;
-	Upcc_ca = u2c;
+	Upcc_ca = -Upcc_ab - Upcc_bc;
 
 	Upcc_a = (Upcc_ab - Upcc_ca) * 0.3333333333f;
 	Upcc_b = (Upcc_bc - Upcc_ab) * 0.3333333333f;

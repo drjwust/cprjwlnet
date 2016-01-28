@@ -16,10 +16,9 @@ static float Iapf_d, Iapf_q;
 static float UdcRampRef;
 //static float graph_data[500];
 
-static float GetPllAngle(void);
+static float GetPllAngle(float ua, float ub);
 static void Para_Init(void);
 static void PID_Init(void);
-static float GetPllAngle(void);
 
 interrupt void FaultProcess(void)
 {
@@ -57,7 +56,7 @@ interrupt void APF_Main(void)
 	static Uint16 i;
 
 	ADValueConvert();
-	VectorAngle = GetPllAngle();	//得到电压矢量的夹角
+	VectorAngle = GetPllAngle(Upcc_a,Upcc_b);	//得到电压矢量的夹角
 	Udc_average = (UdcA + UdcB + UdcC) / 3;
 	sincos(VectorAngle, &sinVal, &cosVal);
 	clarke(Iapf_a, Iapf_b, &Iapf_alfa, &Iapf_beta);
@@ -249,12 +248,14 @@ interrupt void APF_Main(void)
 		EPwm8Regs.CMPA.bit.CMPA = temp_c;
 
 		/* Main Output Enable */
-		EPwm2Regs.AQCSFRC.all = 0;	//输出不强制
-		EPwm3Regs.AQCSFRC.all = 0;
-		EPwm4Regs.AQCSFRC.all = 0;
-		EPwm6Regs.AQCSFRC.all = 0;
-		EPwm7Regs.AQCSFRC.all = 0;
-		EPwm8Regs.AQCSFRC.all = 0;
+		EALLOW;
+		EPwm2Regs.TZCLR.bit.OST = 1;
+		EPwm3Regs.TZCLR.bit.OST = 1;
+		EPwm4Regs.TZCLR.bit.OST = 1;
+		EPwm6Regs.TZCLR.bit.OST = 1;
+		EPwm7Regs.TZCLR.bit.OST = 1;
+		EPwm8Regs.TZCLR.bit.OST = 1;
+		EDIS;
 
 	}
 	else
@@ -263,12 +264,14 @@ interrupt void APF_Main(void)
 		{
 //			APF_State |= APF_STATE_BIT_STOP;	//TODO 请改过来，防止这一段代码重复执行
 			/* Main Output Disable */
-			EPwm2Regs.AQCSFRC.all = 5;	//AB的输出连续强制为低
-			EPwm3Regs.AQCSFRC.all = 5;
-			EPwm4Regs.AQCSFRC.all = 5;
-			EPwm6Regs.AQCSFRC.all = 5;
-			EPwm7Regs.AQCSFRC.all = 5;
-			EPwm8Regs.AQCSFRC.all = 5;
+			EALLOW;
+			EPwm2Regs.TZFRC.bit.OST = 1;
+			EPwm3Regs.TZFRC.bit.OST = 1;
+			EPwm4Regs.TZFRC.bit.OST = 1;
+			EPwm6Regs.TZFRC.bit.OST = 1;
+			EPwm7Regs.TZFRC.bit.OST = 1;
+			EPwm8Regs.TZFRC.bit.OST = 1;
+			EDIS;
 
 			pid_reset(&pid_instance_Udcp);
 			pid_reset(&pid_instance_Udcn_d);
@@ -282,13 +285,14 @@ interrupt void APF_Main(void)
 		else if (APF_STATE_BIT_TEST == APF_State)
 		{
 			/* Main Output Enable */
-			EPwm2Regs.AQCSFRC.bit.CSFA = 0;	//输出不强制
-			EPwm3Regs.AQCSFRC.bit.CSFA = 0;
-			EPwm4Regs.AQCSFRC.bit.CSFA = 0;
-			EPwm6Regs.AQCSFRC.bit.CSFA = 0;
-			EPwm7Regs.AQCSFRC.bit.CSFA = 0;
-			EPwm8Regs.AQCSFRC.bit.CSFA = 0;
-
+			EALLOW;
+			EPwm2Regs.TZCLR.bit.OST = 1;
+			EPwm3Regs.TZCLR.bit.OST = 1;
+			EPwm4Regs.TZCLR.bit.OST = 1;
+			EPwm6Regs.TZCLR.bit.OST = 1;
+			EPwm7Regs.TZCLR.bit.OST = 1;
+			EPwm8Regs.TZCLR.bit.OST = 1;
+			EDIS;
 			EPwm2Regs.CMPA.bit.CMPA = 500;
 			EPwm3Regs.CMPA.bit.CMPA = 1000;
 			EPwm4Regs.CMPA.bit.CMPA = 1500;
@@ -311,14 +315,14 @@ interrupt void APF_Main(void)
 	i++;
 //	if (i >= 500)
 //		i = 0;
-	ExtDA_Output(0, VectorAngle * 100 + 4096);
-	ExtDA_Output(1, VectorAngle * 200+ 4096);
-	ExtDA_Output(2,VectorAngle * 400 + 4096);
-	ExtDA_Output(3,1000* sin(VectorAngle) + 4096);
-	ExtDA_Output(4,2000* sin(VectorAngle) + 4096);
-	ExtDA_Output(5,3000* sin(VectorAngle) + 4096);
-	ExtDA_Output(6,4000* sin(VectorAngle) + 4096);
-	ExtDA_Output(7,4000* cos(VectorAngle) + 4096);
+	ExtDA_Output(0, VectorAngle * 500 + 4096);
+	ExtDA_Output(1, Upcc_a * 50+ 4096);
+	ExtDA_Output(2, Upcc_b * 50 + 4096);
+	ExtDA_Output(3, Upcc_c * 50 + 4096);
+	ExtDA_Output(4, Upcc_ab * 50 + 4096);
+	ExtDA_Output(5, Upcc_bc * 50  + 4096);
+//	ExtDA_Output(6,4000* sin(VectorAngle) + 4096);
+//	ExtDA_Output(7,4000* cos(VectorAngle) + 4096);
 
 	AdcaRegs.ADCINTFLGCLR.bit.ADCINT1 = 1; //clear INT1 flag
 	PieCtrlRegs.PIEACK.all = PIEACK_GROUP1;
@@ -353,8 +357,8 @@ static void Para_Init(void)
 
 static void PID_Init(void)
 {
-	pid_instance_Pll.Kp = 2;
-	pid_instance_Pll.Ki = 5 * APF_SWITCH_PERIOD;
+	pid_instance_Pll.Kp = 10;
+	pid_instance_Pll.Ki = 10 * APF_SWITCH_PERIOD;
 	pid_instance_Pll.Kd = 0;
 	pid_init(&pid_instance_Pll, ENABLE);
 
@@ -383,13 +387,23 @@ static void PID_Init(void)
 	pid_instance_Udcn_q.Kd = 0;
 	pid_init(&pid_instance_Udcn_q, ENABLE);
 }
-static float GetPllAngle(void)
+static float GetPllAngle(float ua, float ub)
 {
 	static float theta = 0;
-	float power, w;
+	float w;
+	float ud,uq;
+	float valsin,valcos;
 
-	power = -Upcc_ab * sin(theta) + Upcc_bc * sin(theta + 2.094395102f);
-	w = pid_calculate(&pid_instance_Pll, power) + 100 * PI;
+	clarke(ua,ub,&ud,&uq);
+	sincos(theta,&valsin,&valcos);
+	park(ud,uq,&ud,&uq,valsin,valcos);
+
+	if (ud <= 0)
+	{
+		ud = -ud + 0.001;
+	}
+	uq = uq / ud;
+	w = pid_calculate(&pid_instance_Pll, uq) + 100 * PI;
 	theta += w * APF_SWITCH_PERIOD;
 	if (theta > 2 * PI)
 	{

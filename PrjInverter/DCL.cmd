@@ -1,4 +1,4 @@
 SECTIONS
 {
-   //dclfuncs    : > RAMLS4,   PAGE = 0
+   dclfuncs    : > RAMLS4,   PAGE = 0
 }

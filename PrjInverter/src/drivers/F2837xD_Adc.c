@@ -147,7 +147,7 @@ void SetupADC(void)
 
 	//determine minimum acquisition window (in SYSCLKS) based on resolution
 	if(ADC_RESOLUTION_12BIT == AdcaRegs.ADCCTL2.bit.RESOLUTION){
-		acqps = 14; //75ns
+		acqps = 100; //75ns-14
 	}
 	else { //resolution is 16-bit
 		acqps = 63; //320ns
@@ -179,9 +179,9 @@ void SetupADC(void)
     AdcbRegs.ADCSOC0CTL.bit.ACQPS = acqps; //sample window is 100 SYSCLK cycles
     AdcbRegs.ADCSOC1CTL.bit.CHSEL = 2;  //SOC1 will convert pin B2
     AdcbRegs.ADCSOC1CTL.bit.ACQPS = acqps; //sample window is 100 SYSCLK cycles
-    AdcbRegs.ADCSOC2CTL.bit.CHSEL = 3;  //SOC0 will convert pin B3
+    AdcbRegs.ADCSOC2CTL.bit.CHSEL = 3;  //SOC2 will convert pin B3
     AdcbRegs.ADCSOC2CTL.bit.ACQPS = acqps; //sample window is 100 SYSCLK cycles
-    AdcbRegs.ADCSOC3CTL.bit.CHSEL = 14;  //SOC1 will convert pin ADCIN14
+    AdcbRegs.ADCSOC3CTL.bit.CHSEL = 14;  //SOC3 will convert pin ADCIN14
     AdcbRegs.ADCSOC3CTL.bit.ACQPS = acqps; //sample window is 100 SYSCLK cycles
 
     AdcbRegs.ADCSOC0CTL.bit.TRIGSEL = 7; //trigger on ePWM2 SOCA
@@ -242,10 +242,10 @@ void InitADC(void)
 	EALLOW;
 
 	//write configurations
-	AdcaRegs.ADCCTL2.bit.PRESCALE = 6; //set ADCCLK divider to /4
-	AdcbRegs.ADCCTL2.bit.PRESCALE = 6; //set ADCCLK divider to /4
-	AdccRegs.ADCCTL2.bit.PRESCALE = 6; //set ADCCLK divider to /4
-	AdcdRegs.ADCCTL2.bit.PRESCALE = 6; //set ADCCLK divider to /4
+	AdcaRegs.ADCCTL2.bit.PRESCALE = 0X2; //set ADCCLK divider to /4
+	AdcbRegs.ADCCTL2.bit.PRESCALE = 0X2; //set ADCCLK divider to /4
+	AdccRegs.ADCCTL2.bit.PRESCALE = 0X2; //set ADCCLK divider to /4
+	AdcdRegs.ADCCTL2.bit.PRESCALE = 0X2; //set ADCCLK divider to /4
 
     AdcSetMode(ADC_ADCA, ADC_RESOLUTION_12BIT, ADC_SIGNALMODE_SINGLE);
     AdcSetMode(ADC_ADCB, ADC_RESOLUTION_12BIT, ADC_SIGNALMODE_SINGLE);
