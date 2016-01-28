@@ -11,5 +11,6 @@
 void APF_Init(void);
 interrupt void APF_Main(void);
 interrupt void FaultProcess(void);
+char CheckPwrState(float uab, float ubc, float uca, float udc);
 
 #endif /* APF_H_ */

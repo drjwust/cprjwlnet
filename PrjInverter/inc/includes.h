@@ -27,7 +27,16 @@
 #include <C28x_FPU_FastRTS.h>
 #include <FPU.h>
 #include <ex_da.h>
+#include <DCL.h>
 
+#include "inc/hw_can.h"
+#include "inc/hw_ints.h"
+#include "inc/hw_memmap.h"
+#include "inc/hw_types.h"
+#include "driverlib/can.h"
+#include "driverlib/debug.h"
+#include "driverlib/interrupt.h"
+#include "driverlib/can.h"
 //#include <2837xDI2C_eeprom.h>
 //#include <xdc/std.h>
 //#include <xdc/runtime/Log.h>

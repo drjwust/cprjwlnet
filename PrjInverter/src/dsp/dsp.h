@@ -3,9 +3,7 @@
 #include "string.h"
 #include "math.h"
 
-#ifndef PI
-#define PI					3.14159265358979f
-#endif
+#define PI_CONST					3.14159265358979f
 
 #ifndef DSP28_DATA_TYPES
 #define DSP28_DATA_TYPES

@@ -11,7 +11,7 @@
 #define GPIO_LED33		41
 #define GPIO_LED34		48
 #define GPIO_FAN		86
-#define GPIO_RESISTOR	87
+#define GPIO_PWRON		87
 #define GPIO_P7			51		//LED
 #define	 GPIO_P8		52		//LED
 

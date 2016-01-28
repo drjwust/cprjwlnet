@@ -55,8 +55,9 @@ interrupt void APF_Main(void)
 	Uint16 temp;
 	static Uint16 i;
 
+	MainTskTrigger = 1;		//主程序任务触发
 	ADValueConvert();
-	VectorAngle = GetPllAngle(Upcc_a,Upcc_b);	//得到电压矢量的夹角
+	VectorAngle = GetPllAngle(Upcc_a, Upcc_b);	//得到电压矢量的夹角
 	Udc_average = (UdcA + UdcB + UdcC) / 3;
 	sincos(VectorAngle, &sinVal, &cosVal);
 	clarke(Iapf_a, Iapf_b, &Iapf_alfa, &Iapf_beta);
@@ -306,21 +307,16 @@ interrupt void APF_Main(void)
 	PointCnt = (PointCnt + 1) % POINT_NUM;
 	GPIO_WritePin(58, 0);	//查看事个控制程序的中断时间
 
-	//过压过流保护
-	DacaRegs.DACVALS.bit.DACVALS = Iapf_a + 2048;
-	DacbRegs.DACVALS.bit.DACVALS = Iapf_b + 2048;
-	DaccRegs.DACVALS.bit.DACVALS = Upcc_ab + 2048;
-
 //	graph_data[i] = VectorAngle;
 	i++;
 //	if (i >= 500)
 //		i = 0;
 	ExtDA_Output(0, VectorAngle * 500 + 4096);
-	ExtDA_Output(1, Upcc_a * 50+ 4096);
+	ExtDA_Output(1, Upcc_a * 50 + 4096);
 	ExtDA_Output(2, Upcc_b * 50 + 4096);
 	ExtDA_Output(3, Upcc_c * 50 + 4096);
 	ExtDA_Output(4, Upcc_ab * 50 + 4096);
-	ExtDA_Output(5, Upcc_bc * 50  + 4096);
+	ExtDA_Output(5, Upcc_bc * 50 + 4096);
 //	ExtDA_Output(6,4000* sin(VectorAngle) + 4096);
 //	ExtDA_Output(7,4000* cos(VectorAngle) + 4096);
 
@@ -352,6 +348,8 @@ static void Para_Init(void)
 	RpGain = 0;
 	RpKr = 0.98;
 	RpLeadingBeat = 2;
+
+	MainTskTrigger = 0;
 
 }
 
@@ -391,28 +389,65 @@ static float GetPllAngle(float ua, float ub)
 {
 	static float theta = 0;
 	float w;
-	float ud,uq;
-	float valsin,valcos;
+	float ud, uq;
+	float valsin, valcos;
 
-	clarke(ua,ub,&ud,&uq);
-	sincos(theta,&valsin,&valcos);
-	park(ud,uq,&ud,&uq,valsin,valcos);
+	clarke(ua, ub, &ud, &uq);
+	sincos(theta, &valsin, &valcos);
+	park(ud, uq, &ud, &uq, valsin, valcos);
 
 	if (ud <= 0)
 	{
 		ud = -ud + 0.001;
 	}
 	uq = uq / ud;
-	w = pid_calculate(&pid_instance_Pll, uq) + 100 * PI;
+	w = pid_calculate(&pid_instance_Pll, uq) + 100 * PI_CONST;
 	theta += w * APF_SWITCH_PERIOD;
-	if (theta > 2 * PI)
+	if (theta > 2 * PI_CONST)
 	{
-		theta -= 2 * PI;
+		theta -= 2 * PI_CONST;
 	}
 	else if (theta < 0)
 	{
-		theta += 2 * PI;
+		theta += 2 * PI_CONST;
 	}
 
 	return theta;
+}
+
+char CheckPwrState(float uab, float ubc, float uca, float udc)
+{
+	float u;
+	char ans;
+	static DF22 filter =
+	{ 5.41589311124356e-07, 1.08317862224871e-06, 5.41589311124356e-07,
+			-1.99791739975065, 0.997919566107898, 0, 0 };
+
+	if (uab < 0)
+		uab = -uab;
+	if (ubc < 0)
+	{
+		ubc = -ubc;
+	}
+	if (uca < 0)
+	{
+		uca = -uca;
+	}
+	if (uab < ubc)
+	{
+		uab = ubc;
+	}
+	if (uab < uca)
+	{
+		uab = uca;
+	}
+
+	u = DCL_runDF22(&filter, uab);
+	if (u > 20 && udc > u)
+
+		ans = 1;
+	else
+		ans = 0;
+
+	return ans;
 }

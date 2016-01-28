@@ -73,6 +73,14 @@ main.obj: J:/MyGit/PrjInverter/inc/bsp.h
 main.obj: J:/MyGit/PrjInverter/lib/inc/C28x_FPU_FastRTS.h
 main.obj: J:/MyGit/PrjInverter/lib/inc/FPU.h
 main.obj: J:/MyGit/PrjInverter/inc/ex_da.h
+main.obj: J:/MyGit/PrjInverter/lib/inc/DCL.h
+main.obj: D:/ti/controlSUITE/device_support/F2837xD/v160/F2837xD_common/inc/hw_can.h
+main.obj: D:/ti/controlSUITE/device_support/F2837xD/v160/F2837xD_common/inc/hw_ints.h
+main.obj: D:/ti/controlSUITE/device_support/F2837xD/v160/F2837xD_common/inc/hw_memmap.h
+main.obj: D:/ti/controlSUITE/device_support/F2837xD/v160/F2837xD_common/inc/hw_types.h
+main.obj: D:/ti/controlSUITE/device_support/F2837xD/v160/F2837xD_common/driverlib/can.h
+main.obj: D:/ti/controlSUITE/device_support/F2837xD/v160/F2837xD_common/driverlib/debug.h
+main.obj: D:/ti/controlSUITE/device_support/F2837xD/v160/F2837xD_common/driverlib/interrupt.h
 
 ../main.c: 
 J:/MyGit/PrjInverter/inc/includes.h: 
@@ -147,3 +155,11 @@ J:/MyGit/PrjInverter/inc/bsp.h:
 J:/MyGit/PrjInverter/lib/inc/C28x_FPU_FastRTS.h: 
 J:/MyGit/PrjInverter/lib/inc/FPU.h: 
 J:/MyGit/PrjInverter/inc/ex_da.h: 
+J:/MyGit/PrjInverter/lib/inc/DCL.h: 
+D:/ti/controlSUITE/device_support/F2837xD/v160/F2837xD_common/inc/hw_can.h: 
+D:/ti/controlSUITE/device_support/F2837xD/v160/F2837xD_common/inc/hw_ints.h: 
+D:/ti/controlSUITE/device_support/F2837xD/v160/F2837xD_common/inc/hw_memmap.h: 
+D:/ti/controlSUITE/device_support/F2837xD/v160/F2837xD_common/inc/hw_types.h: 
+D:/ti/controlSUITE/device_support/F2837xD/v160/F2837xD_common/driverlib/can.h: 
+D:/ti/controlSUITE/device_support/F2837xD/v160/F2837xD_common/driverlib/debug.h: 
+D:/ti/controlSUITE/device_support/F2837xD/v160/F2837xD_common/driverlib/interrupt.h: 

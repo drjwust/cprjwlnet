@@ -78,4 +78,6 @@ APF_EXT float IloadB_rms;
 APF_EXT float IapfA_rms;
 APF_EXT float IapfB_rms;
 
+APF_EXT char MainTskTrigger;
+
 #endif /* APF_VARIABLES_H_ */
