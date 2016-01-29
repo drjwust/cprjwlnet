@@ -19,7 +19,7 @@
 
 
 #include "APF_Define.h"
-#include "APF_Variables.h"
+
 
 #include "filter_init.h"
 #include "apf.h"
@@ -37,6 +37,7 @@
 #include "driverlib/debug.h"
 #include "driverlib/interrupt.h"
 #include "driverlib/can.h"
+#include <F2837xD_Can.h>
 //#include <2837xDI2C_eeprom.h>
 //#include <xdc/std.h>
 //#include <xdc/runtime/Log.h>
@@ -44,6 +45,6 @@
 //#include <ti/sysbios/knl/Task.h>
 //#include <ti/sysbios/knl/Semaphore.h>
 
-
+#include "APF_Variables.h"
 
 #endif /* INCLUDES_H_ */

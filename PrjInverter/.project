@@ -29,5 +29,9 @@
 			<name>INSTALLROOT_F2837XD</name>
 			<value>file:/D:/ti/controlSUITE/device_support/F2837xD/v160</value>
 		</variable>
+		<variable>
+			<name>INSTALLROOT_F2837XD1</name>
+			<value>$%7BPARENT-1-INSTALLROOT_F2837XD%7D/v170</value>
+		</variable>
 	</variableList>
 </projectDescription>

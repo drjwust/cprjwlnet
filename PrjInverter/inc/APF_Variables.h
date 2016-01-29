@@ -41,7 +41,7 @@ APF_EXT float Iapf_a,Iapf_b,Iapf_c;		//APF发出的线电流，单位A
 APF_EXT float Iload_a,Iload_b,Iload_c;	//负载的线电流，单位A
 APF_EXT float Upcc_ab,Upcc_bc,Upcc_ca;	//PCC点线电压，单位V
 APF_EXT float Upcc_a,Upcc_b,Upcc_c;		//PCC点相电压，单位V
-APF_EXT float UdcA,UdcB,UdcC;					//直流侧母线电压，单位V
+APF_EXT float UdcA,UdcB,UdcC,Udc;		//直流侧母线电压，单位V
 APF_EXT float Udc_average;				//直流母线平均电压，单位V
 APF_EXT float VectorAngle;				//电压矢量角度，单位rad
 APF_EXT float GridFrequence;			//电网频率，单位Hz
@@ -79,5 +79,10 @@ APF_EXT float IapfA_rms;
 APF_EXT float IapfB_rms;
 
 APF_EXT char MainTskTrigger;
+APF_EXT tCANMsgObject sTXCANMessage;
+APF_EXT tCANMsgObject sRXCANMessage;
+APF_EXT unsigned char ucTXMsgData[8];
+APF_EXT unsigned char ucRXMsgData[8];
+APF_EXT char FlagRxCAN;
 
 #endif /* APF_VARIABLES_H_ */

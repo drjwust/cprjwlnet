@@ -30,11 +30,13 @@ void BSP_Init(void)
 	EALLOW;
 	PieVectTable.ADCA1_INT = &APF_Main;	//ADC A 结束完一次序列转换，进入一次中断
 	PieVectTable.EPWM2_TZ_INT = &FaultProcess;	//TZ interrupt
+	PieVectTable.CANA_1_INT = CANIntHandler;
 //	PieVectTable.I2CA_INT = &i2c_int1a_isr;
 //	PieVectTable.I2CB_INT = &i2c_int1b_isr;
 	EDIS;
 
 	InitADC();
+	CAN_Init();
 //	I2CA_Init();
 //	I2CB_Init();
 
@@ -84,7 +86,7 @@ void BSP_Init(void)
 	EDIS;
 
 	// Enable CPU INT8 which is connected to PIE group 8
-	IER |= M_INT1;
+	IER |= M_INT1 | M_INT9;
 	// Enable global Interrupts and higher priority real-time debug events:
 	EINT;
 	// Enable Global interrupt INTM
@@ -95,6 +97,7 @@ void BSP_Init(void)
 	PieCtrlRegs.PIEIER1.bit.INTx1 = 1;
 	// Enable I2C __interrupt 1 in the PIE: Group 8 __interrupt 1
 	PieCtrlRegs.PIEIER8.bit.INTx1 = 1;
+	PieCtrlRegs.PIEIER9.bit.INTx5 = 1;
 
 	return;
 }

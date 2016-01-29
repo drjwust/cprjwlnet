@@ -342,7 +342,7 @@ static void Para_Init(void)
 
 	UdcRef = DC_REF_DEFAULT;
 	QRef = Q_REF_DEFAULT;
-	CmpsateSet = 0;
+	CmpsateSet = 100;
 	APF_State = APF_STATE_BIT_SWSTOP;
 
 	RpGain = 0;
