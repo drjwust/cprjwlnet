@@ -32,8 +32,8 @@
 <stringAttribute key="com.ti.ccstudio.debug.debugModel.MRU_PROGRAM.Texas Instruments XDS100v2 USB Debug Probe/C28xx_CPU1" value="X:/Code_Workspace\PrjInverter\RAM\PrjInverter.out"/>
 <stringAttribute key="com.ti.ccstudio.debug.debugModel.MRU_PROGRAM.Texas Instruments XDS100v2 USB Debug Probe_0/C28xx_CPU1" value="J:/MyGit\PrjInverter\FLASH\PrjInverter.out"/>
 <stringAttribute key="com.ti.ccstudio.debug.debugModel.MRU_PROGRAM.Texas Instruments XDS100v2 USB Debug Probe_0/C28xx_CPU2" value="J:/MyGit\PrjInverter\FLASH\PrjInverter.out"/>
-<stringAttribute key="com.ti.ccstudio.debug.debugModel.MRU_PROGRAM.Texas Instruments XDS2xx USB Debug Probe_0/C28xx_CPU1" value="J:/MyGit\PrjInverter\RAM\PrjInverter.out"/>
-<stringAttribute key="com.ti.ccstudio.debug.debugModel.MRU_PROGRAM.Texas Instruments XDS2xx USB Debug Probe_0/C28xx_CPU2" value="J:/MyGit\PrjInverter\RAM\PrjInverter.out"/>
+<stringAttribute key="com.ti.ccstudio.debug.debugModel.MRU_PROGRAM.Texas Instruments XDS2xx USB Debug Probe_0/C28xx_CPU1" value="J:/MyGit\PrjInverter\FLASH\PrjInverter.out"/>
+<stringAttribute key="com.ti.ccstudio.debug.debugModel.MRU_PROGRAM.Texas Instruments XDS2xx USB Debug Probe_0/C28xx_CPU2" value="J:/MyGit\PrjInverter\FLASH\PrjInverter.out"/>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
 <listEntry value="/PrjInverter"/>
 </listAttribute>

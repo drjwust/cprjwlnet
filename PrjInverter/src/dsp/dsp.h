@@ -29,6 +29,12 @@ typedef struct
 
 } iir_filter_instance;
 
+typedef struct
+{
+	Uint16 Cnt;
+	float sum;
+	float data[256];
+} average_filter_instance;
 /**
  * @brief Instance structure for the floating-point PID Control.
  */
@@ -43,7 +49,6 @@ typedef struct
 	float Kd; /**< The derivative gain. */
 } pid_instance;
 
-
 void iir_filter_calculate(iir_filter_instance*S, float in, float* pout);
 /**
  * @brief  Initialization function for the floating-point Biquad cascade filter.
@@ -53,7 +58,6 @@ void iir_filter_calculate(iir_filter_instance*S, float in, float* pout);
  * @return        none
  */
 void iir_filter_init(iir_filter_instance*S, float *pCoeffs, float *pState);
-
 
 /**
  * @brief  Initialization function for the floating-point PID Control.
@@ -87,100 +91,14 @@ static __inline float pid_calculate(pid_instance * S, float in)
 	return (out);
 
 }
+void inv_clarke(float Ialpha, float Ibeta, float * pIa, float * pIb);
 
-static __inline void inv_clarke(
-float Ialpha,
-float Ibeta,
-float * pIa,
-float * pIb)
-{
-  /* Calculating pIa from Ialpha by equation pIa = Ialpha */
-  *pIa = Ialpha;
+void clarke(float Ia, float Ib, float * pIalpha, float * pIbeta);
 
-  /* Calculating pIb from Ialpha and Ibeta by equation pIb = -(1/2) * Ialpha + (sqrt(3)/2) * Ibeta */
-  *pIb = -0.5 * Ialpha + (float) 0.8660254039 *Ibeta;
-
-}
-
-/**
-  *
-  * @brief  Floating-point Clarke transform
-  * @param[in]       Ia       input three-phase coordinate <code>a</code>
-  * @param[in]       Ib       input three-phase coordinate <code>b</code>
-  * @param[out]      *pIalpha points to output two-phase orthogonal vector axis alpha
-  * @param[out]      *pIbeta  points to output two-phase orthogonal vector axis beta
-  * @return none.
-  */
-
- static __inline void clarke(
- float Ia,
- float Ib,
- float * pIalpha,
- float * pIbeta)
- {
-   /* Calculate pIalpha using the equation, pIalpha = Ia */
-   *pIalpha = Ia;
-
-   /* Calculate pIbeta using the equation, pIbeta = (1/sqrt(3)) * Ia + (2/sqrt(3)) * Ib */
-   *pIbeta =
-     ((float) 0.57735026919 * Ia + (float) 1.15470053838 * Ib);
-
- }
-
-/**
- * @addtogroup park
- * @{
- */
-
-/**
- * @brief Floating-point Park transform
- * @param[in]       Ialpha input two-phase vector coordinate alpha
- * @param[in]       Ibeta  input two-phase vector coordinate beta
- * @param[out]      *pId   points to output	rotor reference frame d
- * @param[out]      *pIq   points to output	rotor reference frame q
- * @param[in]       sinVal sine value of rotation angle theta
- * @param[in]       cosVal cosine value of rotation angle theta
- * @return none.
- *
- * The function implements the forward Park transform.
- *
- */
-
-
-
-static inline void park(float Ialpha, float Ibeta, float * pId, float * pIq,
-		float sinVal, float cosVal)
-{
-	/* Calculate pId using the equation, pId = Ialpha * cosVal + Ibeta * sinVal */
-	*pId = Ialpha * cosVal + Ibeta * sinVal;
-
-	/* Calculate pIq using the equation, pIq = - Ialpha * sinVal + Ibeta * cosVal */
-	*pIq = -Ialpha * sinVal + Ibeta * cosVal;
-
-}
-
-
-/**
- * @brief  Floating-point Inverse Park transform
- * @param[in]       Id        input coordinate of rotor reference frame d
- * @param[in]       Iq        input coordinate of rotor reference frame q
- * @param[out]      *pIalpha  points to output two-phase orthogonal vector axis alpha
- * @param[out]      *pIbeta   points to output two-phase orthogonal vector axis beta
- * @param[in]       sinVal    sine value of rotation angle theta
- * @param[in]       cosVal    cosine value of rotation angle theta
- * @return none.
- */
-
-static inline void inv_park(float Id, float Iq, float * pIalpha, float * pIbeta,
-		float sinVal, float cosVal)
-{
-	/* Calculate pIalpha using the equation, pIalpha = Id * cosVal - Iq * sinVal */
-	*pIalpha = Id * cosVal - Iq * sinVal;
-
-	/* Calculate pIbeta using the equation, pIbeta = Id * sinVal + Iq * cosVal */
-	*pIbeta = Id * sinVal + Iq * cosVal;
-
-}
+void park(float Ialpha, float Ibeta, float * pId, float * pIq, float sinVal,
+		float cosVal);
+void inv_park(float Id, float Iq, float * pIalpha, float * pIbeta, float sinVal,
+		float cosVal);
 
 #endif /* _ARM_MATH_H */
 

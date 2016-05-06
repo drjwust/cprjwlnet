@@ -29,7 +29,7 @@
 ; example of section allocation in linker command file:
 ;	dclfuncs		: > RAML4,		PAGE = 0
 
-		.sect	"dclfuncs"
+		.sect	"dclfuncs" ;TODO 为了避免在掉电重启，RAM中的代码丢失，选择程序搬运的方法
 _DCL_runDF22:
 		MOV32   *SP++, R1H
 		MOV32   *SP++, R2H

@@ -23,7 +23,7 @@
 ; example of section allocation in linker command file:
 ;	dclfuncs		: > RAML4,		PAGE = 0
 
-		.sect	"dclfuncs"
+		;.sect	"dclfuncs"
 _DCL_runPI:
 ; context save
         PUSH	AR1H:AR0H

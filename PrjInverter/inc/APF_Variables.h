@@ -30,6 +30,7 @@ APF_EXT int16 CmpsateSet;				//谐波补偿率，单位%
 APF_EXT float RpGain;
 APF_EXT float RpKr;
 APF_EXT char RpLeadingBeat;
+APF_EXT Uint16 RpCutoffFreqence;
 
 
 /******************************************************************************/
@@ -41,18 +42,19 @@ APF_EXT float Iapf_a,Iapf_b,Iapf_c;		//APF发出的线电流，单位A
 APF_EXT float Iload_a,Iload_b,Iload_c;	//负载的线电流，单位A
 APF_EXT float Upcc_ab,Upcc_bc,Upcc_ca;	//PCC点线电压，单位V
 APF_EXT float Upcc_a,Upcc_b,Upcc_c;		//PCC点相电压，单位V
-APF_EXT float UdcA,UdcB,UdcC,Udc;		//直流侧母线电压，单位V
+APF_EXT float UdcA,UdcB,UdcC;		//直流侧母线电压，单位V
 APF_EXT float Udc_average;				//直流母线平均电压，单位V
+APF_EXT float UacRectifier;				//交流电压整流值，单位V
 APF_EXT float VectorAngle;				//电压矢量角度，单位rad
 APF_EXT float GridFrequence;			//电网频率，单位Hz
-APF_EXT float Iload_d[POINT_NUM],Iload_q[POINT_NUM];
 APF_EXT Uint16 PointCnt;
-//APF_EXT float RpBuffer[2][POINT_NUM];
+APF_EXT float RpBuffer[2][POINT_NUM];
+APF_EXT float UpccDm;
 
-APF_EXT iir_filter_instance IIR_for_Rpcontroller[2];
-APF_EXT iir_filter_instance IIR_for_Id[2];
-APF_EXT iir_filter_instance IIR_for_Iq[2];
-APF_EXT iir_filter_instance IIR_for_Pll;
+//APF_EXT iir_filter_instance IIR_for_Rpcontroller[2];
+//APF_EXT iir_filter_instance IIR_for_Id[2];
+//APF_EXT iir_filter_instance IIR_for_Iq[2];
+//APF_EXT iir_filter_instance IIR_for_Pll;
 //APF_EXT float FFT_DataBuffer[FFT_LENGTH];
 //APF_EXT float FFT_CalBuffer[FFT_LENGTH];
 //APF_EXT float FFT_OutBuffer[FFT_LENGTH];
@@ -78,11 +80,30 @@ APF_EXT float IloadB_rms;
 APF_EXT float IapfA_rms;
 APF_EXT float IapfB_rms;
 
+APF_EXT average_filter_instance UdFilter;
+APF_EXT average_filter_instance IhdFilter;
+APF_EXT average_filter_instance IhqFilter;
+
+APF_EXT DF22 DF22_Udaverage;
+APF_EXT DF22 DF22_Ihd;
+APF_EXT DF22 DF22_Ihq;
+
+APF_EXT DF22 DF22_RpFilter0;
+APF_EXT DF22 DF22_RpFilter1;
+APF_EXT DF22 DF22_UdcA;
+APF_EXT DF22 DF22_UdcB;
+APF_EXT DF22 DF22_UdcC;
+
 APF_EXT char MainTskTrigger;
 APF_EXT tCANMsgObject sTXCANMessage;
 APF_EXT tCANMsgObject sRXCANMessage;
 APF_EXT unsigned char ucTXMsgData[8];
 APF_EXT unsigned char ucRXMsgData[8];
 APF_EXT char FlagRxCAN;
+
+APF_EXT float graph_data1[500];
+APF_EXT float graph_data2[500];
+APF_EXT float graph_data3[500];
+//APF_EXT float graph_data4[500];
 
 #endif /* APF_VARIABLES_H_ */

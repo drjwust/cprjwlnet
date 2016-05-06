@@ -34,9 +34,7 @@ void BSP_Init(void)
 //	PieVectTable.I2CA_INT = &i2c_int1a_isr;
 //	PieVectTable.I2CB_INT = &i2c_int1b_isr;
 	EDIS;
-
 	InitADC();
-	CAN_Init();
 //	I2CA_Init();
 //	I2CB_Init();
 
@@ -65,9 +63,9 @@ void BSP_Init(void)
 	DaccRegs.DACOUTEN.bit.DACOUTEN = 1;
 	EDIS;
 
-	SetOC1Value(1);
-	SetOC2Value(1);
-	SetOVValue(5);
+	SetOC1Value(30);
+	SetOC2Value(50);
+	SetOVValue(50);
 
 	// Configure EPWM
 	EALLOW;
@@ -80,13 +78,16 @@ void BSP_Init(void)
 	EDIS;
 
 	InitEpwmAll();
+//	InitADC();
+	CAN_Init();
 
 	EALLOW;
 	CpuSysRegs.PCLKCR0.bit.TBCLKSYNC = 1;
 	EDIS;
 
 	// Enable CPU INT8 which is connected to PIE group 8
-	IER |= M_INT1 | M_INT9;
+//	IER |= M_INT1;
+	IER |= (M_INT1 | M_INT9);
 	// Enable global Interrupts and higher priority real-time debug events:
 	EINT;
 	// Enable Global interrupt INTM
@@ -96,7 +97,7 @@ void BSP_Init(void)
 	//enable PIE interrupt
 	PieCtrlRegs.PIEIER1.bit.INTx1 = 1;
 	// Enable I2C __interrupt 1 in the PIE: Group 8 __interrupt 1
-	PieCtrlRegs.PIEIER8.bit.INTx1 = 1;
+//	PieCtrlRegs.PIEIER8.bit.INTx1 = 1;
 	PieCtrlRegs.PIEIER9.bit.INTx5 = 1;
 
 	return;
@@ -107,20 +108,26 @@ void ExtIO_Init(void)
 	//Output setup
 	GPIO_SetupPinMux(41, GPIO_MUX_CPU1, 0);	//D33
 	GPIO_SetupPinOptions(41, GPIO_OUTPUT, GPIO_PUSHPULL);
+	GPIO_WritePin(41, 1);
 	GPIO_SetupPinMux(48, GPIO_MUX_CPU1, 0);	//D34
 	GPIO_SetupPinOptions(48, GPIO_OUTPUT, GPIO_PUSHPULL);
+	GPIO_WritePin(48, 1);
 	GPIO_SetupPinMux(51, GPIO_MUX_CPU1, 0);	//DO3->LED1
 	GPIO_SetupPinOptions(51, GPIO_OUTPUT, GPIO_PUSHPULL);
+	GPIO_WritePin(51, 0);
 	GPIO_SetupPinMux(52, GPIO_MUX_CPU1, 0);	//DO4->LED2
 	GPIO_SetupPinOptions(52, GPIO_OUTPUT, GPIO_PUSHPULL);
+	GPIO_WritePin(52, 0);
 	GPIO_SetupPinMux(58, GPIO_MUX_CPU1, 0);	//TP50
 	GPIO_SetupPinOptions(58, GPIO_OUTPUT, GPIO_PUSHPULL);
 	GPIO_SetupPinMux(59, GPIO_MUX_CPU1, 0);	//TP51
 	GPIO_SetupPinOptions(59, GPIO_OUTPUT, GPIO_PUSHPULL);
 	GPIO_SetupPinMux(86, GPIO_MUX_CPU1, 0);	//DO1->继电器1
 	GPIO_SetupPinOptions(86, GPIO_OUTPUT, GPIO_PUSHPULL);
+	GPIO_WritePin(86, 0);
 	GPIO_SetupPinMux(87, GPIO_MUX_CPU1, 0);	//DO2->继电器2
 	GPIO_SetupPinOptions(87, GPIO_OUTPUT, GPIO_PUSHPULL);
+	GPIO_WritePin(87, 0);
 
 	GPIO_SetupPinMux(32, GPIO_MUX_CPU1, 0);	//ExtDAC CS
 	GPIO_SetupPinOptions(32, GPIO_OUTPUT, GPIO_PUSHPULL);
@@ -158,45 +165,73 @@ void SetOC2Value(float i)
 void SetOVValue(float u)
 {
 	/*
-	 * 传感器为CHV-25P，变比为10mA ~ 25mA,原边电阻 120K欧;
+	 * 传感器为CHV-25P，变比为10mA ~ 25mA,原边电阻 170K欧;
 	 * DAC REFH = 3.3V，12Bit DAC
 	 * 测量电阻 59欧
 	 */
-	DaccRegs.DACVALS.bit.DACVALS = u * 1.5515;
+	DaccRegs.DACVALS.bit.DACVALS = u * 4.42;
 }
 
 void ADValueConvert(void)
 {
-	static float cali_i1a = 0.05462, cali_i1b = 0.05462;
-	static float cali_i2a = 0.05462, cali_i2b = 0.05462;
+	/*
+	 * 以下电流定标适用于，电流传感器变比为2000：1，采样电阻为29.5欧
+	 */
+	static float cali_i1ap = 0.04622, cali_i1an = 0.04584, cali_i1bp = 0.04775,
+			cali_i1bn = 0.04341;
+//	static float cali_i1ap = 1, cali_i1an = 1, cali_i1bp = 1,	cali_i1bn = 1;
+	static float cali_i2ap = 0.01275, cali_i2an = 0.01416, cali_i2bp = 0.01344,
+			cali_i2bn = 0.0124;
+//	static float cali_i2ap = 1, cali_i2an = 1, cali_i2bp = 1,
+//			cali_i2bn = 1;
+
 	static float cali_u1a = 0.437, cali_u1b = 0.437;
-	static float cali_u2a = 0.437, cali_u2b = 0.437;
-	static float cali_udca = 0.6447, cali_udcb = 0.6447, cali_udcc = 0.6447,
+	static float cali_u2a = 0.4682, cali_u2b = 0.4651;
+//	static float cali_u2a = 1, cali_u2b = 1;
+	static float cali_udca = 0.2212, cali_udcb = 0.2234, cali_udcc = 0.2155,
 			cali_udcd = 1; //直流母线电压增益校正系数
 
-	static uint16_t i;
+	static uint16_t i =0;
 	static float u1a0, u2a0, u1b0, u2b0;
 	float i1a, i1b, i1c, i2a, i2b, i2c;
+	float i1ap, i1an, i1bp, i1bn;
+	float i2ap,i2an,i2bp,i2bn;
 	float u1a, u1b, u1c, u2a, u2b, u2c;
 	float udca, udcb, udcc, udcd;
 
-	i1a = (int) AdcaResultRegs.ADCRESULT0 - (int) AdcaResultRegs.ADCRESULT1; //I1A
-	i1b = (int) AdcaResultRegs.ADCRESULT2 - (int) AdcaResultRegs.ADCRESULT3; //I1B
+	/*
+	 * 必须要注意电路板的I2BP和I2BN接错了，U2A和U2B接错了，
+	 * 此处已按照XXX_Adc.c中配置更正，i1a,i1b,i2a,i2b,u2a,u2b等变量与接口一致。
+	 */
+	i1ap = AdcaResultRegs.ADCRESULT0;
+	i1ap *= cali_i1ap;
+	i1an = AdcaResultRegs.ADCRESULT1;
+	i1an *= cali_i1an; //I1A
+	i1bp = AdcaResultRegs.ADCRESULT2;
+	i1bp *= cali_i1bp;
+	i1bn = AdcaResultRegs.ADCRESULT3;
+	i1bn *= cali_i1bn; //I1B
 
-	i2a = (int) AdcdResultRegs.ADCRESULT0 - (int) AdcdResultRegs.ADCRESULT1; //I2A
-	i2b = (int) AdcdResultRegs.ADCRESULT2 - (int) AdcdResultRegs.ADCRESULT3; //I2B
+	i2ap = AdcdResultRegs.ADCRESULT0;
+	i2ap *= cali_i2ap;
+	i2an = AdcdResultRegs.ADCRESULT1;
+	i2an *= cali_i2an; //I2A
+	i2bp = AdcdResultRegs.ADCRESULT3;
+	i2bp *= cali_i2bp;
+	i2bn = AdcdResultRegs.ADCRESULT2;
+	i2bn *= cali_i2bp; //I2B
 
 	u1a = (AdcbResultRegs.ADCRESULT3);	//U1A
 	u1b = (AdccResultRegs.ADCRESULT3);	//U1B
-	u2a = (AdcbResultRegs.ADCRESULT0);	//U2A
-	u2b = (AdcbResultRegs.ADCRESULT1);	//U2B
+	u2a = (AdcbResultRegs.ADCRESULT1);	//U2A
+	u2b = (AdcbResultRegs.ADCRESULT0);	//U2B
 
-	udca = (AdcbResultRegs.ADCRESULT2);	//UDCA
-	udcb = (AdccResultRegs.ADCRESULT2);	//UDCB
-	udcc = (AdccResultRegs.ADCRESULT1);	//UDCC
-	udcd = (AdccResultRegs.ADCRESULT0);	//UDCD
+	udca = (AdccResultRegs.ADCRESULT2);	//UDCA
+	udcb = (AdccResultRegs.ADCRESULT1);	//UDCB
+	udcc = (AdccResultRegs.ADCRESULT0);	//UDCC
+	udcd = (AdcbResultRegs.ADCRESULT2);	//UDCD
 
-	if (i <= APF_SWITCH_FREQ)
+	if (i < APF_SWITCH_FREQ)
 	{
 		u1a0 += u1a * APF_SWITCH_PERIOD;
 		u1b0 += u1b * APF_SWITCH_PERIOD;
@@ -204,12 +239,12 @@ void ADValueConvert(void)
 		u2b0 += u2b * APF_SWITCH_PERIOD;
 		i++;
 	}
-//	i1a = (i1a - offset[0]) * cali_i1a;
-//	i1b = (i1b - offset[1]) * cali_i1b;
+	i1a = i1ap - i1an;
+	i1b = i1bp - i1bn;
 	i1c = -i1a - i1b;
 //
-//	i2a = (i2a - offset[2]) * cali_i2a;
-//	i2b = (i2b - offset[3]) * cali_i2b;
+	i2a = i2ap - i2an;
+	i2b = i2bp - i2bn;
 	i2c = -i2a - i2b;
 
 	u1a = (u1a - u1a0) * cali_u1a;
@@ -225,25 +260,32 @@ void ADValueConvert(void)
 	udcc = udcc * cali_udcc;
 	udcd = udcd * cali_udcd;
 
-	Upcc_ab = u2a;
-	Upcc_bc = u2b;
+	/*
+	 * 以上i1a,i1b等变量，与接口标号符一致。
+	 */
+	Upcc_ab = i2a;
+	Upcc_bc = i2b;
 	Upcc_ca = -Upcc_ab - Upcc_bc;
 
 	Upcc_a = (Upcc_ab - Upcc_ca) * 0.3333333333f;
 	Upcc_b = (Upcc_bc - Upcc_ab) * 0.3333333333f;
 	Upcc_c = -Upcc_a - Upcc_b;
 
-	Iapf_a = i2a;
-	Iapf_b = i2b;
-	Iapf_c = i2c;
+	Iapf_a = u2a;
+	Iapf_b = u2b;
+//	Iapf_c = i2c;
 
-	Iload_a = i1a;
-	Iload_b = i1b;
-	Iload_c = i1c;
+	Iload_a = u1a;
+	Iload_b = u1b;
+//	Iload_c = i1c;
 
-	UdcA = udca;
-	UdcB = udcb;
-	UdcC = udcc;
+//	UdcA = udca;
+//	UdcB = udcb;
+//	UdcC = udcc;
 
+	//直线母线电压经过了一个2500HZ的二阶低通滤波器
+	UdcA = DCL_runDF22(&DF22_UdcA, udca);
+	UdcB = DCL_runDF22(&DF22_UdcB, udcb);
+	UdcC = DCL_runDF22(&DF22_UdcC, udcc);
 }
 

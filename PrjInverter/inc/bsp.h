@@ -14,6 +14,8 @@
 #define GPIO_PWRON		87
 #define GPIO_P7			51		//LED
 #define	 GPIO_P8		52		//LED
+#define GPIO_P9			53
+#define GPIO_P10		54
 
  void SetOC1Value(float i);
  void SetOC2Value(float i);

@@ -147,7 +147,7 @@ void SetupADC(void)
 
 	//determine minimum acquisition window (in SYSCLKS) based on resolution
 	if(ADC_RESOLUTION_12BIT == AdcaRegs.ADCCTL2.bit.RESOLUTION){
-		acqps = 100; //75ns-14
+		acqps = 300; //75ns-14
 	}
 	else { //resolution is 16-bit
 		acqps = 63; //320ns
