@@ -194,7 +194,6 @@
 	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
 		<project id="PrjInverter.com.ti.ccstudio.buildDefinitions.C2000.ProjectType.2038809350" name="C2000" projectType="com.ti.ccstudio.buildDefinitions.C2000.ProjectType"/>
 	</storageModule>
-	<storageModule moduleId="scannerConfiguration"/>
 	<storageModule moduleId="org.eclipse.cdt.core.language.mapping">
 		<project-mappings>
 			<content-type-mapping configuration="" content-type="org.eclipse.cdt.core.asmSource" language="com.ti.ccstudio.core.TIASMLanguage"/>
@@ -204,6 +203,7 @@
 			<content-type-mapping configuration="" content-type="org.eclipse.cdt.core.cxxSource" language="com.ti.ccstudio.core.TIGPPLanguage"/>
 		</project-mappings>
 	</storageModule>
+	<storageModule moduleId="scannerConfiguration"/>
 	<storageModule moduleId="null.endianPreference"/>
 	<storageModule moduleId="cpuFamily"/>
 </cproject>

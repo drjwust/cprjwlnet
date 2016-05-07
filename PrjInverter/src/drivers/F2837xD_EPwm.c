@@ -342,8 +342,11 @@ void InitEPwm2()
 	EPwm2Regs.AQCTLA.bit.CAU = AQ_SET;            // Set PWM2A on Zero
 	EPwm2Regs.AQCTLA.bit.CAD = AQ_CLEAR;
 
-	EPwm2Regs.AQCTLB.bit.CAU = AQ_CLEAR;          // Set PWM2A on Zero
-	EPwm2Regs.AQCTLB.bit.CAD = AQ_SET;
+//	EPwm2Regs.AQCTLB.bit.CAU = AQ_CLEAR;          // Set PWM2B on Zero
+//	EPwm2Regs.AQCTLB.bit.CAD = AQ_SET;
+
+	EPwm2Regs.AQCTLB.bit.CAU = AQ_SET;          // Set PWM2B on Zero
+	EPwm2Regs.AQCTLB.bit.CAD = AQ_CLEAR;
 
 	// Active Low PWMs - Setup Deadband
 	EPwm2Regs.DBCTL.bit.OUT_MODE = DB_FULL_ENABLE;
@@ -382,10 +385,15 @@ void InitEPwmx(volatile struct EPWM_REGS *EPwmxRegs)
 //	EPwmxRegs->CMPB.bit.CMPB = 3000;     // Set Compare B value
 
 	// Set actions
-	EPwmxRegs->AQCTLA.bit.CAD = AQ_SET;            // Set PWM1A on Zero
-	EPwmxRegs->AQCTLA.bit.CAU = AQ_CLEAR;    // Clear PWM1A on event A, up count
-	EPwmxRegs->AQCTLB.bit.CAD = AQ_CLEAR;            // Set PWM1A on Zero
-	EPwmxRegs->AQCTLB.bit.CAU = AQ_SET;    // Clear PWM1A on event A, up count
+//	EPwmxRegs->AQCTLA.bit.CAD = AQ_SET;            // Set PWM1A on Zero
+//	EPwmxRegs->AQCTLA.bit.CAU = AQ_CLEAR;    // Clear PWM1A on event A, up count
+	EPwmxRegs->AQCTLA.bit.CAD = AQ_CLEAR;            // Set PWM1A on Zero
+	EPwmxRegs->AQCTLA.bit.CAU = AQ_SET;    // Clear PWM1A on event A, up count
+
+//	EPwmxRegs->AQCTLB.bit.CAD = AQ_CLEAR;            // Set PWM1A on Zero
+//	EPwmxRegs->AQCTLB.bit.CAU = AQ_SET;    // Clear PWM1A on event A, up count
+	EPwmxRegs->AQCTLB.bit.CAD = AQ_SET;            // Set PWM1A on Zero
+	EPwmxRegs->AQCTLB.bit.CAU = AQ_CLEAR;    // Clear PWM1A on event A, up count
 
 	// Active Low PWMs - Setup Deadband
 	EPwmxRegs->DBCTL.bit.IN_MODE = DBA_ALL;

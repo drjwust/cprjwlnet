@@ -177,25 +177,25 @@ void ADValueConvert(void)
 	/*
 	 * 以下电流定标适用于，电流传感器变比为2000：1，采样电阻为29.5欧
 	 */
-	static float cali_i1ap = 0.04622, cali_i1an = 0.04584, cali_i1bp = 0.04775,
-			cali_i1bn = 0.04341;
-//	static float cali_i1ap = 1, cali_i1an = 1, cali_i1bp = 1,	cali_i1bn = 1;
-	static float cali_i2ap = 0.01275, cali_i2an = 0.01416, cali_i2bp = 0.01344,
-			cali_i2bn = 0.0124;
-//	static float cali_i2ap = 1, cali_i2an = 1, cali_i2bp = 1,
-//			cali_i2bn = 1;
+//	static float cali_i1ap = 0.04622, cali_i1an = 0.04584, cali_i1bp = 0.04775,
+//			cali_i1bn = 0.04341;
+	static float cali_i1ap = 1, cali_i1an = 1, cali_i1bp = 1, cali_i1bn = 1;
+//	static float cali_i2ap = 0.01275, cali_i2an = 0.01416, cali_i2bp = 0.01344,
+//			cali_i2bn = 0.0124;
+	static float cali_i2ap = 1, cali_i2an = 1, cali_i2bp = 1, cali_i2bn = 1;
+	static float cali_u1a = 1, cali_u1b = 1;
+//	static float cali_u1a = 0.437, cali_u1b = 0.437;
+	static float cali_u2a = 0.0253, cali_u2b = 0.0256;
+//	static float cali_u2a = 0.4682, cali_u2b = 0.4651;
 
-	static float cali_u1a = 0.437, cali_u1b = 0.437;
-	static float cali_u2a = 0.4682, cali_u2b = 0.4651;
-//	static float cali_u2a = 1, cali_u2b = 1;
 	static float cali_udca = 0.2212, cali_udcb = 0.2234, cali_udcc = 0.2155,
 			cali_udcd = 1; //直流母线电压增益校正系数
 
-	static uint16_t i =0;
+	static uint16_t i = 0;
 	static float u1a0, u2a0, u1b0, u2b0;
 	float i1a, i1b, i1c, i2a, i2b, i2c;
 	float i1ap, i1an, i1bp, i1bn;
-	float i2ap,i2an,i2bp,i2bn;
+	float i2ap, i2an, i2bp, i2bn;
 	float u1a, u1b, u1c, u2a, u2b, u2c;
 	float udca, udcb, udcc, udcd;
 
@@ -221,7 +221,7 @@ void ADValueConvert(void)
 	i2bn = AdcdResultRegs.ADCRESULT2;
 	i2bn *= cali_i2bp; //I2B
 
-	u1a = (AdcbResultRegs.ADCRESULT3);	//U1A
+	u1a = (AdcaResultRegs.ADCRESULT3);	//U1A	todo 请改成Adca
 	u1b = (AdccResultRegs.ADCRESULT3);	//U1B
 	u2a = (AdcbResultRegs.ADCRESULT1);	//U2A
 	u2b = (AdcbResultRegs.ADCRESULT0);	//U2B

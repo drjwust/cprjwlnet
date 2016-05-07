@@ -13,9 +13,8 @@ static float Iapf_alfa, Iapf_beta;
 static float Iload_alfa, Iload_beta;
 /* 两相旋转坐标系下变量 *******************************************************/
 static float Iapf_d, Iapf_q;
-static float Iload_d,Iload_q;
+static float Iload_d, Iload_q;
 static float UdcRampRef;
-
 
 static float GetPllAngle(float ua, float ub);
 static void Para_Init(void);
@@ -66,11 +65,12 @@ interrupt void APF_Main(void)
 	float temp_a, temp_b, temp_c;
 	float sinVal, cosVal;
 	float pwm_a, pwm_b, pwm_c;
-	float ihd, ihq,ifa,ifb,id,iq,iha,ihb;
-	float ux, uy,upccd_average;
+	float ihd, ihq, ifa, ifb, id, iq, iha, ihb;
+	float ux, uy, upccd_average;
 	Uint16 temp;
 	static Uint16 i;
 
+	GPIO_WritePin(58, 1);
 	MainTskTrigger = 1;		//主程序任务触发
 	ADValueConvert();
 	VectorAngle = GetPllAngle(Upcc_a, Upcc_b);	//得到电压矢量的夹角
@@ -94,14 +94,13 @@ interrupt void APF_Main(void)
 //	inv_park(id, iq, &Iload_alfa, &Iload_beta, sinVal, cosVal);
 //	inv_clarke(Iload_alfa, Iload_beta, &ifa, &ifb);
 //	iha = Iload_a - ifa;
-	HarmonicDetection(Iload_a, Iload_b, &ifa,&ifb,&ihd, &ihq);
+	HarmonicDetection(Iload_a, Iload_b, &ifa, &ifb, &ihd, &ihq);
 	iha = Iload_a - ifa;
 	/****************************电网电压反馈******************************/
 	clarke(Upcc_a, Upcc_b, &ux, &uy);
 	park(ux, uy, &ux, &uy, sinVal, cosVal);
-	UpccDm = DCL_runDF22(&DF22_Udaverage,ux);
+	UpccDm = DCL_runDF22(&DF22_Udaverage, ux);
 
-	GPIO_WritePin(58, 1);
 	/******************************检测APF是否有故障发生**************************************/
 	if (GPIO_ReadPin(70) == DISABLE)
 	{
@@ -137,19 +136,20 @@ interrupt void APF_Main(void)
 	}
 
 	/*****************检测APF是否启动运行或启动IGBT检查************************/
-	if (APF_STATE_BIT_STOP == APF_State || APF_STATE_BIT_SWSTOP == APF_State
-			|| APF_STATE_BIT_TEST == APF_State || 0 == APF_State)
-	{
-		if (GPIO_ReadPin(54) == SET)	//检查APF启动按钮是否按下
-		{
-			APF_State = 0;
-			GPIO_WritePin(GPIO_LED33, 0);
-		}
-		else
-		{
-			APF_State = APF_STATE_BIT_STOP;
-			GPIO_WritePin(GPIO_LED33, 1);
-		}
+//由于开关检测时好时坏，因此启动均上由上位机确定
+//	if (APF_STATE_BIT_STOP == APF_State || APF_STATE_BIT_SWSTOP == APF_State
+//			|| APF_STATE_BIT_TEST == APF_State || 0 == APF_State)
+//	{
+//		if (GPIO_ReadPin(54) == SET)	//检查APF启动按钮是否按下
+//		{
+//			APF_State = 0;
+//			GPIO_WritePin(GPIO_LED33, 0);
+//		}
+//		else
+//		{
+//			APF_State = APF_STATE_BIT_STOP;
+//			GPIO_WritePin(GPIO_LED33, 1);
+//		}
 //		if (GPIO_ReadPin(53) == SET)	//检查APF是否启动IGBT检测
 //		{
 //			APF_State = APF_STATE_BIT_TEST;
@@ -160,8 +160,7 @@ interrupt void APF_Main(void)
 //			APF_State = APF_STATE_BIT_STOP;
 //			GPIO_WritePin(GPIO_LED34, 1);
 //		}
-	}
-
+//	}
 	/*****************************根据APF的状态进行操作*************************************/
 	if (0 == APF_State)	//如果APF启动了
 	{
@@ -293,9 +292,27 @@ interrupt void APF_Main(void)
 	}
 	else
 	{
-		if (APF_State == APF_STATE_BIT_STOP)	//可以防止重复执行初始化
+		if (APF_STATE_BIT_TEST == APF_State)
 		{
-//			APF_State |= APF_STATE_BIT_STOP;	//TODO 请改过来，防止这一段代码重复执行
+			/* Main Output Enable */
+			EALLOW;
+			EPwm2Regs.TZCLR.bit.OST = 1;
+			EPwm3Regs.TZCLR.bit.OST = 1;
+			EPwm4Regs.TZCLR.bit.OST = 1;
+			EPwm6Regs.TZCLR.bit.OST = 1;
+			EPwm7Regs.TZCLR.bit.OST = 1;
+			EPwm8Regs.TZCLR.bit.OST = 1;
+			EDIS;
+			EPwm2Regs.CMPA.bit.CMPA = 500;
+			EPwm3Regs.CMPA.bit.CMPA = 1000;
+			EPwm4Regs.CMPA.bit.CMPA = 1500;
+			EPwm6Regs.CMPA.bit.CMPA = 500;
+			EPwm7Regs.CMPA.bit.CMPA = 1000;
+			EPwm8Regs.CMPA.bit.CMPA = 1500;
+		}
+		else
+		{
+			APF_State |= APF_STATE_BIT_STOP;
 			/* Main Output Disable */
 			EALLOW;
 			EPwm2Regs.TZFRC.bit.OST = 1;
@@ -334,48 +351,30 @@ interrupt void APF_Main(void)
 			memset_fast(RpBuffer[0], 0, POINT_NUM * 2);	//这两条代码比较耗时
 			memset_fast(RpBuffer[1], 0, POINT_NUM * 2);
 		}
-		else if (APF_STATE_BIT_TEST == APF_State)
-		{
-			/* Main Output Enable */
-			EALLOW;
-			EPwm2Regs.TZCLR.bit.OST = 1;
-			EPwm3Regs.TZCLR.bit.OST = 1;
-			EPwm4Regs.TZCLR.bit.OST = 1;
-			EPwm6Regs.TZCLR.bit.OST = 1;
-			EPwm7Regs.TZCLR.bit.OST = 1;
-			EPwm8Regs.TZCLR.bit.OST = 1;
-			EDIS;
-			EPwm2Regs.CMPA.bit.CMPA = 500;
-			EPwm3Regs.CMPA.bit.CMPA = 1000;
-			EPwm4Regs.CMPA.bit.CMPA = 1500;
-			EPwm6Regs.CMPA.bit.CMPA = 500;
-			EPwm7Regs.CMPA.bit.CMPA = 1000;
-			EPwm8Regs.CMPA.bit.CMPA = 1500;
-		}
 		UdcRampRef = Udc_average;
 		compensatepercentage = 0;
 	} /*end if (0 == APF_State)*/
 	PointCnt = (PointCnt + 1) % POINT_NUM;
-	GPIO_WritePin(58, 0);	//查看事个控制程序的中断时间
 
 ////	park(100*cosVal,100*sinVal,&Iload_d,&Iload_q,sinVal,cosVal);
-//	graph_data1[i] = Iapf_a;
-//	graph_data2[i] = Iapf_b;
-//	graph_data3[i] = UdcC;
-////	graph_data4[i] = Iload_b;
-//	i++;
-//	if (i >= 500)
-//		i = 0;
+	graph_data1[i] = Upcc_ab;
+	graph_data2[i] = Upcc_bc;
+//	graph_data3[i] = Iload_a;
+//	graph_data4[i] = Iload_b;
+	i++;
+	if (i >= 500)
+		i = 0;
 
-	ExtDA_Output(0, VectorAngle * 500 + 4096);
-	ExtDA_Output(1, Upcc_a * 50 + 4096);
-	ExtDA_Output(2, Upcc_ab * 100 + 4096);
-	ExtDA_Output(3, Upcc_bc * 100 + 4096);
-	ExtDA_Output(4, Iapf_a * 100 + 4096);
-	ExtDA_Output(5, iha * 1000 + 4096);
-	ExtDA_Output(6, cosVal * 1000 + 4096);
-	ExtDA_Output(7, Iload_d * 100 + 4096);
+	ExtDA_Output(0, VectorAngle * 500 + 4096);  //DA8
+	ExtDA_Output(1, Upcc_a * 1 + 4096);			//DA7
+	ExtDA_Output(2, Upcc_ab * 1 + 4096);		//DA6
+	ExtDA_Output(3, Upcc_bc * 1 + 4096);		//DA5
+	ExtDA_Output(4, Iapf_a * 100 + 4096);		//DA4
+	ExtDA_Output(5, iha * 1000 + 4096);			//DA3
+	ExtDA_Output(6, cosVal * 1000 + 4096);		//DA2
+	ExtDA_Output(7, Iload_d * 100 + 4096);		//DA1
 
+	GPIO_WritePin(58, 0);	//查看事个控制程序的中断时间
 	AdcaRegs.ADCINTFLGCLR.bit.ADCINT1 = 1; //clear INT1 flag
 	PieCtrlRegs.PIEACK.all = PIEACK_GROUP1;
 
@@ -395,7 +394,7 @@ static void Para_Init(void)
 	UdcRef = DC_REF_DEFAULT;
 	QRef = Q_REF_DEFAULT;
 	CmpsateSet = 0;
-	APF_State = APF_STATE_BIT_SWSTOP;
+	APF_State = APF_STATE_BIT_STOP;
 
 	RpGain = 0;
 	RpKr = 0.98;
@@ -419,11 +418,11 @@ static void Para_Init(void)
 		DF22_Ihq = df22;
 	}
 	UdFilter.sum = 0;
-	memset_fast(UdFilter.data,0,256*2);
+	memset_fast(UdFilter.data, 0, 256 * 2);
 	IhdFilter.sum = 0;
-	memset_fast(IhdFilter.data,0,256*2);
+	memset_fast(IhdFilter.data, 0, 256 * 2);
 	IhqFilter.sum = 0;
-	memset_fast(IhqFilter.data,0,256*2);
+	memset_fast(IhqFilter.data, 0, 256 * 2);
 
 	MainTskTrigger = 0;
 
@@ -541,7 +540,7 @@ static float AverageFilter(float ui, average_filter_instance* filter)
 	avr = filter->sum / 256;
 	filter->data[filter->Cnt] = ui;
 	filter->Cnt++;
-	if(filter->Cnt >= 256)
+	if (filter->Cnt >= 256)
 		filter->Cnt = 0;
 	filter->sum -= filter->data[filter->Cnt];
 
@@ -552,7 +551,7 @@ static void HarmonicDetection(float ia, float ib, float *pifa, float *pifb,
 		float *pihd, float *pihq)
 {
 	float sinval, cosval;
-	float id, iq,ix,iy;
+	float id, iq, ix, iy;
 
 	sincos(VectorAngle, &sinval, &cosval);
 	clarke(ia, ib, &ix, &iy);
