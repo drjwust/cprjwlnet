@@ -414,7 +414,7 @@ void InitEPwmx(volatile struct EPWM_REGS *EPwmxRegs)
 	EDIS;
 
 	// Interrupt where we will change the Compare Values
-	EPwmxRegs->ETSEL.bit.INTSEL = ET_CTR_ZERO;     // Select INT on Zero event
+	EPwmxRegs->ETSEL.bit.INTSEL = ET_CTR_PRDZERO;    // Select INT on Zero event
 	EPwmxRegs->ETSEL.bit.INTEN = 0;                // Enable INT
 	EPwmxRegs->ETPS.bit.INTPRD = ET_3RD;           // Generate INT on 3rd event
 

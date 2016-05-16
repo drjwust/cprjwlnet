@@ -147,7 +147,7 @@ void SetupADC(void)
 
 	//determine minimum acquisition window (in SYSCLKS) based on resolution
 	if(ADC_RESOLUTION_12BIT == AdcaRegs.ADCCTL2.bit.RESOLUTION){
-		acqps = 300; //75ns-14
+		acqps = 149; //75ns-14 TODO 300改成99，将转换时间缩小了3倍
 	}
 	else { //resolution is 16-bit
 		acqps = 63; //320ns
@@ -165,7 +165,7 @@ void SetupADC(void)
     AdcaRegs.ADCSOC2CTL.bit.CHSEL = 4;  //SOC0 will convert pin A4
     AdcaRegs.ADCSOC2CTL.bit.ACQPS = acqps; //sample window is 100 SYSCLK cycles
     AdcaRegs.ADCSOC2CTL.bit.TRIGSEL = 7; //trigger on ePWM2 SOCA
-    AdcaRegs.ADCSOC3CTL.bit.CHSEL = 5;  //SOC1 will convert pin A5	todo 14请改成5
+    AdcaRegs.ADCSOC3CTL.bit.CHSEL = 5;  //SOC1 will convert pin A5
     AdcaRegs.ADCSOC3CTL.bit.ACQPS = acqps; //sample window is 100 SYSCLK cycles
     AdcaRegs.ADCSOC3CTL.bit.TRIGSEL = 7; //trigger on ePWM2 SOCA
 
@@ -222,7 +222,7 @@ void SetupADC(void)
     AdcdRegs.ADCSOC1CTL.bit.ACQPS = acqps; //sample window is 100 SYSCLK cycles
     AdcdRegs.ADCSOC2CTL.bit.CHSEL = 2;  //SOC0 will convert pin D2
     AdcdRegs.ADCSOC2CTL.bit.ACQPS = acqps; //sample window is 100 SYSCLK cycles
-    AdcdRegs.ADCSOC3CTL.bit.CHSEL = 14;  //SOC1 will convert pin D3
+    AdcdRegs.ADCSOC3CTL.bit.CHSEL = 3;  //SOC1 will convert pin D3
     AdcdRegs.ADCSOC3CTL.bit.ACQPS = acqps; //sample window is 100 SYSCLK cycles
 
     AdcdRegs.ADCSOC0CTL.bit.TRIGSEL = 7; //trigger on ePWM2 SOCA

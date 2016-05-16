@@ -38,12 +38,12 @@ static void HarmonicDetection(float ia, float ib, float *pifa, float *pifb,
 interrupt void FaultProcess(void)
 {
 
-	EPwm2Regs.AQCSFRC.all = 5;	//AB的输出连续强制为低
-	EPwm3Regs.AQCSFRC.all = 5;
-	EPwm4Regs.AQCSFRC.all = 5;
-	EPwm6Regs.AQCSFRC.all = 5;
-	EPwm7Regs.AQCSFRC.all = 5;
-	EPwm8Regs.AQCSFRC.all = 5;
+	EPwm2Regs.TZCLR.bit.OST = 1;
+	EPwm3Regs.TZCLR.bit.OST = 1;
+	EPwm4Regs.TZCLR.bit.OST = 1;
+	EPwm6Regs.TZCLR.bit.OST = 1;
+	EPwm7Regs.TZCLR.bit.OST = 1;
+	EPwm8Regs.TZCLR.bit.OST = 1;
 
 	EALLOW;
 	EPwm2Regs.TZCLR.bit.CBC = 1;
@@ -96,11 +96,12 @@ interrupt void APF_Main(void)
 //	iha = Iload_a - ifa;
 	HarmonicDetection(Iload_a, Iload_b, &ifa, &ifb, &ihd, &ihq);
 	iha = Iload_a - ifa;
+	ihb = Iload_b - ifb;
 	/****************************电网电压反馈******************************/
 	clarke(Upcc_a, Upcc_b, &ux, &uy);
 	park(ux, uy, &ux, &uy, sinVal, cosVal);
 	UpccDm = DCL_runDF22(&DF22_Udaverage, ux);
-
+//	GPIO_WritePin(58,0);
 	/******************************检测APF是否有故障发生**************************************/
 	if (GPIO_ReadPin(70) == DISABLE)
 	{
@@ -126,14 +127,14 @@ interrupt void APF_Main(void)
 	{
 		APF_State &= ~ APF_STATE_BIT_OC2;
 	}
-	if (GPIO_ReadPin(71) == DISABLE)
-	{
-		APF_State |= APF_STATE_BIT_IGBT_ERR;
-	}
-	else
-	{
-		APF_State &= ~ APF_STATE_BIT_IGBT_ERR;
-	}
+//	if (GPIO_ReadPin(71) == DISABLE)	//TODO 由于IGBT的问题，不检测短路保护
+//	{
+//		APF_State |= APF_STATE_BIT_IGBT_ERR;
+//	}
+//	else
+//	{
+//		APF_State &= ~ APF_STATE_BIT_IGBT_ERR;
+//	}
 
 	/*****************检测APF是否启动运行或启动IGBT检查************************/
 //由于开关检测时好时坏，因此启动均上由上位机确定
@@ -167,17 +168,19 @@ interrupt void APF_Main(void)
 		/*
 		 * 直流母线平均电压控制
 		 */
-		UdcRampRef += 60.0 * APF_SWITCH_PERIOD;	//1s内给定值会增加60V
+		UdcRampRef += 20.0 * APF_SAMPLE_PERIOD;	//1s内给定值会增加20V
 		if (UdcRampRef > UdcRef)
 		{
 			UdcRampRef = UdcRef;
 		}
-		udcp_out = pid_calculate(&pid_instance_Udcp, Udc_average - UdcRampRef);
+		PI_Udcp.Umax = 30;	//用于直流母线电压调节的电流不可超过30A
+		PI_Udcp.Umin = -30;
+		udcp_out = DCL_runPI(&PI_Udcp,Udc_average,UdcRampRef);
 
 		if ((UdcRampRef == UdcRef) && ((UdcRef - Udc_average) < 30)
 				&& ((UdcRef - Udc_average) > -30))	//只有稳压结束后，才会进行谐波补偿
 		{
-			compensatepercentage += 100.0 * APF_SWITCH_PERIOD;	//1s内百分比会上增加100%
+			compensatepercentage += 30.0 * APF_SAMPLE_PERIOD;	//1s内百分比会上增加30%
 			if (compensatepercentage > CmpsateSet)
 			{
 				compensatepercentage = CmpsateSet;
@@ -188,19 +191,34 @@ interrupt void APF_Main(void)
 
 		/******************直流母线相间平衡基波负序电流计算********************/
 		clarke(Udc_average - UdcA, Udc_average - UdcB, &temp_alfa, &temp_beta);
-		temp_alfa = pid_calculate(&pid_instance_Udcn_d, temp_alfa);
-		temp_beta = pid_calculate(&pid_instance_Udcn_q, temp_beta);
+		//用于直线母线电压平衡调节的电流不可以超过30A
+		PI_Udcn_d.Umax = 30;
+		PI_Udcn_d.Umin = -30;
+		PI_Udcn_q.Umax = 30;
+		PI_Udcn_q.Umin = -30;
+		temp_alfa = DCL_runPI(&PI_Udcn_d, temp_alfa,0);
+		temp_beta = DCL_runPI(&PI_Udcn_q, temp_beta,0);
 		sincos(VectorAngle * 2, &sinVal, &cosVal);
 		inv_park(temp_alfa, temp_beta, &temp_alfa, &temp_beta, sinVal, cosVal);
 		/****************************dq轴电流控制******************************/
-		//电流环给定计算
-		temp_d = udcp_out - temp_alfa - Iapf_d + ihd * compensatepercentage;
-		temp_q = temp_beta - Iapf_q + ihq * compensatepercentage
+		//电流环给定值计算
+//		ihd = ihq = 0;
+		temp_d = udcp_out - temp_alfa + ihd * 0.01 * compensatepercentage;
+		temp_q = temp_beta + ihq * compensatepercentage * 0.01
 				+ QRef * compensatepercentage * 0.01 * 1.414213562f;
 		//PI调节
-		temp_alfa = pid_calculate(&pid_instance_Ialfa, temp_d);
-		temp_beta = pid_calculate(&pid_instance_Ibeta, temp_q);
+		PI_Ialfa.Umax = Udc_average;
+		PI_Ialfa.Umin = -Udc_average;
+		PI_Ibeta.Umax = Udc_average;
+		PI_Ibeta.Umin = -Udc_average;
+		temp_alfa = DCL_runPI(&PI_Ialfa, temp_d, Iapf_d);
+		temp_beta = DCL_runPI(&PI_Ibeta, temp_q, Iapf_q);
+
 		//重复控制
+		temp_d -= Iapf_d;
+		temp_q -= Iapf_q;
+		DispData1 = temp_d;
+		DispData2 = temp_q;
 		RpBuffer[0][PointCnt] = temp_d + RpKr * RpBuffer[0][PointCnt];
 		RpBuffer[1][PointCnt] = temp_q + RpKr * RpBuffer[1][PointCnt];
 
@@ -212,26 +230,33 @@ interrupt void APF_Main(void)
 		temp_alfa += error_alfa * RpGain + UpccDm;
 		temp_beta += error_beta * RpGain;
 		/*****************************坐标逆变换*******************************/
+		sincos(VectorAngle, &sinVal, &cosVal);
 		inv_park(temp_alfa, temp_beta, &temp_alfa, &temp_beta, sinVal, cosVal);
 		inv_clarke(temp_alfa, temp_beta, &pwm_a, &pwm_b);
 
-		pwm_c = -pwm_a - pwm_b;
+		/*************************逆变器死区时间补偿***************************/
+//		float dtcmpsena,dtcmpsenb,dtcmpsenc;
+//		if (Iapf_a > 0.3)
+//			dtcmpsena = UdcA*
+//		pwm_c = -pwm_a - pwm_b;
+
+
 
 		/*
 		 * 输出PWM波，单极性倍频PWM调制
 		 */
-		if (UdcA < DC_MIN_VOLTAGE)	//直流母线的电压值，不应低于整流电压值
-		{
-			UdcA = DC_MIN_VOLTAGE;
-		}
-		if (UdcB < DC_MIN_VOLTAGE)
-		{
-			UdcB = DC_MIN_VOLTAGE;
-		}
-		if (UdcC < DC_MIN_VOLTAGE)
-		{
-			UdcC = DC_MIN_VOLTAGE;
-		}
+//		if (UdcA < DC_MIN_VOLTAGE)	//直流母线的电压值，不应低于整流电压值
+//		{
+//			UdcA = DC_MIN_VOLTAGE;
+//		}
+//		if (UdcB < DC_MIN_VOLTAGE)
+//		{
+//			UdcB = DC_MIN_VOLTAGE;
+//		}
+//		if (UdcC < DC_MIN_VOLTAGE)
+//		{
+//			UdcC = DC_MIN_VOLTAGE;
+//		}
 		pwm_a = pwm_a / UdcA * 0.5;
 		pwm_b = pwm_b / UdcB * 0.5;
 		pwm_c = pwm_c / UdcC * 0.5;
@@ -306,9 +331,9 @@ interrupt void APF_Main(void)
 			EPwm2Regs.CMPA.bit.CMPA = 500;
 			EPwm3Regs.CMPA.bit.CMPA = 1000;
 			EPwm4Regs.CMPA.bit.CMPA = 1500;
-			EPwm6Regs.CMPA.bit.CMPA = 500;
-			EPwm7Regs.CMPA.bit.CMPA = 1000;
-			EPwm8Regs.CMPA.bit.CMPA = 1500;
+			EPwm6Regs.CMPA.bit.CMPA = 2000;
+			EPwm7Regs.CMPA.bit.CMPA = 2500;
+			EPwm8Regs.CMPA.bit.CMPA = 3000;
 		}
 		else
 		{
@@ -323,11 +348,17 @@ interrupt void APF_Main(void)
 			EPwm8Regs.TZFRC.bit.OST = 1;
 			EDIS;
 
-			pid_reset(&pid_instance_Udcp);
-			pid_reset(&pid_instance_Udcn_d);
-			pid_reset(&pid_instance_Udcn_q);
-			pid_reset(&pid_instance_Ialfa);
-			pid_reset(&pid_instance_Ibeta);
+			//PI调节器的输出要清零
+			PI_Udcp.i10 = 0;
+			PI_Udcp.i6 = 0;
+			PI_Udcn_d.i10 = 0;
+			PI_Udcn_d.i6 = 0;
+			PI_Udcn_q.i10 = 0;
+			PI_Udcn_q.i6 = 0;
+			PI_Ialfa.i10 = 0;
+			PI_Ialfa.i6 = 0;
+			PI_Ibeta.i10 = 0;
+			PI_Ibeta.i6 = 0;
 
 			if (4000 == RpCutoffFreqence)
 			{
@@ -356,23 +387,27 @@ interrupt void APF_Main(void)
 	} /*end if (0 == APF_State)*/
 	PointCnt = (PointCnt + 1) % POINT_NUM;
 
-////	park(100*cosVal,100*sinVal,&Iload_d,&Iload_q,sinVal,cosVal);
-	graph_data1[i] = Upcc_ab;
-	graph_data2[i] = Upcc_bc;
+//	DispData1 = UpccDm;
+//	DispData2 = Iload_b;
+	graph_data1[i] = DispData1;
+	graph_data2[i] = DispData2;
 //	graph_data3[i] = Iload_a;
-//	graph_data4[i] = Iload_b;
+//	graph_data4[i] = Iapf_b;
 	i++;
 	if (i >= 500)
 		i = 0;
 
+#define DAC_IK_100mV_1A	 (4096/30)
+#define DAC_IK_10mV_1A	 (4096/300)
+
 	ExtDA_Output(0, VectorAngle * 500 + 4096);  //DA8
-	ExtDA_Output(1, Upcc_a * 1 + 4096);			//DA7
-	ExtDA_Output(2, Upcc_ab * 1 + 4096);		//DA6
-	ExtDA_Output(3, Upcc_bc * 1 + 4096);		//DA5
-	ExtDA_Output(4, Iapf_a * 100 + 4096);		//DA4
-	ExtDA_Output(5, iha * 1000 + 4096);			//DA3
-	ExtDA_Output(6, cosVal * 1000 + 4096);		//DA2
-	ExtDA_Output(7, Iload_d * 100 + 4096);		//DA1
+	ExtDA_Output(1, Upcc_a * 50 + 4096);		//DA7
+	ExtDA_Output(2, Iload_a * DAC_IK_10mV_1A * 10 + 4096);		//DA6
+	ExtDA_Output(3, ifa * DAC_IK_10mV_1A * 10 + 4096);		//DA5
+	ExtDA_Output(4, iha * DAC_IK_10mV_1A * 10 + 4096);		//DA4
+	ExtDA_Output(5, Iapf_a * DAC_IK_10mV_1A * 10 + 4096);			//DA3
+	ExtDA_Output(6, DispData1 * DAC_IK_10mV_1A * 50 + 4096);		//DA2
+	ExtDA_Output(7, DispData2 * DAC_IK_10mV_1A * 20 + 4096);		//DA1
 
 	GPIO_WritePin(58, 0);	//查看事个控制程序的中断时间
 	AdcaRegs.ADCINTFLGCLR.bit.ADCINT1 = 1; //clear INT1 flag
@@ -413,16 +448,21 @@ static void Para_Init(void)
 	}
 	{
 		DF22 df22 = DF22_70Hz;
-		DF22_Udaverage = df22;
-		DF22_Ihd = df22;
-		DF22_Ihq = df22;
+		DF22_Ihpd = df22;
+		DF22_Ihpq = df22;
+		DF22_Ihnd = df22;
+		DF22_Ihnq = df22;
 	}
-	UdFilter.sum = 0;
-	memset_fast(UdFilter.data, 0, 256 * 2);
-	IhdFilter.sum = 0;
-	memset_fast(IhdFilter.data, 0, 256 * 2);
-	IhqFilter.sum = 0;
-	memset_fast(IhqFilter.data, 0, 256 * 2);
+	{
+		DF22 df22 = DF22_15Hz;
+		DF22_Udaverage = df22;
+	}
+//	UdFilter.sum = 0;
+//	memset_fast(UdFilter.data, 0, 256 * 2);
+//	IhdFilter.sum = 0;
+//	memset_fast(IhdFilter.data, 0, 256 * 2);
+//	IhqFilter.sum = 0;
+//	memset_fast(IhqFilter.data, 0, 256 * 2);
 
 	MainTskTrigger = 0;
 
@@ -430,36 +470,20 @@ static void Para_Init(void)
 
 static void PID_Init(void)
 {
-	pid_instance_Pll.Kp = 10;
-	pid_instance_Pll.Ki = 10 * APF_SWITCH_PERIOD;
-	pid_instance_Pll.Kd = 0;
-	pid_init(&pid_instance_Pll, ENABLE);
-
-	pid_instance_Ialfa.Kp = 8;
-	pid_instance_Ialfa.Ki = 2 * APF_SWITCH_PERIOD;
-	pid_instance_Ialfa.Kd = 0;
-	pid_init(&pid_instance_Ialfa, ENABLE);
-
-	pid_instance_Ibeta.Kp = 8;
-	pid_instance_Ibeta.Ki = 2 * APF_SWITCH_PERIOD;
-	pid_instance_Ibeta.Kd = 0;
-	pid_init(&pid_instance_Ibeta, ENABLE);
-
-	pid_instance_Udcp.Kp = 0.5;
-	pid_instance_Udcp.Ki = 1 * APF_SWITCH_PERIOD;
-	pid_instance_Udcp.Kd = 0;
-	pid_init(&pid_instance_Udcp, ENABLE);
-
-	pid_instance_Udcn_d.Kp = 0.5;
-	pid_instance_Udcn_d.Ki = 1 * APF_SWITCH_PERIOD;
-	pid_instance_Udcn_d.Kd = 0;
-	pid_init(&pid_instance_Udcn_d, ENABLE);
-
-	pid_instance_Udcn_q.Kp = 0.5;
-	pid_instance_Udcn_q.Ki = 1 * APF_SWITCH_PERIOD;
-	pid_instance_Udcn_q.Kd = 0;
-	pid_init(&pid_instance_Udcn_q, ENABLE);
+	PI_Ialfa = (PI
+			) PI_CUR_DEFALUT;
+	PI_Ibeta = (PI
+			) PI_CUR_DEFALUT;
+	PI_Udcn_d = (PI
+			) PI_VLT_DEFALUT;
+	PI_Udcn_q = (PI
+			) PI_VLT_DEFALUT;
+	PI_Udcp = (PI
+			) PI_VLT_DEFALUT;
+	PI_Pll = (PI
+			) PI_PLL_DEFALUT;
 }
+
 static float GetPllAngle(float ua, float ub)
 {
 	static float theta = 0;
@@ -469,8 +493,6 @@ static float GetPllAngle(float ua, float ub)
 
 	clarke(ua, ub, &ux, &uy);
 	sincos(theta, &valsin, &valcos);
-//	valsin = sin(theta);
-//	valcos = cos(theta);
 	park(ux, uy, &ud, &uq, valsin, valcos);
 
 	if (ud <= 0)
@@ -478,8 +500,8 @@ static float GetPllAngle(float ua, float ub)
 		ud = -ud + 0.001;
 	}
 	uq = uq / ud;
-	w = pid_calculate(&pid_instance_Pll, uq) + 100 * PI_CONST;
-	theta += w * APF_SWITCH_PERIOD;
+	w = DCL_runPI(&PI_Pll, uq,0) + 100 * PI_CONST;
+	theta += w * APF_SAMPLE_PERIOD;
 	if (theta > 2 * PI_CONST)
 	{
 		theta -= 2 * PI_CONST;
@@ -551,21 +573,32 @@ static void HarmonicDetection(float ia, float ib, float *pifa, float *pifb,
 		float *pihd, float *pihq)
 {
 	float sinval, cosval;
-	float id, iq, ix, iy;
+	float ipd, ipq, ind, inq, ialfa, ibeta, tpa, tpb, tna, tnb;
+	static float ipx = 0, ipy = 0, inx = 0, iny = 0;
 
-	sincos(VectorAngle, &sinval, &cosval);
-	clarke(ia, ib, &ix, &iy);
-	park(ix, iy, &id, &iq, sinval, cosval);
+	clarke(ia, ib, &ialfa, &ibeta);
+	sincos(VectorAngle, &sinval, &cosval);	//正序PARK变换
+	park(ialfa, ibeta, &ipd, &ipq, sinval, cosval);
+	sincos(-VectorAngle, &sinval, &cosval);	//负序PARK变换
+	park(ialfa, ibeta, &ind, &inq, sinval, cosval);
+	sincos(2 * VectorAngle, &sinval, &cosval);	//正序2W-PARK变换
+	park(inx, iny, &tpa, &tpb, sinval, cosval);
+	sincos(-2 * VectorAngle, &sinval, &cosval);	//负序2W-PARK变换
+	park(ipx, ipy, &tna, &tnb, sinval, cosval);
 
-	ix = AverageFilter(id, &IhdFilter);
-	iy = AverageFilter(iq, &IhqFilter);
+	ipx = DCL_runDF22(&DF22_Ihpd, ipd - tpa);
+	ipy = DCL_runDF22(&DF22_Ihpq, ipq - tpb);
+	inx = DCL_runDF22(&DF22_Ihnd, ind - tna);
+	iny = DCL_runDF22(&DF22_Ihnq, inq - tnb);
 
-//	ix = DCL_runDF22(&DF22_Ihd,id);
-//	iy = DCL_runDF22(&DF22_Ihq,id);
+	*pihd = ipd - tpa - ipx;
+	*pihq = ipq - tpb - ipy;
 
-	*pihd = id - ix;
-	*pihq = id - iy;
-	inv_park(ix, iy, &id, &iq, sinval, cosval);
-	inv_clarke(id, iq, pifa, pifb);
+//	DispData1 = ix;
+//	DispData2 = iy;
+
+	sincos(VectorAngle, &sinval, &cosval);	//正序PARK变换
+	inv_park(tpa + ipx, tpb + ipy, &ialfa, &ibeta, sinval, cosval);
+	inv_clarke(ialfa, ibeta, pifa, pifb);
 }
 

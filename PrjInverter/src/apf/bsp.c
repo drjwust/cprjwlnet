@@ -63,16 +63,16 @@ void BSP_Init(void)
 	DaccRegs.DACOUTEN.bit.DACOUTEN = 1;
 	EDIS;
 
-	SetOC1Value(30);
-	SetOC2Value(50);
-	SetOVValue(50);
+	SetOC1Value(50);
+	SetOC2Value(200);
+	SetOVValue(400);
 
 	// Configure EPWM
 	EALLOW;
 	CpuSysRegs.PCLKCR0.bit.TBCLKSYNC = 0;
 
 	EPwm2Regs.ETSEL.bit.SOCAEN = 1;	        // Disable SOC on A group
-	EPwm2Regs.ETSEL.bit.SOCASEL = 2;	        // Select SOC on up-count
+	EPwm2Regs.ETSEL.bit.SOCASEL = ET_CTR_PRDZERO;	  // Select SOC on up-count
 	EPwm2Regs.ETPS.bit.SOCAPRD = 1;		        // Generate pulse on 1st event
 
 	EDIS;
@@ -145,7 +145,7 @@ void ExtIO_Init(void)
  */
 void SetOC1Value(float i)
 {
-	DacaRegs.DACVALS.bit.DACVALS = i * 4096 / 100;
+	DacaRegs.DACVALS.bit.DACVALS = i * 37;
 }
 /*
  * 设置逆变器#2的过流值，单位为A
@@ -155,9 +155,9 @@ void SetOC2Value(float i)
 	/*
 	 * 传感器为CHB-200SF，变比为：200A ~ 100mA
 	 * DAC REFH=3.3V，12Bit DAC
-	 * 测量电阻为29.5欧
+	 * 测量电阻为59欧，K= 0.1 / 200 * 59 / 3.3 * 4096 = 36.6
 	 */
-	DacbRegs.DACVALS.bit.DACVALS = i * 18.3078;
+	DacbRegs.DACVALS.bit.DACVALS = i * 37;
 }
 /*
  * 设置直流母线的过压值，单位为V
@@ -165,37 +165,37 @@ void SetOC2Value(float i)
 void SetOVValue(float u)
 {
 	/*
-	 * 传感器为CHV-25P，变比为10mA ~ 25mA,原边电阻 170K欧;
+	 * 传感器为CHV-25P，变比为10mA ~ 25mA,原边电阻 60K欧;
 	 * DAC REFH = 3.3V，12Bit DAC
-	 * 测量电阻 59欧
+	 * 测量电阻 59欧, K = 1 / 0.109
 	 */
-	DaccRegs.DACVALS.bit.DACVALS = u * 4.42;
+	DaccRegs.DACVALS.bit.DACVALS = u * 9.17;
 }
 
 void ADValueConvert(void)
 {
 	/*
-	 * 以下电流定标适用于，电流传感器变比为2000：1，采样电阻为29.5欧
+	 * 以下电流定标适用于，电流传感器变比为2000：1，采样电阻为59欧
 	 */
 //	static float cali_i1ap = 0.04622, cali_i1an = 0.04584, cali_i1bp = 0.04775,
 //			cali_i1bn = 0.04341;
-	static float cali_i1ap = 1, cali_i1an = 1, cali_i1bp = 1, cali_i1bn = 1;
-//	static float cali_i2ap = 0.01275, cali_i2an = 0.01416, cali_i2bp = 0.01344,
-//			cali_i2bn = 0.0124;
-	static float cali_i2ap = 1, cali_i2an = 1, cali_i2bp = 1, cali_i2bn = 1;
-	static float cali_u1a = 1, cali_u1b = 1;
+	static float cali_i1a = 1, cali_i1b = 1;
+//	static float cali_i2a = 1, cali_i2b = 1;
+	static float cali_i2a = 0.271, cali_i2b = 0.269;
+	static float cali_u1a = 0.0253, cali_u1b = 0.0255;
 //	static float cali_u1a = 0.437, cali_u1b = 0.437;
 	static float cali_u2a = 0.0253, cali_u2b = 0.0256;
-//	static float cali_u2a = 0.4682, cali_u2b = 0.4651;
+//	static float cali_u2a = 1, cali_u2b = 1;
 
-	static float cali_udca = 0.2212, cali_udcb = 0.2234, cali_udcc = 0.2155,
+//	static float cali_udca = 1, cali_udcb = 1, cali_udcc = 01, cali_udcd = 1; //直流母线电压增益校正系数
+	static float cali_udca = 0.109, cali_udcb = 0.109, cali_udcc = 0.109,
 			cali_udcd = 1; //直流母线电压增益校正系数
 
 	static uint16_t i = 0;
 	static float u1a0, u2a0, u1b0, u2b0;
+	static float i1a0, i2a0, i1b0, i2b0;
+	float i1ap,i1an,i1bp,i1bn,i2ap,i2an,i2bp,i2bn;
 	float i1a, i1b, i1c, i2a, i2b, i2c;
-	float i1ap, i1an, i1bp, i1bn;
-	float i2ap, i2an, i2bp, i2bn;
 	float u1a, u1b, u1c, u2a, u2b, u2c;
 	float udca, udcb, udcc, udcd;
 
@@ -204,24 +204,24 @@ void ADValueConvert(void)
 	 * 此处已按照XXX_Adc.c中配置更正，i1a,i1b,i2a,i2b,u2a,u2b等变量与接口一致。
 	 */
 	i1ap = AdcaResultRegs.ADCRESULT0;
-	i1ap *= cali_i1ap;
+//	i1ap *= cali_i1ap;
 	i1an = AdcaResultRegs.ADCRESULT1;
-	i1an *= cali_i1an; //I1A
+//	i1an *= cali_i1an; //I1A
 	i1bp = AdcaResultRegs.ADCRESULT2;
-	i1bp *= cali_i1bp;
+//	i1bp *= cali_i1bp;
 	i1bn = AdcaResultRegs.ADCRESULT3;
-	i1bn *= cali_i1bn; //I1B
+//	i1bn *= cali_i1bn; //I1B
 
 	i2ap = AdcdResultRegs.ADCRESULT0;
-	i2ap *= cali_i2ap;
+//	i2ap *= cali_i2ap;
 	i2an = AdcdResultRegs.ADCRESULT1;
-	i2an *= cali_i2an; //I2A
+//	i2an *= cali_i2an; //I2A
 	i2bp = AdcdResultRegs.ADCRESULT3;
-	i2bp *= cali_i2bp;
+//	i2bp *= cali_i2bp;
 	i2bn = AdcdResultRegs.ADCRESULT2;
-	i2bn *= cali_i2bp; //I2B
+//	i2bn *= cali_i2bp; //I2B
 
-	u1a = (AdcaResultRegs.ADCRESULT3);	//U1A	todo 请改成Adca
+	u1a = (AdcbResultRegs.ADCRESULT3);	//U1A
 	u1b = (AdccResultRegs.ADCRESULT3);	//U1B
 	u2a = (AdcbResultRegs.ADCRESULT1);	//U2A
 	u2b = (AdcbResultRegs.ADCRESULT0);	//U2B
@@ -231,21 +231,39 @@ void ADValueConvert(void)
 	udcc = (AdccResultRegs.ADCRESULT0);	//UDCC
 	udcd = (AdcbResultRegs.ADCRESULT2);	//UDCD
 
-	if (i < APF_SWITCH_FREQ)
+	i1a = -i1ap + i1an;
+	i1b = -i1bp + i1bn;
+	i1c = -i1a - i1b;
+
+	i2a = -i2ap + i2an; 	//必须要注意 电路图里面的PN画反了
+	i2b = -i2bp + i2bn;
+	i2c = -i2a - i2b;
+
+	if (i < APF_SAMPLE_FREQ)
 	{
-		u1a0 += u1a * APF_SWITCH_PERIOD;
-		u1b0 += u1b * APF_SWITCH_PERIOD;
-		u2a0 += u2a * APF_SWITCH_PERIOD;
-		u2b0 += u2b * APF_SWITCH_PERIOD;
+		i1a0 += i1a * APF_SAMPLE_PERIOD;
+		i1b0 += i1b * APF_SAMPLE_PERIOD;
+		i2a0 += i2a * APF_SAMPLE_PERIOD;
+		i2b0 += i2b * APF_SAMPLE_PERIOD;
+
+		u1a0 += u1a * APF_SAMPLE_PERIOD;
+		u1b0 += u1b * APF_SAMPLE_PERIOD;
+		u2a0 += u2a * APF_SAMPLE_PERIOD;
+		u2b0 += u2b * APF_SAMPLE_PERIOD;
 		i++;
 	}
-	i1a = i1ap - i1an;
-	i1b = i1bp - i1bn;
-	i1c = -i1a - i1b;
-//
-	i2a = i2ap - i2an;
-	i2b = i2bp - i2bn;
-	i2c = -i2a - i2b;
+	i1a = (i1a - i1a0) * cali_i1a;
+	i1b = (i1b - i1b0) * cali_i1b;
+
+	i2a = (i2a - i2a0) * cali_i2a;
+	i2b = (i2b - i2b0) * cali_i2b;
+
+//	i1b = i1bp - i1bn;
+//	i1c = -i1a - i1b;
+////
+//	i2a = i2ap - i2an -30;
+//	i2b = i2bp - i2bn;
+//	i2c = -i2a - i2b;
 
 	u1a = (u1a - u1a0) * cali_u1a;
 	u1b = (u1b - u1b0) * cali_u1b;
@@ -271,7 +289,7 @@ void ADValueConvert(void)
 	Upcc_b = (Upcc_bc - Upcc_ab) * 0.3333333333f;
 	Upcc_c = -Upcc_a - Upcc_b;
 
-	Iapf_a = u2a;
+	Iapf_a = -u2a;	//AB两相的电流传感器方向不一样，逆变器内部是流向IGBT
 	Iapf_b = u2b;
 //	Iapf_c = i2c;
 
