@@ -65,7 +65,7 @@ void BSP_Init(void)
 
 	SetOC1Value(50);
 	SetOC2Value(200);
-	SetOVValue(400);
+	SetOVValue(445);
 
 	// Configure EPWM
 	EALLOW;

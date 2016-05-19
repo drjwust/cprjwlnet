@@ -117,6 +117,7 @@ void CANRx_Tsk(void)
 		UdcRef = (ucRXMsgData[0] << 8) | ucRXMsgData[1];
 		QRef = (ucRXMsgData[2] << 8) | ucRXMsgData[3];
 		CmpsateSet = (ucRXMsgData[4] << 8) | ucRXMsgData[5];
+		DeadTimeCmpSet = (ucRXMsgData[6] << 8) | ucRXMsgData[7];
 		break;
 	case 0x205:
 		PI_Udcn_d.Kp = ((ucRXMsgData[0] << 8) | ucRXMsgData[1]) * 0.01;

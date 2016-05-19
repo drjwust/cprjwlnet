@@ -47,6 +47,7 @@ APF_EXT float Udc_average;				//直流母线平均电压，单位V
 APF_EXT float UacRectifier;				//交流电压整流值，单位V
 APF_EXT float VectorAngle;				//电压矢量角度，单位rad
 APF_EXT float GridFrequence;			//电网频率，单位Hz
+APF_EXT float DeadTimeCmpSet;			//逆变器死区时间补偿率，单位%
 APF_EXT Uint16 PointCnt;
 APF_EXT float RpBuffer[2][POINT_NUM];
 APF_EXT float UpccDm;

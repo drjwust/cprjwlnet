@@ -10,7 +10,7 @@
 
 #define APF_SWITCH_FREQ				(256*50)	//APF的开关频率
 #define APF_SAMPLE_FREQ				(256*50*2)	//逆变器采样周期
-#define DEAD_TIME_VALUE				(4.0e-6)	//逆变器的死区时间
+#define DEAD_TIME_VALUE				(2.5e-6)	//逆变器的死区时间
 #define GID_FREQUENCE				(50)		//电网频率
 #define FFT_LENGTH					256
 #define DC_MIN_VOLTAGE				20			//直流母线最低电压

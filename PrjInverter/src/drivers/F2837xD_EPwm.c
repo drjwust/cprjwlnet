@@ -400,8 +400,8 @@ void InitEPwmx(volatile struct EPWM_REGS *EPwmxRegs)
 	EPwmxRegs->DBCTL.bit.OUT_MODE = DB_FULL_ENABLE;
 	EPwmxRegs->DBCTL.bit.POLSEL = DB_ACTV_HIC;
 	EPwmxRegs->DBCTL.bit.IN_MODE = DBA_ALL;
-	EPwmxRegs->DBRED = 2000 / 5;	//4us的死区时间
-	EPwmxRegs->DBFED = 2000 / 5;
+	EPwmxRegs->DBRED = 250;	//2.5us的死区时间
+	EPwmxRegs->DBFED = 250;
 
 	EALLOW;
 //	EPwmxRegs->TZSEL.bit.OSHT1 = TZ_ENABLE;			//TZ1 to EPWM1
