@@ -31,9 +31,9 @@ int main(void)
 			}
 			// LED闪烁表示程序正常运行
 			if (cnt > 2500)
-				GPIO_WritePin(GPIO_LED33,1);
+				GPIO_WritePin(GPIO_LED33, 1);
 			else
-				GPIO_WritePin(GPIO_LED33,0);
+				GPIO_WritePin(GPIO_LED33, 0);
 			//CAN任务
 			if (cnt > 5000)
 			{
@@ -54,38 +54,59 @@ void CANTx_Tsk(void)
 {
 //	static unsigned char msgid = 0x101;
 	static int16 udc;
+	static int16 MsgID = 0X102;
 
-	/*
-	 * 显示电压
-	 */
-	ucTXMsgData[0] = ((int16) UdcA & 0xFF00) >> 8;
-	ucTXMsgData[1] = (int16) UdcA & 0xFF;
-	ucTXMsgData[2] = ((int16) UdcB & 0xFF00) >> 8;
-	ucTXMsgData[3] = (int16) UdcB & 0xFF;
-	ucTXMsgData[4] = ((int16) UdcC & 0xFF00) >> 8;
-	ucTXMsgData[5] = (int16) UdcC & 0xFF;
-	ucTXMsgData[6] = ((int16) UacRectifier & 0xFF00) >> 8;
-	ucTXMsgData[7] = (int16) UacRectifier & 0xFF;
+	switch (MsgID)
+	{
+	case 0X102:
+
+		/*
+		 * 显示电压
+		 */
+		ucTXMsgData[0] = ((int16) UdcA & 0xFF00) >> 8;
+		ucTXMsgData[1] = (int16) UdcA & 0xFF;
+		ucTXMsgData[2] = ((int16) UdcB & 0xFF00) >> 8;
+		ucTXMsgData[3] = (int16) UdcB & 0xFF;
+		ucTXMsgData[4] = ((int16) UdcC & 0xFF00) >> 8;
+		ucTXMsgData[5] = (int16) UdcC & 0xFF;
+		ucTXMsgData[6] = ((int16) UacRectifier & 0xFF00) >> 8;
+		ucTXMsgData[7] = (int16) UacRectifier & 0xFF;
 //	udc++;
 //	ucTXMsgData[6] = ((int16) udc & 0xFF00) >> 8;
 //	ucTXMsgData[7] = (int16) udc & 0xFF;
 
-	sTXCANMessage.ui32MsgID = 0x102;
-	sTXCANMessage.ui32MsgIDMask = 0;
-	sTXCANMessage.ui32Flags = MSG_OBJ_NO_FLAGS;
-	sTXCANMessage.ui32MsgLen = 8;
-	sTXCANMessage.pucMsgData = ucTXMsgData;
-	CANMessageSet(CANA_BASE, 1, &sTXCANMessage, MSG_OBJ_TYPE_TX);
+		sTXCANMessage.ui32MsgID = 0x102;
+		sTXCANMessage.ui32MsgIDMask = 0;
+		sTXCANMessage.ui32Flags = MSG_OBJ_NO_FLAGS;
+		sTXCANMessage.ui32MsgLen = 8;
+		sTXCANMessage.pucMsgData = ucTXMsgData;
+		CANMessageSet(CANA_BASE, 1, &sTXCANMessage, MSG_OBJ_TYPE_TX);
+		break;
+	case 0X103:
 
-	ucTXMsgData[6] = ((int16) APF_State & 0xFF00) >> 8;
-	ucTXMsgData[7] = (int16) APF_State & 0xFF;
+		ucTXMsgData[0] = ((int16) APF_State & 0xFF00) >> 8;
+		ucTXMsgData[1] = (int16) APF_State & 0xFF;
+		ucTXMsgData[2] = ((int16) APF_State & 0xFF00) >> 8;
+		ucTXMsgData[3] = (int16) APF_State & APF_STATE_BIT_OC1;
+		ucTXMsgData[4] = ((int16) APF_State & 0xFF00) >> 8;
+		ucTXMsgData[5] = (int16) APF_State & APF_STATE_BIT_OC2;
+		ucTXMsgData[6] = ((int16) APF_State & 0xFF00) >> 8;
+		ucTXMsgData[7] = (int16) APF_State & APF_STATE_BIT_OV;
 
-	sTXCANMessage.ui32MsgID = 0x108;
-	sTXCANMessage.ui32MsgIDMask = 0;
-	sTXCANMessage.ui32Flags = MSG_OBJ_NO_FLAGS;
-	sTXCANMessage.ui32MsgLen = 8;
-	sTXCANMessage.pucMsgData = ucTXMsgData;
-	CANMessageSet(CANA_BASE, 1, &sTXCANMessage, MSG_OBJ_TYPE_TX);
+		sTXCANMessage.ui32MsgID = 0x103;
+		sTXCANMessage.ui32MsgIDMask = 0;
+		sTXCANMessage.ui32Flags = MSG_OBJ_NO_FLAGS;
+		sTXCANMessage.ui32MsgLen = 8;
+		sTXCANMessage.pucMsgData = ucTXMsgData;
+		CANMessageSet(CANA_BASE, 1, &sTXCANMessage, MSG_OBJ_TYPE_TX);
+		break;
+	default:
+		break;
+	}
+	if (MsgID == 0x102)
+		MsgID = 0X103;
+	else if (MsgID == 0X103)
+		MsgID = 0X0102;
 }
 
 void CANRx_Tsk(void)

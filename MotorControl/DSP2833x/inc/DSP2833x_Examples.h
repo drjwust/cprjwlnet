@@ -107,9 +107,9 @@ extern "C" {
 #include "DSP2833x_GlobalPrototypes.h"         // Prototypes for global functions within the
                                               // .c files.
 
-#include "DSP2833x_ePwm_defines.h"             // Macros used for PWM examples.
+#include "DSP2833x_EPwm_defines.h"             // Macros used for PWM examples.
 #include "DSP2833x_Dma_defines.h"              // Macros used for DMA examples.
-#include "DSP2833x_I2C_defines.h"              // Macros used for I2C examples.
+#include "DSP2833x_I2c_defines.h"              // Macros used for I2C examples.
 
 #define PARTNO_28335  0xEF
 #define PARTNO_28334  0xEE
@@ -121,7 +121,7 @@ extern "C" {
 
 // Include files not used with DSP/BIOS
 #ifndef DSP28_BIOS
-#include "DSP2833x_DefaultISR.h"
+#include "DSP2833x_DefaultIsr.h"
 #endif
 
 

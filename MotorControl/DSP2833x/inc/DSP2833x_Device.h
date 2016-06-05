@@ -111,7 +111,7 @@ typedef long double        float64;
 #include "DSP2833x_EQep.h"               // Enhanced QEP
 #include "DSP2833x_Gpio.h"               // General Purpose I/O Registers
 #include "DSP2833x_I2c.h"                // I2C Registers
-#include "DSP2833x_McBSP.h"              // McBSP
+#include "DSP2833x_Mcbsp.h"              // McBSP
 #include "DSP2833x_PieCtrl.h"            // PIE Control Registers
 #include "DSP2833x_PieVect.h"            // PIE Vector Table
 #include "DSP2833x_Spi.h"                // SPI Registers
@@ -124,11 +124,11 @@ typedef long double        float64;
 #include "math.h"
 #include "ramp.h"
 #include "pi.h"
-#include "theta_calc.h" 
+#include "theta_calc.h"
 #include "ipark.h"			// Include header for the IPARK object
 #include "park.h"
-#include "clarke.h"       		 
-#include "svgen.h"       	// Include header for the SVGENDQ object 
+#include "clarke.h"
+#include "svgen.h"       	// Include header for the SVGENDQ object
 #include "parameters.h"
 
 #if DSP28_28335

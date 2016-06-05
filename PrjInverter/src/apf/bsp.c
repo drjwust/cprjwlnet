@@ -63,9 +63,9 @@ void BSP_Init(void)
 	DaccRegs.DACOUTEN.bit.DACOUTEN = 1;
 	EDIS;
 
-	SetOC1Value(50);
+	SetOC1Value(60);
 	SetOC2Value(200);
-	SetOVValue(445);
+	SetOVValue(420);
 
 	// Configure EPWM
 	EALLOW;
@@ -188,7 +188,7 @@ void ADValueConvert(void)
 //	static float cali_u2a = 1, cali_u2b = 1;
 
 //	static float cali_udca = 1, cali_udcb = 1, cali_udcc = 01, cali_udcd = 1; //直流母线电压增益校正系数
-	static float cali_udca = 0.109, cali_udcb = 0.109, cali_udcc = 0.109,
+	static float cali_udca = 0.104, cali_udcb = 0.104, cali_udcc = 0.104,
 			cali_udcd = 1; //直流母线电压增益校正系数
 
 	static uint16_t i = 0;

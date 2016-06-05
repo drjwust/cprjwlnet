@@ -5,8 +5,8 @@
  *      Author: cecs1
  */
 
-#ifndef INCLUDE_APP_H_
-#define INCLUDE_APP_H_
+#ifndef APP_INCLUDE_APP_H_
+#define APP_INCLUDE_APP_H_
 #include "DCL.h"
 
 #define SAMPLE_FREQUENCE	10000	//Hz
@@ -22,4 +22,4 @@
 
 #endif
 
-#endif /* INCLUDE_APP_H_ */
+#endif /* APP_INCLUDE_APP_H_ */

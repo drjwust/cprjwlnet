@@ -31,6 +31,7 @@ APF_EXT float RpGain;
 APF_EXT float RpKr;
 APF_EXT char RpLeadingBeat;
 APF_EXT Uint16 RpCutoffFreqence;
+APF_EXT Uint16 PointNum;
 
 
 /******************************************************************************/
@@ -84,6 +85,7 @@ APF_EXT DF22 DF22_RpFilter1;
 APF_EXT DF22 DF22_UdcA;
 APF_EXT DF22 DF22_UdcB;
 APF_EXT DF22 DF22_UdcC;
+APF_EXT DF22 DF22_Pll;
 
 APF_EXT char MainTskTrigger;
 APF_EXT tCANMsgObject sTXCANMessage;

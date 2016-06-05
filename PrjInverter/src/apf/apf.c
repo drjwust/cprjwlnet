@@ -89,9 +89,10 @@ interrupt void APF_Main(void)
 	UpccDm = DCL_runDF22(&DF22_Udaverage, ux);
 //	GPIO_WritePin(58,0);
 	/******************************检测APF是否有故障发生**************************************/
-	if (GPIO_ReadPin(70) == DISABLE || UdcA > 360 || UdcB > 360 || UdcC > 360)
+	if (GPIO_ReadPin(70) == DISABLE || UdcA > DC_LINK_WARNING_VALUE
+			|| UdcB > DC_LINK_WARNING_VALUE || UdcC > DC_LINK_WARNING_VALUE)
 	{
-		APF_State |= APF_STATE_BIT_OV;
+		APF_State |= APF_STATE_BIT_OV | APF_STATE_BIT_STOP;
 	}
 	else
 	{
@@ -99,7 +100,7 @@ interrupt void APF_Main(void)
 	}
 	if (GPIO_ReadPin(68) == DISABLE)
 	{
-		APF_State |= APF_STATE_BIT_OC1;
+		APF_State |= APF_STATE_BIT_OC1 | APF_STATE_BIT_STOP;
 	}
 	else
 	{
@@ -107,7 +108,7 @@ interrupt void APF_Main(void)
 	}
 	if (GPIO_ReadPin(69) == DISABLE)
 	{
-		APF_State |= APF_STATE_BIT_OC2;
+		APF_State |= APF_STATE_BIT_OC2 | APF_STATE_BIT_STOP;
 	}
 	else
 	{
@@ -203,18 +204,19 @@ interrupt void APF_Main(void)
 		//重复控制
 		temp_d -= Iapf_d;
 		temp_q -= Iapf_q;
-		DispData1 = temp_d;
-		DispData2 = temp_q;
+//		DispData1 = temp_d;
+//		DispData2 = temp_q;
 		RpBuffer[0][PointCnt] = temp_d + RpKr * RpBuffer[0][PointCnt];
 		RpBuffer[1][PointCnt] = temp_q + RpKr * RpBuffer[1][PointCnt];
 
-		temp = (PointCnt + POINT_NUM - RpLeadingBeat) % POINT_NUM;
+		temp = (PointCnt + PointNum - RpLeadingBeat) % PointNum;
 		//重复控制器的结果需要滤波，去除高频分量
 		error_alfa = DCL_runDF22(&DF22_RpFilter0, RpBuffer[0][temp]);
 		error_beta = DCL_runDF22(&DF22_RpFilter1, RpBuffer[1][temp]);
 
 		temp_alfa += error_alfa * RpGain + UpccDm;
 		temp_beta += error_beta * RpGain;
+
 		/*****************************坐标逆变换*******************************/
 		sincos(VectorAngle, &sinVal, &cosVal);
 		inv_park(temp_alfa, temp_beta, &temp_alfa, &temp_beta, sinVal, cosVal);
@@ -224,25 +226,34 @@ interrupt void APF_Main(void)
 		float dtcmpsena, dtcmpsenb, dtcmpsenc;
 		//A相死区时间补偿
 		if (Iapf_a > 0.3)
-			dtcmpsena = UdcA * 2 * APF_SWITCH_FREQ * DEAD_TIME_VALUE * DeadTimeCmpSet * 0.01;
+			dtcmpsena = UdcA * 2 * APF_SWITCH_FREQ * DEAD_TIME_VALUE
+					* DeadTimeCmpSet * 0.01;
 		else if (Iapf_a < -0.3)
-			dtcmpsena = -UdcA * 2 * APF_SWITCH_FREQ * DEAD_TIME_VALUE * DeadTimeCmpSet * 0.01;
+			dtcmpsena = -UdcA * 2 * APF_SWITCH_FREQ * DEAD_TIME_VALUE
+					* DeadTimeCmpSet * 0.01;
 		else
-			dtcmpsena = UdcA * 2 * APF_SWITCH_FREQ * DEAD_TIME_VALUE * DeadTimeCmpSet * 0.01 * Iapf_a * 3.333;
+			dtcmpsena = UdcA * 2 * APF_SWITCH_FREQ * DEAD_TIME_VALUE
+					* DeadTimeCmpSet * 0.01 * Iapf_a * 3.333;
 		//B相死区时间补偿
 		if (Iapf_b > 0.3)
-			dtcmpsenb = UdcB * 2 * APF_SWITCH_FREQ * DEAD_TIME_VALUE * DeadTimeCmpSet * 0.01;
+			dtcmpsenb = UdcB * 2 * APF_SWITCH_FREQ * DEAD_TIME_VALUE
+					* DeadTimeCmpSet * 0.01;
 		else if (Iapf_b < -0.3)
-			dtcmpsenb = -UdcB * 2 * APF_SWITCH_FREQ * DEAD_TIME_VALUE * DeadTimeCmpSet * 0.01;
+			dtcmpsenb = -UdcB * 2 * APF_SWITCH_FREQ * DEAD_TIME_VALUE
+					* DeadTimeCmpSet * 0.01;
 		else
-			dtcmpsenb = UdcB * 2 * APF_SWITCH_FREQ * DEAD_TIME_VALUE * DeadTimeCmpSet * 0.01 * Iapf_b * 3.333;
+			dtcmpsenb = UdcB * 2 * APF_SWITCH_FREQ * DEAD_TIME_VALUE
+					* DeadTimeCmpSet * 0.01 * Iapf_b * 3.333;
 		//C相死区时间补偿
 		if (Iapf_c > 0.3)
-			dtcmpsenc = UdcC * 2 * APF_SWITCH_FREQ * DEAD_TIME_VALUE * DeadTimeCmpSet * 0.01;
+			dtcmpsenc = UdcC * 2 * APF_SWITCH_FREQ * DEAD_TIME_VALUE
+					* DeadTimeCmpSet * 0.01;
 		else if (Iapf_c < -0.3)
-			dtcmpsenc = -UdcC * 2 * APF_SWITCH_FREQ * DEAD_TIME_VALUE * DeadTimeCmpSet * 0.01;
+			dtcmpsenc = -UdcC * 2 * APF_SWITCH_FREQ * DEAD_TIME_VALUE
+					* DeadTimeCmpSet * 0.01;
 		else
-			dtcmpsenc = UdcC * 2 * APF_SWITCH_FREQ * DEAD_TIME_VALUE * DeadTimeCmpSet * 0.01 * Iapf_c * 3.333;
+			dtcmpsenc = UdcC * 2 * APF_SWITCH_FREQ * DEAD_TIME_VALUE
+					* DeadTimeCmpSet * 0.01 * Iapf_c * 3.333;
 		pwm_a += dtcmpsena;
 		pwm_b += dtcmpsenb;
 		pwm_c += dtcmpsenc;
@@ -389,7 +400,7 @@ interrupt void APF_Main(void)
 		UdcRampRef = Udc_average;
 		compensatepercentage = 0;
 	} /*end if (0 == APF_State)*/
-	PointCnt = (PointCnt + 1) % POINT_NUM;
+	PointCnt = (PointCnt + 1) % PointNum;
 
 //	DispData1 = UpccDm;
 //	DispData2 = Iload_b;
@@ -405,12 +416,12 @@ interrupt void APF_Main(void)
 #define DAC_IK_10mV_1A	 (4096/300)
 
 	ExtDA_Output(0, VectorAngle * 500 + 4096);  //DA8
-	ExtDA_Output(1, Upcc_a * 50 + 4096);		//DA7
-	ExtDA_Output(2, Iload_a * DAC_IK_10mV_1A * 10 + 4096);		//DA6
+	ExtDA_Output(1, Iload_a * DAC_IK_10mV_1A * 10 + 4096);		//DA7
+	ExtDA_Output(2, Iload_b * DAC_IK_10mV_1A * 10 + 4096);		//DA6
 	ExtDA_Output(3, ifa * DAC_IK_10mV_1A * 10 + 4096);		//DA5
 	ExtDA_Output(4, iha * DAC_IK_10mV_1A * 10 + 4096);		//DA4
-	ExtDA_Output(5, Iapf_a * DAC_IK_10mV_1A * 10 + 4096);			//DA3
-	ExtDA_Output(6, DispData1 * DAC_IK_10mV_1A * 50 + 4096);		//DA2
+	ExtDA_Output(5, ifb * DAC_IK_10mV_1A * 10 + 4096);			//DA3
+	ExtDA_Output(6, ihb * DAC_IK_10mV_1A * 10 + 4096);		//DA2
 	ExtDA_Output(7, DispData2 * DAC_IK_10mV_1A * 20 + 4096);		//DA1
 
 	GPIO_WritePin(58, 0);	//查看事个控制程序的中断时间
@@ -446,7 +457,7 @@ static void Para_Init(void)
 		DF22_RpFilter1 = df22;
 	}
 	{
-		DF22 df22 = DF22_2500Hz;
+		DF22 df22 = DF22_500Hz;
 		DF22_UdcA = df22;
 		DF22_UdcB = df22;
 		DF22_UdcC = df22;
@@ -462,6 +473,8 @@ static void Para_Init(void)
 		DF22 df22 = DF22_15Hz;
 		DF22_Udaverage = df22;
 	}
+	DF22_Pll = (DF22
+			) DF22_5Hz;
 //	UdFilter.sum = 0;
 //	memset_fast(UdFilter.data, 0, 256 * 2);
 //	IhdFilter.sum = 0;
@@ -505,7 +518,11 @@ static float GetPllAngle(float ua, float ub)
 		ud = -ud + 0.001;
 	}
 	uq = uq / ud;
-	w = DCL_runPI(&PI_Pll, uq, 0) + 100 * PI_CONST;
+	w = DCL_runPI(&PI_Pll, uq, 0);
+	DCL_runDF22(&DF22_Pll, w);
+	GridFrequence = w * 0.5 / PI_CONST;
+	PointNum = APF_SAMPLE_FREQ / GridFrequence;
+
 	theta += w * APF_SAMPLE_PERIOD;
 	if (theta > 2 * PI_CONST)
 	{
@@ -584,7 +601,7 @@ static void HarmonicDetection(float ia, float ib, float *pifa, float *pifb,
 	clarke(ia, ib, &ialfa, &ibeta);
 	sincos(VectorAngle, &sinval, &cosval);	//正序PARK变换
 	park(ialfa, ibeta, &ipd, &ipq, sinval, cosval);
-#if 0
+#if 1
 	sincos(-VectorAngle, &sinval, &cosval);	//负序PARK变换
 	park(ialfa, ibeta, &ind, &inq, sinval, cosval);
 	sincos(2 * VectorAngle, &sinval, &cosval);	//正序2W-PARK变换

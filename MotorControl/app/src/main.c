@@ -5,8 +5,9 @@
 //位置检测UVW已根据管脚变化改动
 //PWM接口和TZ接口的配置已根据管脚变化更改，其中死区，高有效还是低有效，哪些TZ信号触发封锁还要后续配置。
 //AD采样接口已更改
+#include <app_define.h>
 #include <DCL.h>
-#include <APP.h>
+
 #include "DSP2833x_Device.h"     // DSP2833x Headerfile Include File
 #include "DSP2833x_Examples.h"   // DSP2833x Examples Include File
 #include "variables.h"
@@ -53,10 +54,11 @@ float EstAngle = 0;
 float RealAngle = 0;
 float EstSpeed;
 float RealSpeed;
+float Imax1 = 0, Imax2 = 0;
 
 float GraphData1[500];
 float GraphData2[500];
-float DispData1,DispData2;
+float DispData1, DispData2;
 int16 Cnt = 0;
 
 float P1 = 0.00001;
@@ -257,6 +259,8 @@ void main(void)
 //		DAC(0x00160000 | ((Uint16) (EstSpeed * 100 + 2048) << 4));
 		DAC(0x00140000 | ((Uint16) (RealAngle * 500) << 4)); //TODO DAC输出
 		DAC(0x00160000 | ((Uint16) (EstAngle * 500) << 4)); //park1.Qs为iq标么值缌值为900A
+//		DAC(0x00140000 | ((Uint16) (DispData1 * 300 + 2049) << 4)); //TODO DAC输出
+//		DAC(0x00160000 | ((Uint16) (DispData2 * 300 + 2048) << 4)); //park1.Qs为iq标么值缌值为900A
 		if ((COMReg_Para1.Runcode == 1) && (PWM_STAT1 == 0))
 			En1EPWM();
 		if (COMReg_Para1.Runcode != 1)
@@ -264,12 +268,17 @@ void main(void)
 
 			AngEstPI = (PI_CONTROLLER
 					)PI_ANGEST_DEFAULT;
-			AngEstBPF = (DF22)DF22_BPF_800HZ_BW320HZ;
-			AngEstLPF = (DF22)DF22_LPF_100HZ;
+			AngEstBPF = (DF22
+					)DF22_BPF_800HZ_BW320HZ;
+			AngEstLPF = (DF22
+					)DF22_LPF_100HZ;
 			IqBSF = (DF22
 					) DF22_BSF_800HZ_BW80HZ;
 			IdBSF = (DF22
 					) DF22_BSF_800HZ_BW80HZ;
+			Time = 0;
+			Imax1 = 0;
+			Imax2 = 0;
 
 //			AngEstBPF.x1 = 0;
 //			AngEstBPF.x2 = 0;
@@ -613,7 +622,6 @@ interrupt void adc_isr(void)
 	park1.Beta = clarke1.Beta;
 
 	PARK_MACRO(park1)
-	EstAngle = AngleEstimation(park1.Qs);
 
 	ramp_speed1.TargetValue = COMReg_Para1.Omiga_Ref;
 	ramp_speed1.Step = 0.08;
@@ -685,12 +693,12 @@ interrupt void adc_isr(void)
 		pi_iq1.Ref = pi_Omiga1.Out;
 	}
 
-//	if (COMReg_Para1.Mode == 1)		//使用转矩模型进行位置估计,消除高频注入对电流控制带来的影响
-//	{
-//		pi_iq1.Fbk = DCL_runDF22(&IqBSF, park1.Qs);	//消除高频注入带来的影响
-//		pi_id1.Fbk = DCL_runDF22(&IdBSF, park1.Ds);	//消除高频注入带来的影响
-//	}
-//	else
+	if (COMReg_Para1.Mode == 1)		//使用转矩模型进行位置估计,消除高频注入对电流控制带来的影响
+	{
+		pi_iq1.Fbk = DCL_runDF22(&IqBSF, park1.Qs);	//消除高频注入带来的影响
+		pi_id1.Fbk = DCL_runDF22(&IdBSF, park1.Ds);	//消除高频注入带来的影响
+	}
+	else
 	{
 		pi_iq1.Fbk = park1.Qs;
 		pi_id1.Fbk = park1.Ds;
@@ -711,9 +719,71 @@ interrupt void adc_isr(void)
 	/***************************无速度传感器的高频注入*************************/
 	if (COMReg_Para1.Mode == 1)		//使用转矩模型进行位置估计
 	{
+		if (Time < 3)	//当时间小于5s时，电机先判断磁极位置
+		{
+			EstAngle = AngleEstimation(park1.Qs);
+
+			pi_id1.Out = 0;		//初次调试时，可以先把电流调节器输出置为0
+			pi_iq1.Out = 0;
+			pi_id1.Out += 120 * cos(2 * 800 * PI_CONSTANT * Time);
+		}
+		else if (Time > 3 && Time < 5)
+		{
+			pi_id1.Out = 0;		//初次调试时，可以先把电流调节器输出置为0
+			pi_iq1.Out = 0;
+//			EstAngle = AngleEstimation(park1.Qs);
+		}
+		else if (Time > 5 && Time <= 5.002)
+		{
+			pi_id1.Out = 80;
+			pi_iq1.Out = 0;
+			if (Imax1 < park1.Ds)
+				Imax1 = park1.Ds;
+//			EstAngle = AngleEstimation(park1.Qs);
+		}
+		else if (Time > 5.002 && Time <= 5.1)
+		{
+			pi_id1.Out = 0;		//初次调试时，可以先把电流调节器输出置为0
+			pi_iq1.Out = 0;
+//			EstAngle = AngleEstimation(park1.Qs);
+		}
+		else if (Time > 5.1 && Time <= 5.102)
+		{
+			pi_id1.Out = -80;	//注入一个极性相反的电压
+			pi_iq1.Out = 0;
+			if (Imax2 < fabs(park1.Ds))
+				Imax2 = fabs(park1.Ds);
+//			EstAngle = AngleEstimation(park1.Qs);
+		}
+		else if (Time > 5.102 && Time <= 5.2)
+		{
+			pi_id1.Out = 0;		//初次调试时，可以先把电流调节器输出置为0
+			pi_iq1.Out = 0;
+//			EstAngle = AngleEstimation(park1.Qs);
+		}
+		else if (Time > 5.2)
+		{
+			if (Imax1 > Imax2)	//磁极极性判断
+			{
+				EstAngle = AngleEstimation(park1.Qs);
+			}
+			else
+			{
+				float theta;
+				theta = AngleEstimation(park1.Qs) + PI_CONSTANT;
+				if (theta > 2 * PI_CONSTANT)
+					theta -= 2 * PI_CONSTANT;
+				else if (theta < 0)
+					theta += 2 * PI_CONSTANT;
+				EstAngle = theta;
+			}
+
 //		pi_id1.Out = 0;		//初次调试时，可以先把电流调节器输出置为0
 //		pi_iq1.Out = 0;
-		pi_id1.Out += 80 * cos(2 * 800 * PI_CONSTANT * Time);
+			pi_id1.Out += 120 * cos(2 * 800 * PI_CONSTANT * Time);
+		}
+		DispData1 = park1.Ds;
+		DispData2 = park1.Qs;
 	}
 	//TODO 高频注入
 
@@ -1375,7 +1445,7 @@ void Pos_Cal(void)                             // 计算转速、转子位置
 	if (Omiga_count >= 500)
 	{
 		//Omiga_prev=Omiga;
-		RealSpeed = Omiga_sum / Pulse_Num * 2* PI_CONSTANT / 0.05;
+		RealSpeed = Omiga_sum / Pulse_Num * 2 * PI_CONSTANT / 0.05;
 		Omiga = Omiga_sum * Omiga_COFF;
 		Omiga_count = 0;
 		Omiga_sum = 0;

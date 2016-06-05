@@ -3,12 +3,11 @@
 <projectOptions>
 	<deviceVariant value="TMS320C28XX.TMS320F28335"/>
 	<deviceFamily value="C2000"/>
-	<codegenToolVersion value="6.4.6"/>
+	<codegenToolVersion value="6.4.9"/>
 	<isElfFormat value="false"/>
 	<linkerCommandFile value="28335_RAM_lnk.cmd"/>
 	<rts value="libc.a"/>
 	<createSlaveProjects value=""/>
-	<templateProperties value="id=com.ti.common.project.core.emptyProjectTemplate,"/>
+	<templateProperties value="id=com.ti.common.project.core.emptyProjectWithMainTemplate,"/>
 	<isTargetManual value="true"/>
-	<origin value="H:/PMSM"/>
 </projectOptions>
