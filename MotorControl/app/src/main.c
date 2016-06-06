@@ -37,16 +37,23 @@ void Init_Pos(void);
 void max_7219(Uint16 data);
 Uint16 Temp_Cal(Uint16 data);
 float Pos_CurAngle_Cal(float is);
+void ADConverter(void);
+void LEDDisp(void);
 float AngleEstimation(float iq);
-float SpeedRef = 0.05;
-float Ts = 0.001 / ISR_FREQUENCY;
+void M1ParaReset(void);
+void M1ParaReset(void);
+void Protection(void);
+float SpeedRef = 20;	//Hz
+float FreqRef = 10;	//VVVF控制的频率给定值
+float VoltRef = 50; //VVVF控制的电压给定值
 float Omiga = 0;
 float huang_omiga = 0;
 float Omiga_abs;
 float Omiga_prev = 0;
 float theta_test = 0.75 * Pulse_Num;
 
-float Time = 0;
+/*高频注入所需要的参数*/
+double Time = 0;
 DF22 AngEstBPF, AngEstLPF;
 DF22 IdBSF, IqBSF;
 PI_CONTROLLER AngEstPI;
@@ -61,21 +68,15 @@ float GraphData2[500];
 float DispData1, DispData2;
 int16 Cnt = 0;
 
-float P1 = 0.00001;
-float P2 = 0.00001;
-float P3 = 0.000001;
-float c = 0.000001;
-float k1;
 Uint16 IsrTicker = 0;
 Uint16 RxTicker = 0;
 Uint16 Timer_1s = 0;
 Uint16 CANTX_MSGID = 0x101;
-Uint16 PWM_STAT1 = 0;
-Uint16 PWM_STAT2 = 0;
+Uint16 PWM1_State = 1;
+Uint16 PWM2_State = 1;
 Uint16 counter = 0;
 Uint16 U_uvw, V_uvw, W_uvw, Direction, Pos_Error;
 Uint16 LEDSG1, LEDSG2;
-float Is = 0;
 int16 Pos_Zero = 0, Position, Pos_Prev, Omiga_sum, Omiga_count;
 int16 huang1, huang_differ, huang_prev, huang_sum; //通过can传上来的位置等数据
 float Cur_A = 0;
@@ -85,9 +86,6 @@ float Cur_U = 0;
 float Cur_V = 0;
 float Cur_W = 0;
 float UDC = 0;
-float Ud_see;
-float Uq_see;
-float powerfactor; //功率因数
 float Uvector; //电压矢量幅值
 float Ivector; //电流矢量幅值
 float Ivector_old = 0;
@@ -207,129 +205,16 @@ void main(void)
 	Pos_Prev = huang1;
 	for (;;)
 	{
-		if (COMReg_Para1.Mode == 1)
-		{
-			LEDSG1 = 0x0130;	//1
-			LEDSG2 = 0x027E;
-		}
-		else if (COMReg_Para1.Mode == 2)
-		{
-			LEDSG1 = 0x016D;	//2
-			LEDSG2 = 0x027E;
-		}
-		else if (COMReg_Para1.Mode == 3)
-		{
-			LEDSG1 = 0x0179;	//3.
-			LEDSG2 = 0x027E;
-		}
-		else if (COMReg_Para1.Mode == 4)
-		{
-			LEDSG1 = 0x0133;	//4
-			LEDSG2 = 0x027E;
-		}
-		else
-		{
-			LEDSG1 = 0x017E;
-			LEDSG2 = 0x027E;		//显示00.
-		}
-		if (COMReg_Para2.Mode == 1)
-		{
-			LEDSG2 = 0x0230;		//显示01.
-		}
-		else if (COMReg_Para2.Mode == 2)
-		{
-			LEDSG2 = 0x026D;
-		}
-		else if (COMReg_Para2.Mode == 3)
-		{
-			LEDSG2 = 0x0279;
-		}
-		else if (COMReg_Para2.Mode == 4)
-		{
-			LEDSG2 = 0x0233;
-		}
-		else
-		{
-			LEDSG1 = 0x017E;
-			LEDSG2 = 0x027E;		//显示00.
-		}
-		DAC(0x00100000 | ((Uint16) (3891) << 4));//5.1987--DA输出5V（4095）时对应的直流母线保护电压是788V
-		DAC(0x00120000 | ((Uint16) (3600) << 4));//((Uint16)(COMReg_Para1.I_Prtct*4.55)<<4));//4.55-DA输出5V（4095）时对应的电流保护值为900A
+		LEDDisp();	//保护也在里面
+		DAC(0x00100000 | ((Uint16) (3891) << 4)); //5.1987--DA输出5V（4095）时对应的直流母线保护电压是788V
+		DAC(0x00120000 | ((Uint16) (3600) << 4)); //((Uint16)(COMReg_Para1.I_Prtct*4.55)<<4));//4.55-DA输出5V（4095）时对应的电流保护值为900A
 //		DAC(0x00140000 | ((Uint16) (RealSpeed * 100 + 2048) << 4));
 //		DAC(0x00160000 | ((Uint16) (EstSpeed * 100 + 2048) << 4));
 		DAC(0x00140000 | ((Uint16) (RealAngle * 500) << 4)); //TODO DAC输出
 		DAC(0x00160000 | ((Uint16) (EstAngle * 500) << 4)); //park1.Qs为iq标么值缌值为900A
 //		DAC(0x00140000 | ((Uint16) (DispData1 * 300 + 2049) << 4)); //TODO DAC输出
 //		DAC(0x00160000 | ((Uint16) (DispData2 * 300 + 2048) << 4)); //park1.Qs为iq标么值缌值为900A
-		if ((COMReg_Para1.Runcode == 1) && (PWM_STAT1 == 0))
-			En1EPWM();
-		if (COMReg_Para1.Runcode != 1)
-		{
 
-			AngEstPI = (PI_CONTROLLER
-					)PI_ANGEST_DEFAULT;
-			AngEstBPF = (DF22
-					)DF22_BPF_800HZ_BW320HZ;
-			AngEstLPF = (DF22
-					)DF22_LPF_100HZ;
-			IqBSF = (DF22
-					) DF22_BSF_800HZ_BW80HZ;
-			IdBSF = (DF22
-					) DF22_BSF_800HZ_BW80HZ;
-			Time = 0;
-			Imax1 = 0;
-			Imax2 = 0;
-
-//			AngEstBPF.x1 = 0;
-//			AngEstBPF.x2 = 0;
-//			AngEstLPF.x1 = 0;
-//			AngEstLPF.x2 = 0;
-
-			pi_Omiga1.Ref = 0;
-			pi_Omiga1.Out = 0;
-			pi_Omiga1.i1 = 0;
-			pi_id1.Ref = 0;
-			pi_id1.i1 = 0;
-			pi_id1.Out = 0;
-			pi_iq1.Ref = 0;
-			pi_iq1.i1 = 0;
-			pi_iq1.Out = 0;
-			theta1.Out = 0;
-			ramp1.Out = 0;
-			ramp_speed1.Out = 0;
-			ipark1.Ds = 0;
-			ipark1.Qs = 0;
-			Ivector_old = 0;
-
-			if (PWM_STAT1 == 1)
-			{
-				Dis1EPWM();
-			}
-		}
-		if ((COMReg_Para2.Runcode == 1) && (PWM_STAT2 == 0))
-			En2EPWM();
-		if (COMReg_Para2.Runcode != 1)
-		{
-
-			pi_Omiga2.Ref = 0;
-			pi_Omiga2.Out = 0;
-			pi_Omiga2.i1 = 0;
-			pi_id2.Ref = 0;
-			pi_id2.i1 = 0;
-			pi_id2.Out = 0;
-			pi_iq2.Ref = 0;
-			pi_iq2.i1 = 0;
-			pi_iq2.Out = 0;
-			theta2.Out = 0;
-			ramp2.Out = 0;
-			ramp_speed2.Out = UDC;
-			ipark2.Ds = 0;
-			ipark2.Qs = 0;
-			if (PWM_STAT2 == 1)
-			{
-				Dis2EPWM();
-			}
-		}
 		/*---控制开关量---*/
 		/*if(COMReg_Para1.switch_1==1)
 		 {
@@ -362,39 +247,7 @@ void main(void)
 		 LEDSG2 = 0x029F;		//显示0X.
 		 COMReg_Para1.FaultCode = NOFAULT;
 		 }*/
-		/*---过电流软件保护---*/
-		if ((Cur_A > 20) || (Cur_B > 20) || (Cur_C > 20) || (Cur_A < -20)
-				|| (Cur_B < -20) || (Cur_C < -20))
-		{
-			LEDSG2 = 0x0247;		//显示F.X.
-			COMReg_Para1.FaultCode = OVERCUR;
-			Dis1EPWM();
-		}
-		else
-		{
-			COMReg_Para1.FaultCode = NOFAULT;
-		}
-		if ((Cur_U > 20) || (Cur_V > 20) || (Cur_W > 20) || (Cur_U < -20)
-				|| (Cur_V < -20) || (Cur_W < -20))
-		{
-			LEDSG2 = 0x0247;		//显示F.X.
-			COMReg_Para2.FaultCode = OVERCUR;
-			Dis2EPWM();
-		}
-		else
-		{
-			COMReg_Para2.FaultCode = NOFAULT;
-		}
-		/*---过电压软件保护---*/
-		if (UDC > 650)
-		{
-			LEDSG2 = 0x02B8;		//显示F.X.
-			COMReg_Para1.FaultCode = OVERVOL;
-			Dis1EPWM();
-			Dis2EPWM();
-		}
-		max_7219(LEDSG1);
-		max_7219(LEDSG2);
+
 		if (EPwm1Regs.TZFLG.bit.OST == 1)
 		{
 			GpioDataRegs.GPCCLEAR.bit.GPIO65 = 1;
@@ -404,96 +257,10 @@ void main(void)
 			GpioDataRegs.GPCSET.bit.GPIO66 = 1;
 		}
 	}
-
 }
 
-// MainISR 10kHz
-//
-interrupt void adc_isr(void)
+void CANDisp(void)
 {
-
-// Verifying the ISR
-
-	IsrTicker++;
-	Timer_1s++;
-	Time += SAMPLE_PERIOD;
-	ADResult.I_V_DSP = AdcRegs.ADCRESULT0 >> 4;
-	ADResult.I_V_DSP += AdcRegs.ADCRESULT9 >> 4;
-	ADResult.I_V_DSP = ADResult.I_V_DSP / 2;
-
-	ADResult.UV_2_DSP = AdcRegs.ADCRESULT1 >> 4;
-	ADResult.UV_2_DSP += AdcRegs.ADCRESULT10 >> 4;
-	ADResult.UV_2_DSP = ADResult.UV_2_DSP / 3;
-
-	ADResult.Udc_DSP = AdcRegs.ADCRESULT2 >> 4;
-	ADResult.Udc_DSP += AdcRegs.ADCRESULT11 >> 4;
-	ADResult.Udc_DSP = ADResult.Udc_DSP / 2;
-
-	ADResult.IpA_DSP = AdcRegs.ADCRESULT3 >> 4;
-	ADResult.IpA_DSP += AdcRegs.ADCRESULT12 >> 4;
-	ADResult.IpA_DSP = ADResult.IpA_DSP / 2;
-
-	ADResult.I_U_DSP = AdcRegs.ADCRESULT5 >> 4;
-	ADResult.I_U_DSP += AdcRegs.ADCRESULT13 >> 4;
-	ADResult.I_U_DSP = ADResult.I_U_DSP / 2;
-
-	ADResult.VW_2_DSP = AdcRegs.ADCRESULT6 >> 4;
-	ADResult.VW_2_DSP += AdcRegs.ADCRESULT14 >> 4;
-	ADResult.VW_2_DSP = ADResult.VW_2_DSP / 2;
-
-	ADResult.IpB_DSP = AdcRegs.ADCRESULT7 >> 4;
-	ADResult.IpB_DSP += AdcRegs.ADCRESULT15 >> 4;
-	ADResult.IpB_DSP = ADResult.IpB_DSP / 2;
-
-	ADResult.Vref2V048 = AdcRegs.ADCRESULT4 >> 4;
-
-	ADResult.AGND = AdcRegs.ADCRESULT8 >> 4;
-
-	if (ADResult.ADtimes == 0)				//校准AD零位
-	{
-		ADResult.I_V_DSP0 = ADResult.I_V_DSP;
-		ADResult.UV_2_DSP0 = ADResult.UV_2_DSP;
-//		ADResult.Udc_DSP0 = ADResult.Udc_DSP;	//这种定标方式会在直流母线上残余电压时出现问题
-		ADResult.Udc_DSP0 = 29;	//TODO
-		ADResult.IpA_DSP0 = ADResult.IpA_DSP;
-		ADResult.I_U_DSP0 = ADResult.I_U_DSP;
-		ADResult.VW_2_DSP0 = ADResult.VW_2_DSP;
-		ADResult.IpB_DSP0 = ADResult.IpB_DSP;
-		ADResult.ADtimes = 1;
-	}
-	Cur_A = -(ADResult.IpA_DSP - ADResult.IpA_DSP0) * I_ABC_COFF;
-	Cur_B = -(ADResult.IpB_DSP - ADResult.IpB_DSP0) * I_ABC_COFF;
-	Cur_C = -Cur_A - Cur_B;
-	Cur_U = -(ADResult.I_U_DSP - ADResult.I_U_DSP0) * I_ABC_COFF;
-	Cur_V = -(ADResult.I_V_DSP - ADResult.I_V_DSP0) * I_ABC_COFF;
-	Cur_W = -Cur_U - Cur_V;
-	UDC = (ADResult.Udc_DSP - ADResult.Udc_DSP0) * U_UDC_COFF;
-	Temp_A = 0;				//Temp_Cal(ADResult.Temp_A);
-	Temp_B = 0;				//Temp_Cal(ADResult.Temp_B);
-	Temp_C = 0;				//Temp_Cal(ADResult.Temp_C);
-	//if(COMReg_Para1.Mode == 1||COMReg_Para1.Mode == 2||COMReg_Para1.Mode == 3||COMReg_Para1.Mode == 4)
-	Pos_Cal();
-	//else
-//	{
-	/*
-	 * 下面这段代码应该没有作用
-	 */
-	huang_differ = huang1 - huang_prev;
-	if (huang_differ < -300)
-		huang_differ = huang_differ + 4096;
-	else if (huang_differ > 300)
-		huang_differ = huang_differ - 4096;
-	huang_prev = huang1;
-	huang_sum += huang_differ;
-	RxTicker++;
-	if (RxTicker >= 500)
-	{
-		huang_omiga = huang_sum * 0.048828125;
-		huang_sum = 0;
-		RxTicker = 0;
-	}
-//	}
-	/*******************************/
 	if (IsrTicker >= 500)			//50ms周期时钟
 	{
 		struct ECAN_REGS ECanaShadow;
@@ -512,9 +279,24 @@ interrupt void adc_isr(void)
 		ECanaRegs.CANTRS.all = ECanaShadow.CANTRS.all;
 
 	}
+}
+
+// MainISR 10kHz
+//
+interrupt void adc_isr(void)
+{
+
+// Verifying the ISR
+
+	IsrTicker++;
+	Timer_1s++;
+	Time += SAMPLE_PERIOD;
+	ADConverter();
+	Protection();
+	Pos_Cal();
+	CANDisp();
 	if (Timer_1s >= 10000)
 	{
-
 		Timer_1s = 0;
 		GpioDataRegs.GPATOGGLE.bit.GPIO30 = 1;
 		if ((COMReg_Para1.Mode == 3 && COMReg_Para1.Runcode == 1)
@@ -538,32 +320,10 @@ interrupt void adc_isr(void)
 
 	}
 
-	if (COMReg_Para1.Mode == 4 && COMReg_Para1.Runcode == 1) //calculate vvvf theta
-	{
-//	    ramp1.TargetValue = SpeedRef;
-//	    ramp1.Step = 0.000004;
-//		RAMP_MACRO(ramp1)
-//	    theta1.Freq = ramp1.Out;
-//		theta1.StepAngleMax = BASE_FREQ*Ts;//VVVF模最终电流稳定在10Hz，200rpm。
-//		THETA_CALC(theta1)
-		theta1.Freq = 10;
-		theta1.StepAngleMax = Ts; //VVVF模最终电流稳定在10Hz，200rpm。
-		THETA_CALC(theta1)
-	}
-
-	if (COMReg_Para2.Mode == 4 && COMReg_Para2.Runcode == 1)
-	{
-		ramp2.TargetValue = SpeedRef;
-		ramp2.Step = 0.000004;
-		RAMP_MACRO(ramp2)
-		theta2.Freq = ramp2.Out;
-		theta2.StepAngleMax = BASE_FREQ * Ts; //VVVF模式最终电流稳定在10Hz，200rpm。
-		THETA_CALC(theta2)
-	}
-// ------------------------------------------------------------------------------
-//  Measure phase currents. 
-//	Connect inputs of the CLARKE module and call the clarke transformation macro
-// ------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+//Measure phase currents.
+// Connect inputs of the CLARKE module and call the clarke transformation macro
+//------------------------------------------------------------------------------
 
 	clarke1.As = Cur_A; // Phase A curr.
 	clarke1.Bs = Cur_B; // Phase B curr.
@@ -575,318 +335,365 @@ interrupt void adc_isr(void)
 
 	CLARKE_MACRO(clarke2)
 
-// ------------------------------------------------------------------------------
-//  Connect inputs of the PARK module and call the park trans. macro
-// ------------------------------------------------------------------------------ 
-	/*-----电机1-----*/
-	if (COMReg_Para1.Mode == 1) //1转矩模式，2转速模式，3定位模式，4VVVF测试模式
+	//TODO 电机#1的控制
+	/*******************************电机#1的控制***********************************/
+	if (0 == PWM1_State)
 	{
-//		park1.Angle = (float) (Position + COMReg_Para1.Pos_Differ) / Pulse_Num;
-		park1.Angle = EstAngle;
-	}
-	if (COMReg_Para1.Mode == 2) //1转矩模式，2转速模式，3定位模式，4VVVF测试模式
-	{
-		park1.Angle = (float) (Position + COMReg_Para1.Pos_Differ) / Pulse_Num;
-	}
-	if (COMReg_Para1.Mode == 3)
-	{
-		park1.Angle = theta_test / Pulse_Num;
-	}
-	if (COMReg_Para1.Mode == 4)
-	{
-		park1.Angle = theta1.Out;
-	}
-	if (COMReg_Para1.Mode == 5) //5can转矩模式
-	{
-		park1.Angle = (float) (huang1 + COMReg_Para1.Pos_Differ) / Pulse_Num;
-	}
-	if (COMReg_Para1.Mode == 6) //6can转速模式
-	{
-		park1.Angle = (float) (huang1 + COMReg_Para1.Pos_Differ) / Pulse_Num;
-	}
-	if (COMReg_Para1.Mode == 7) //7can定位模式
-	{
-		park1.Angle = theta_test / Pulse_Num;
-	}
-
-	if (COMReg_Para1.Mode == 1)
-	{
-		sincos(park1.Angle, &park1.Sine, &park1.Cosine);
-	}
-	else
-	{
-		park1.Sine = sin(park1.Angle * 2 * PI_CONSTANT);
-		park1.Cosine = cos(park1.Angle * 2 * PI_CONSTANT);
-	}
-	park1.Alpha = clarke1.Alpha;
-	park1.Beta = clarke1.Beta;
-
-	PARK_MACRO(park1)
-
-	ramp_speed1.TargetValue = COMReg_Para1.Omiga_Ref;
-	ramp_speed1.Step = 0.08;
-	if (COMReg_Para1.Runcode == 1)
-	{
-		RAMP_MACRO(ramp_speed1)
-		pi_Omiga1.Ref = ramp_speed1.Out; //转速给定斜坡上升
-	}
-	if (COMReg_Para1.Mode == 5 || COMReg_Para1.Mode == 6
-			|| COMReg_Para1.Mode == 7)
-		pi_Omiga1.Fbk = huang_omiga;
-	else
-		pi_Omiga1.Fbk = Omiga;
-	pi_Omiga1.Kp = (float) COMReg_Para1.Omiga_Kp * 0.001;
-	pi_Omiga1.Ki = (float) COMReg_Para1.Omiga_Ki * 0.00001;
-	PI_MACRO(pi_Omiga1)
-
-	/*-----电机2-----*/
-	if (COMReg_Para2.Mode == 1) //1转矩模式，2转速模式，3定位模式，4输出0.5占空比PWM
-	{
-		park2.Angle = (float) (Position + COMReg_Para2.Pos_Differ) / Pulse_Num;
-	}
-	if (COMReg_Para2.Mode == 2)
-	{
-		park2.Angle = (float) (Position + COMReg_Para2.Pos_Differ) / Pulse_Num;
-	}
-	if (COMReg_Para2.Mode == 3)
-	{
-		park2.Angle = theta_test / Pulse_Num;
-	}
-	if (COMReg_Para2.Mode == 4)
-	{
-		park2.Angle = theta2.Out;
-	}
-
-	park2.Sine = sin(park2.Angle * 2 * PI_CONSTANT);
-	park2.Cosine = cos(park2.Angle * 2 * PI_CONSTANT);
-	park2.Alpha = clarke2.Alpha;
-	park2.Beta = clarke2.Beta;
-
-	PARK_MACRO(park2)
-
-	ramp_speed2.TargetValue = COMReg_Para2.Omiga_Ref;
-	ramp_speed2.Step = 0.08;
-	if (COMReg_Para2.Mode == 2 && COMReg_Para2.Runcode == 1)
-	{
-		RAMP_MACRO(ramp_speed2)
-		pi_Omiga2.Ref = ramp_speed2.Out; //转速给定斜坡上升
-	}
-	pi_Omiga2.Fbk = Omiga;
-	pi_Omiga2.Kp = (float) COMReg_Para2.Omiga_Kp * 0.001;
-	pi_Omiga2.Ki = (float) COMReg_Para2.Omiga_Ki * 0.00001;
-	PI_MACRO(pi_Omiga2)
-
-// ------------------------------------------------------------------------------
-//  Connect inputs of the PI module and call the PI IQ controller macro
-// ------------------------------------------------------------------------------  
-	/*-----电机1-----*/
-	if (COMReg_Para1.Mode == 1 || COMReg_Para1.Mode == 3
-			|| COMReg_Para1.Mode == 5 || COMReg_Para1.Mode == 7)
-	{
-		pi_id1.Ref = COMReg_Para1.Id_Ref;
-		pi_iq1.Ref = COMReg_Para1.Iq_Ref;
-	}
-
-	else if (COMReg_Para1.Mode == 2 || COMReg_Para1.Mode == 6)
-	{
-		pi_id1.Ref = COMReg_Para1.Id_Ref;
-		pi_iq1.Ref = pi_Omiga1.Out;
-	}
-
-	if (COMReg_Para1.Mode == 1)		//使用转矩模型进行位置估计,消除高频注入对电流控制带来的影响
-	{
-		pi_iq1.Fbk = DCL_runDF22(&IqBSF, park1.Qs);	//消除高频注入带来的影响
-		pi_id1.Fbk = DCL_runDF22(&IdBSF, park1.Ds);	//消除高频注入带来的影响
-	}
-	else
-	{
-		pi_iq1.Fbk = park1.Qs;
-		pi_id1.Fbk = park1.Ds;
-	}
-
-	pi_iq1.Kp = (float) COMReg_Para1.I_Kp * 0.001;
-	pi_iq1.Ki = (float) COMReg_Para1.I_Ki * 0.00001;
-	pi_iq1.Umax = UDC * ONEbySQRT3;
-	pi_iq1.Umin = -UDC * ONEbySQRT3;
-	PI_MACRO(pi_iq1)
-
-	pi_id1.Kp = (float) COMReg_Para1.I_Kp * 0.001;
-	pi_id1.Ki = (float) COMReg_Para1.I_Ki * 0.00001;
-	pi_id1.Umax = UDC * ONEbySQRT3;
-	pi_id1.Umin = -UDC * ONEbySQRT3;
-	PI_MACRO(pi_id1)
-
-	/***************************无速度传感器的高频注入*************************/
-	if (COMReg_Para1.Mode == 1)		//使用转矩模型进行位置估计
-	{
-		if (Time < 3)	//当时间小于5s时，电机先判断磁极位置
+		switch (COMReg_Para1.Mode)
 		{
-			EstAngle = AngleEstimation(park1.Qs);
+		case 1:	//转矩模式
+//			park1.Angle = (float) (Position + COMReg_Para1.Pos_Differ)
+//					/ Pulse_Num* 2* PI_CONSTANT;
+			park1.Angle = EstAngle;
+			/****************************PARK变换*****************************/
+			sincos(park1.Angle, &park1.Sine, &park1.Cosine);
+			park1.Alpha = clarke1.Alpha;
+			park1.Beta = clarke1.Beta;
+			PARK_MACRO(park1)
+			/******************************电流环*****************************/
+			pi_id1.Ref = COMReg_Para1.Id_Ref;
+			pi_iq1.Ref = COMReg_Para1.Iq_Ref;
+			pi_iq1.Fbk = DCL_runDF22(&IqBSF, park1.Qs);	//消除高频注入带来的影响
+			pi_id1.Fbk = DCL_runDF22(&IdBSF, park1.Ds);	//消除高频注入带来的影响
 
-			pi_id1.Out = 0;		//初次调试时，可以先把电流调节器输出置为0
-			pi_iq1.Out = 0;
-			pi_id1.Out += 120 * cos(2 * 800 * PI_CONSTANT * Time);
-		}
-		else if (Time > 3 && Time < 5)
-		{
-			pi_id1.Out = 0;		//初次调试时，可以先把电流调节器输出置为0
-			pi_iq1.Out = 0;
-//			EstAngle = AngleEstimation(park1.Qs);
-		}
-		else if (Time > 5 && Time <= 5.002)
-		{
-			pi_id1.Out = 80;
-			pi_iq1.Out = 0;
-			if (Imax1 < park1.Ds)
-				Imax1 = park1.Ds;
-//			EstAngle = AngleEstimation(park1.Qs);
-		}
-		else if (Time > 5.002 && Time <= 5.1)
-		{
-			pi_id1.Out = 0;		//初次调试时，可以先把电流调节器输出置为0
-			pi_iq1.Out = 0;
-//			EstAngle = AngleEstimation(park1.Qs);
-		}
-		else if (Time > 5.1 && Time <= 5.102)
-		{
-			pi_id1.Out = -80;	//注入一个极性相反的电压
-			pi_iq1.Out = 0;
-			if (Imax2 < fabs(park1.Ds))
-				Imax2 = fabs(park1.Ds);
-//			EstAngle = AngleEstimation(park1.Qs);
-		}
-		else if (Time > 5.102 && Time <= 5.2)
-		{
-			pi_id1.Out = 0;		//初次调试时，可以先把电流调节器输出置为0
-			pi_iq1.Out = 0;
-//			EstAngle = AngleEstimation(park1.Qs);
-		}
-		else if (Time > 5.2)
-		{
-			if (Imax1 > Imax2)	//磁极极性判断
+			pi_iq1.Kp = (float) COMReg_Para1.I_Kp * 0.001;
+			pi_iq1.Ki = (float) COMReg_Para1.I_Ki * 0.00001;
+			pi_iq1.Umax = UDC * ONEbySQRT3;
+			pi_iq1.Umin = -UDC * ONEbySQRT3;
+			PI_MACRO(pi_iq1)
+
+			pi_id1.Kp = (float) COMReg_Para1.I_Kp * 0.001;
+			pi_id1.Ki = (float) COMReg_Para1.I_Ki * 0.00001;
+			pi_id1.Umax = UDC * ONEbySQRT3;
+			pi_id1.Umin = -UDC * ONEbySQRT3;
+			PI_MACRO(pi_id1)
+
+			/*********************无速度传感器的高频注入**********************/
+			if (Time < 3)	//当时间小于3s时，电机先判断磁极位置
 			{
 				EstAngle = AngleEstimation(park1.Qs);
+
+				pi_id1.Out = 0;		//初次调试时，可以先把电流调节器输出置为0
+				pi_iq1.Out = 0;
+				pi_id1.Out += 120 * cos(2 * 800 * PI_CONSTANT * Time);
 			}
-			else
+			else if (Time > 3 && Time < 5)
 			{
-				float theta;
-				theta = AngleEstimation(park1.Qs) + PI_CONSTANT;
-				if (theta > 2 * PI_CONSTANT)
-					theta -= 2 * PI_CONSTANT;
-				else if (theta < 0)
-					theta += 2 * PI_CONSTANT;
-				EstAngle = theta;
+				pi_id1.Out = 0;		//初次调试时，可以先把电流调节器输出置为0
+				pi_iq1.Out = 0;
 			}
+			else if (Time > 5 && Time <= 5.002)
+			{
+				pi_id1.Out = 80;
+				pi_iq1.Out = 0;
+				if (Imax1 < park1.Ds)
+					Imax1 = park1.Ds;
+			}
+			else if (Time > 5.002 && Time <= 5.1)
+			{
+				pi_id1.Out = 0;		//初次调试时，可以先把电流调节器输出置为0
+				pi_iq1.Out = 0;
+			}
+			else if (Time > 5.1 && Time <= 5.102)
+			{
+				pi_id1.Out = -80;	//注入一个极性相反的电压
+				pi_iq1.Out = 0;
+				if (Imax2 < fabs(park1.Ds))
+					Imax2 = fabs(park1.Ds);
+			}
+			else if (Time > 5.102 && Time <= 5.2)
+			{
+				pi_id1.Out = 0;		//初次调试时，可以先把电流调节器输出置为0
+				pi_iq1.Out = 0;
+			}
+			else if (Time > 5.2)
+			{
+				if (Imax1 > Imax2)	//磁极极性判断
+				{
+					EstAngle = AngleEstimation(park1.Qs);
+				}
+				else
+				{
+					float theta;
+					theta = AngleEstimation(park1.Qs) + PI_CONSTANT;
+					if (theta > 2 * PI_CONSTANT)
+						theta -= 2 * PI_CONSTANT;
+					else if (theta < 0)
+						theta += 2 * PI_CONSTANT;
+					EstAngle = theta;
+				}
 
-//		pi_id1.Out = 0;		//初次调试时，可以先把电流调节器输出置为0
-//		pi_iq1.Out = 0;
-			pi_id1.Out += 120 * cos(2 * 800 * PI_CONSTANT * Time);
-		}
-		DispData1 = park1.Ds;
-		DispData2 = park1.Qs;
-	}
-	//TODO 高频注入
+				//		pi_id1.Out = 0;		//初次调试时，可以先把电流调节器输出置为0
+				//		pi_iq1.Out = 0;
+				pi_id1.Out += 120 * cos(2 * 800 * PI_CONSTANT * Time);
+			}
+			DispData1 = park1.Ds;
+			DispData2 = park1.Qs;
 
-	/*-----电机2-----*/
-	if (COMReg_Para2.Mode == 1 || COMReg_Para2.Mode == 3)
-	{
-		pi_id2.Ref = COMReg_Para2.Id_Ref;
-		pi_iq2.Ref = COMReg_Para2.Iq_Ref;
-	}
+			/**********************逆PARK变换*********************************/
+			ipark1.Angle = EstAngle;
+			sincos(ipark1.Angle, &ipark1.Sine, &ipark1.Cosine);
+			ipark1.Ds = pi_id1.Out;
+			ipark1.Qs = pi_iq1.Out;
+			IPARK_MACRO(ipark1)
 
-	else if (COMReg_Para2.Mode == 2)
-	{
-		pi_id2.Ref = COMReg_Para2.Id_Ref;
-		pi_iq2.Ref = pi_Omiga2.Out;
-	}
-	pi_iq2.Fbk = park2.Qs;
-	pi_iq2.Kp = (float) COMReg_Para2.I_Kp * 0.001;
-	pi_iq2.Ki = (float) COMReg_Para2.I_Ki * 0.00001;
-	pi_iq2.Umax = UDC * ONEbySQRT3;
-	pi_iq2.Umin = -UDC * ONEbySQRT3;
-	PI_MACRO(pi_iq2)
+			break;
+		case 2:	//转速模式
+			park1.Angle = (float) (Position + COMReg_Para1.Pos_Differ)
+					/ Pulse_Num * 2 * PI_CONSTANT;
+			/****************************PARK变换*****************************/
+			sincos(park1.Angle, &park1.Sine, &park1.Cosine);
+			park1.Alpha = clarke1.Alpha;
+			park1.Beta = clarke1.Beta;
+			PARK_MACRO(park1)
+			/******************************转速环*****************************/
+			//速度给定
+			ramp_speed1.TargetValue = COMReg_Para1.Omiga_Ref;
+			ramp_speed1.Step = 0.08;
+			RAMP_MACRO(ramp_speed1)
+			//速度调节
+			pi_Omiga1.Ref = ramp_speed1.Out; //转速给定斜坡上升
+			pi_Omiga1.Kp = (float) COMReg_Para1.Omiga_Kp * 0.001;
+			pi_Omiga1.Ki = (float) COMReg_Para1.Omiga_Ki * 0.00001;
+			PI_MACRO(pi_Omiga1)
+			/******************************电流环*****************************/
+			//电流给定
+			pi_id1.Ref = COMReg_Para1.Id_Ref;
+			pi_iq1.Ref = pi_Omiga1.Out;
+			pi_iq1.Fbk = park1.Qs;
+			pi_id1.Fbk = park1.Ds;
 
-	pi_id2.Fbk = park2.Ds;
-	pi_id2.Kp = (float) COMReg_Para2.I_Kp * 0.001;
-	pi_id2.Ki = (float) COMReg_Para2.I_Ki * 0.00001;
-	pi_id2.Umax = UDC * ONEbySQRT3;
-	pi_id2.Umin = -UDC * ONEbySQRT3;
-	PI_MACRO(pi_id2)
+			pi_iq1.Kp = (float) COMReg_Para1.I_Kp * 0.001;
+			pi_iq1.Ki = (float) COMReg_Para1.I_Ki * 0.00001;
+			pi_iq1.Umax = UDC * ONEbySQRT3;
+			pi_iq1.Umin = -UDC * ONEbySQRT3;
+			PI_MACRO(pi_iq1)
 
-// ------------------------------------------------------------------------------
-//	Connect inputs of the INV_PARK module and call the inverse park trans. macro
-// ------------------------------------------------------------------------------
-	/*-----电机1-----*/
-	if (COMReg_Para1.Runcode == 1)
-	{
-		if (COMReg_Para1.Mode == 1 || COMReg_Para1.Mode == 2
-				|| COMReg_Para1.Mode == 3 || COMReg_Para1.Mode == 5
-				|| COMReg_Para1.Mode == 6 || COMReg_Para1.Mode == 7)
-		{
+			pi_id1.Kp = (float) COMReg_Para1.I_Kp * 0.001;
+			pi_id1.Ki = (float) COMReg_Para1.I_Ki * 0.00001;
+			pi_id1.Umax = UDC * ONEbySQRT3;
+			pi_id1.Umin = -UDC * ONEbySQRT3;
+			PI_MACRO(pi_id1)
+
+			/**********************逆PARK变换*********************************/
+			ipark1.Sine = park1.Sine;
+			ipark1.Cosine = park1.Cosine;
 			ipark1.Ds = pi_id1.Out;  //Ud
 			ipark1.Qs = pi_iq1.Out; //Uq
-		}
-		else if (COMReg_Para1.Mode == 4)
-		{
+			IPARK_MACRO(ipark1)
+
+			break;
+		case 3:	//定位模式
+			park1.Angle = theta_test / Pulse_Num * 2 * PI_CONSTANT;
+			/****************************PARK变换*****************************/
+			sincos(park1.Angle, &park1.Sine, &park1.Cosine);
+			park1.Alpha = clarke1.Alpha;
+			park1.Beta = clarke1.Beta;
+			PARK_MACRO(park1)
+			/******************************电流环*****************************/
+			pi_id1.Ref = COMReg_Para1.Id_Ref;
+			pi_iq1.Ref = COMReg_Para1.Iq_Ref;
+			pi_iq1.Fbk = park1.Qs;
+			pi_id1.Fbk = park1.Ds;
+
+			pi_iq1.Kp = (float) COMReg_Para1.I_Kp * 0.001;
+			pi_iq1.Ki = (float) COMReg_Para1.I_Ki * 0.00001;
+			pi_iq1.Umax = UDC * ONEbySQRT3;
+			pi_iq1.Umin = -UDC * ONEbySQRT3;
+			PI_MACRO(pi_iq1)
+
+			pi_id1.Kp = (float) COMReg_Para1.I_Kp * 0.001;
+			pi_id1.Ki = (float) COMReg_Para1.I_Ki * 0.00001;
+			pi_id1.Umax = UDC * ONEbySQRT3;
+			pi_id1.Umin = -UDC * ONEbySQRT3;
+			PI_MACRO(pi_id1)
+
+			/**********************逆PARK变换*********************************/
+			ipark1.Sine = park1.Sine;
+			ipark1.Cosine = park1.Cosine;
+			ipark1.Ds = pi_id1.Out;  //Ud
+			ipark1.Qs = pi_iq1.Out; //Uq
+			IPARK_MACRO(ipark1)
+
+			break;
+		case 4:
+			ramp1.TargetValue = FreqRef;	//此处以Hz为单位
+			ramp1.Step = 3 * SAMPLE_PERIOD;		//速度给定量每秒变化3
+			RAMP_MACRO(ramp1)
+			theta1.Freq = FreqRef;
+			theta1.StepAngleMax = SAMPLE_PERIOD;
+			THETA_CALC(theta1)
+			ipark1.Angle = theta1.Out * 2 * PI_CONSTANT;
+			sincos(ipark1.Angle, &ipark1.Sine, &ipark1.Cosine);
+			/**********************逆PARK变换*********************************/
 			ipark1.Ds = 0;
-			ipark1.Qs = 10 * ramp1.Out * 60; //最大为600*0.05=30
+			ipark1.Qs = VoltRef;
+			IPARK_MACRO(ipark1)
+
+		default:
+			break;
 		}
+		En1EPWM();
+	}
+	else	//TODO 这个地方添加参数复位的代码
+	{
+		Dis1EPWM();
+		M1ParaReset();
+	}
 
-		else
+	//TODO 电机#2的控制
+	/*******************************电机#2的控制***********************************/
+	if (0 == PWM2_State)
+	{
+
+		switch (COMReg_Para2.Mode)
 		{
-			ipark1.Ds = 0;
-			ipark1.Qs = 0;
-		}
-	}
+		case 1:	//转矩模式
+			park2.Angle = (float) (Position + COMReg_Para2.Pos_Differ)
+					/ Pulse_Num * 2 * PI_CONSTANT;
+			/****************************PARK变换*****************************/
+			sincos(park2.Angle, &park2.Sine, &park2.Cosine);
+			park2.Alpha = clarke2.Alpha;
+			park2.Beta = clarke2.Beta;
+			PARK_MACRO(park2)
 
-	if (COMReg_Para1.Mode == 1)
-	{
-		ipark1.Angle = EstAngle;
-		sincos(ipark1.Angle, &ipark1.Sine, &ipark1.Cosine);
-	}
-	else
-	{
-		ipark1.Sine = park1.Sine;
-		ipark1.Cosine = park1.Cosine;
-	}
-	IPARK_MACRO(ipark1)
-	Ivector = sqrt(park1.Ds * park1.Ds + park1.Qs * park1.Qs);
-	if (Ivector > Ivector_old)
-		Ivector_old = Ivector;
+			/******************************电流环*****************************/
+			pi_id2.Ref = COMReg_Para2.Id_Ref;
+			pi_iq2.Ref = COMReg_Para2.Iq_Ref;
 
-	/*-----电机2-----*/
-	if (COMReg_Para2.Runcode == 1)
-	{
-		if (COMReg_Para2.Mode == 1 || COMReg_Para2.Mode == 2
-				|| COMReg_Para2.Mode == 3)
-		{
+			pi_iq2.Fbk = park2.Qs;
+			pi_iq2.Kp = (float) COMReg_Para2.I_Kp * 0.001;
+			pi_iq2.Ki = (float) COMReg_Para2.I_Ki * 0.00001;
+			pi_iq2.Umax = UDC * ONEbySQRT3;
+			pi_iq2.Umin = -UDC * ONEbySQRT3;
+			PI_MACRO(pi_iq2)
+
+			pi_id2.Fbk = park2.Ds;
+			pi_id2.Kp = (float) COMReg_Para2.I_Kp * 0.001;
+			pi_id2.Ki = (float) COMReg_Para2.I_Ki * 0.00001;
+			pi_id2.Umax = UDC * ONEbySQRT3;
+			pi_id2.Umin = -UDC * ONEbySQRT3;
+			PI_MACRO(pi_id2)
+			/**********************逆PARK变换*********************************/
 			ipark2.Ds = pi_id2.Out;  //Ud
 			ipark2.Qs = pi_iq2.Out; //Uq
-		}
-		else if (COMReg_Para2.Mode == 4)
-		{
+			ipark2.Sine = park2.Sine;
+			ipark2.Cosine = park2.Cosine;
+			IPARK_MACRO(ipark2)
+
+			break;
+		case 2:	//转速模式
+			park2.Angle = (float) (Position + COMReg_Para1.Pos_Differ)
+					/ Pulse_Num * 2 * PI_CONSTANT;
+			/****************************PARK变换*****************************/
+			sincos(park2.Angle, &park2.Sine, &park2.Cosine);
+			park2.Alpha = clarke2.Alpha;
+			park2.Beta = clarke2.Beta;
+			PARK_MACRO(park2)
+			/******************************转速环*****************************/
+			ramp_speed2.TargetValue = COMReg_Para2.Omiga_Ref;
+			ramp_speed2.Step = 0.08;
+			RAMP_MACRO(ramp_speed2)
+			pi_Omiga2.Ref = ramp_speed2.Out; //转速给定斜坡上升
+			pi_Omiga2.Fbk = Omiga;
+			pi_Omiga2.Kp = (float) COMReg_Para2.Omiga_Kp * 0.001;
+			pi_Omiga2.Ki = (float) COMReg_Para2.Omiga_Ki * 0.00001;
+			PI_MACRO(pi_Omiga2)
+			/******************************电流环*****************************/
+			pi_id2.Ref = COMReg_Para2.Id_Ref;
+			pi_iq2.Ref = pi_Omiga2.Out;
+
+			pi_iq2.Fbk = park2.Qs;
+			pi_iq2.Kp = (float) COMReg_Para2.I_Kp * 0.001;
+			pi_iq2.Ki = (float) COMReg_Para2.I_Ki * 0.00001;
+			pi_iq2.Umax = UDC * ONEbySQRT3;
+			pi_iq2.Umin = -UDC * ONEbySQRT3;
+			PI_MACRO(pi_iq2)
+
+			pi_id2.Fbk = park2.Ds;
+			pi_id2.Kp = (float) COMReg_Para2.I_Kp * 0.001;
+			pi_id2.Ki = (float) COMReg_Para2.I_Ki * 0.00001;
+			pi_id2.Umax = UDC * ONEbySQRT3;
+			pi_id2.Umin = -UDC * ONEbySQRT3;
+			PI_MACRO(pi_id2)
+
+			/**********************逆PARK变换*********************************/
+			ipark2.Ds = pi_id2.Out;  //Ud
+			ipark2.Qs = pi_iq2.Out; //Uq
+			ipark2.Sine = park2.Sine;
+			ipark2.Cosine = park2.Cosine;
+			IPARK_MACRO(ipark2)
+
+			break;
+		case 3:	//定位模式
+			park2.Angle = theta_test / Pulse_Num * 2 * PI_CONSTANT;
+			/****************************PARK变换*****************************/
+			sincos(park2.Angle, &park2.Sine, &park2.Cosine);
+			park2.Alpha = clarke2.Alpha;
+			park2.Beta = clarke2.Beta;
+			PARK_MACRO(park2)
+			/******************************电流环*****************************/
+			pi_id2.Ref = COMReg_Para2.Id_Ref;
+			pi_iq2.Ref = COMReg_Para2.Iq_Ref;
+
+			pi_iq2.Fbk = park2.Qs;
+			pi_iq2.Kp = (float) COMReg_Para2.I_Kp * 0.001;
+			pi_iq2.Ki = (float) COMReg_Para2.I_Ki * 0.00001;
+			pi_iq2.Umax = UDC * ONEbySQRT3;
+			pi_iq2.Umin = -UDC * ONEbySQRT3;
+			PI_MACRO(pi_iq2)
+
+			pi_id2.Fbk = park2.Ds;
+			pi_id2.Kp = (float) COMReg_Para2.I_Kp * 0.001;
+			pi_id2.Ki = (float) COMReg_Para2.I_Ki * 0.00001;
+			pi_id2.Umax = UDC * ONEbySQRT3;
+			pi_id2.Umin = -UDC * ONEbySQRT3;
+			PI_MACRO(pi_id2)
+			/**********************逆PARK变换*********************************/
+			ipark2.Ds = pi_id2.Out;  //Ud
+			ipark2.Qs = pi_iq2.Out; //Uq
+			ipark2.Sine = park2.Sine;
+			ipark2.Cosine = park2.Cosine;
+			IPARK_MACRO(ipark2)
+
+			break;
+		case 4:
+			ramp2.TargetValue = SpeedRef;	//TODO 这个地方应该改成按压频比来进行
+			ramp2.Step = 0.000004;
+			RAMP_MACRO(ramp2)
+			theta2.Freq = ramp2.Out;
+			theta2.StepAngleMax = BASE_FREQ * SAMPLE_PERIOD; //VVVF模式最终电流稳定在10Hz，200rpm。
+			THETA_CALC(theta2)
+			ipark2.Angle = theta2.Out * 2 * PI_CONSTANT;
+			/**********************逆PARK变换*********************************/
 			ipark2.Ds = 0;
 			ipark2.Qs = 10 * ramp2.Out * 60; //最大为600*0.05=30
+			sincos(ipark2.Angle, &ipark2.Sine, &ipark2.Cosine);
+			IPARK_MACRO(ipark2)
+			break;
+		default:
+			break;
 		}
-		else
-		{
-			ipark2.Ds = 0;
-			ipark2.Qs = 0;
-		}
+		En2EPWM();
 	}
-	ipark2.Sine = park2.Sine;
-	ipark2.Cosine = park2.Cosine;
-	IPARK_MACRO(ipark2)
+	else	//TODO 这个地方添加参数复位的代码
+	{
+		Dis2EPWM();
+		M2ParaReset();
+	}
 
+	/***************************数据显示*************************************/
 	GraphData1[Cnt] = DispData1;
 	GraphData2[Cnt] = DispData2;
 	Cnt++;
 	if (Cnt >= 500)
 		Cnt = 0;
+
+	/***************************死区时间补偿*********************************/
+	//TODO
 // ------------------------------------------------------------------------------
 //  Connect inputs of the SVGEN_DQ module and call the space-vector gen. macro
 // ------------------------------------------------------------------------------
-
 	/*-----电机1-----*/
 	svgen1.Ualpha = ipark1.Alpha / (UDC * ONEbySQRT3);
 	svgen1.Ubeta = ipark1.Beta / (UDC * ONEbySQRT3);
@@ -941,6 +748,10 @@ interrupt void CANARX_ISR(void)
 	case 0x201:
 	{
 		COMReg_Para1.Runcode = ECanaMboxes.MBOX0.MDL.byte.BYTE0;
+		if (COMReg_Para1.Runcode == 1)
+			PWM1_State = 0;
+		else
+			PWM1_State |= PWM_STAT_STOP;
 		COMReg_Para1.Mode = ECanaMboxes.MBOX0.MDL.byte.BYTE1;
 		COMReg_Para1.FreRef = ECanaMboxes.MBOX0.MDL.byte.BYTE2;
 		COMReg_Para1.switch_1 = ECanaMboxes.MBOX0.MDH.byte.BYTE4;
@@ -978,6 +789,10 @@ interrupt void CANARX_ISR(void)
 	case 0x204:
 	{
 		COMReg_Para2.Runcode = ECanaMboxes.MBOX0.MDL.byte.BYTE0;
+		if (COMReg_Para2.Runcode == 1)
+			PWM2_State = 0;
+		else
+			PWM2_State |= PWM_STAT_STOP;
 		COMReg_Para2.Mode = ECanaMboxes.MBOX0.MDL.byte.BYTE1;
 		COMReg_Para2.FreRef = ECanaMboxes.MBOX0.MDL.byte.BYTE2;
 		COMReg_Para2.switch_1 = ECanaMboxes.MBOX0.MDH.byte.BYTE4;
@@ -1257,8 +1072,6 @@ void En1EPWM()
 	EPwm5Regs.TZCLR.bit.OST = 1;
 	EPwm6Regs.TZCLR.bit.OST = 1;
 
-	PWM_STAT1 = 1;
-
 	EDIS;
 
 	return;
@@ -1272,7 +1085,6 @@ void En2EPWM()
 	EPwm2Regs.TZCLR.bit.OST = 1;
 	EPwm3Regs.TZCLR.bit.OST = 1;
 
-	PWM_STAT2 = 1;
 
 	EDIS;
 
@@ -1290,8 +1102,6 @@ void Dis1EPWM()
 	EPwm5Regs.TZFRC.bit.OST = 1;
 	EPwm6Regs.TZFRC.bit.OST = 1;
 
-	PWM_STAT1 = 0;
-
 	EDIS;
 
 	return;
@@ -1304,9 +1114,6 @@ void Dis2EPWM()
 	EPwm1Regs.TZFRC.bit.OST = 1;				//Force trip event
 	EPwm2Regs.TZFRC.bit.OST = 1;
 	EPwm3Regs.TZFRC.bit.OST = 1;
-
-	PWM_STAT2 = 0;
-
 	EDIS;
 
 	return;
@@ -1542,6 +1349,158 @@ void max_7219(Uint16 data)
 	GpioDataRegs.GPCSET.bit.GPIO68 = 1;
 }
 
+void ADConverter(void)
+{
+	ADResult.I_V_DSP = AdcRegs.ADCRESULT0 >> 4;
+	ADResult.I_V_DSP += AdcRegs.ADCRESULT9 >> 4;
+	ADResult.I_V_DSP = ADResult.I_V_DSP / 2;
+
+	ADResult.UV_2_DSP = AdcRegs.ADCRESULT1 >> 4;
+	ADResult.UV_2_DSP += AdcRegs.ADCRESULT10 >> 4;
+	ADResult.UV_2_DSP = ADResult.UV_2_DSP / 3;
+
+	ADResult.Udc_DSP = AdcRegs.ADCRESULT2 >> 4;
+	ADResult.Udc_DSP += AdcRegs.ADCRESULT11 >> 4;
+	ADResult.Udc_DSP = ADResult.Udc_DSP / 2;
+
+	ADResult.IpA_DSP = AdcRegs.ADCRESULT3 >> 4;
+	ADResult.IpA_DSP += AdcRegs.ADCRESULT12 >> 4;
+	ADResult.IpA_DSP = ADResult.IpA_DSP / 2;
+
+	ADResult.I_U_DSP = AdcRegs.ADCRESULT5 >> 4;
+	ADResult.I_U_DSP += AdcRegs.ADCRESULT13 >> 4;
+	ADResult.I_U_DSP = ADResult.I_U_DSP / 2;
+
+	ADResult.VW_2_DSP = AdcRegs.ADCRESULT6 >> 4;
+	ADResult.VW_2_DSP += AdcRegs.ADCRESULT14 >> 4;
+	ADResult.VW_2_DSP = ADResult.VW_2_DSP / 2;
+
+	ADResult.IpB_DSP = AdcRegs.ADCRESULT7 >> 4;
+	ADResult.IpB_DSP += AdcRegs.ADCRESULT15 >> 4;
+	ADResult.IpB_DSP = ADResult.IpB_DSP / 2;
+
+	ADResult.Vref2V048 = AdcRegs.ADCRESULT4 >> 4;
+
+	ADResult.AGND = AdcRegs.ADCRESULT8 >> 4;
+
+	if (ADResult.ADtimes == 0)				//校准AD零位
+	{
+		ADResult.I_V_DSP0 = ADResult.I_V_DSP;
+		ADResult.UV_2_DSP0 = ADResult.UV_2_DSP;
+//		ADResult.Udc_DSP0 = ADResult.Udc_DSP;	//这种定标方式会在直流母线上残余电压时出现问题
+		ADResult.Udc_DSP0 = 29;	//TODO
+		ADResult.IpA_DSP0 = ADResult.IpA_DSP;
+		ADResult.I_U_DSP0 = ADResult.I_U_DSP;
+		ADResult.VW_2_DSP0 = ADResult.VW_2_DSP;
+		ADResult.IpB_DSP0 = ADResult.IpB_DSP;
+		ADResult.ADtimes = 1;
+	}
+	Cur_A = -(ADResult.IpA_DSP - ADResult.IpA_DSP0) * I_ABC_COFF;
+	Cur_B = -(ADResult.IpB_DSP - ADResult.IpB_DSP0) * I_ABC_COFF;
+	Cur_C = -Cur_A - Cur_B;
+	Cur_U = -(ADResult.I_U_DSP - ADResult.I_U_DSP0) * I_ABC_COFF;
+	Cur_V = -(ADResult.I_V_DSP - ADResult.I_V_DSP0) * I_ABC_COFF;
+	Cur_W = -Cur_U - Cur_V;
+	UDC = (ADResult.Udc_DSP - ADResult.Udc_DSP0) * U_UDC_COFF;
+	Temp_A = 0;				//Temp_Cal(ADResult.Temp_A);
+	Temp_B = 0;				//Temp_Cal(ADResult.Temp_B);
+	Temp_C = 0;				//Temp_Cal(ADResult.Temp_C);
+}
+
+void LEDDisp(void)
+{
+	if (COMReg_Para1.Mode == 1)
+	{
+		LEDSG1 = 0x0130;	//1
+		LEDSG2 = 0x027E;
+	}
+	else if (COMReg_Para1.Mode == 2)
+	{
+		LEDSG1 = 0x016D;	//2
+		LEDSG2 = 0x027E;
+	}
+	else if (COMReg_Para1.Mode == 3)
+	{
+		LEDSG1 = 0x0179;	//3.
+		LEDSG2 = 0x027E;
+	}
+	else if (COMReg_Para1.Mode == 4)
+	{
+		LEDSG1 = 0x0133;	//4
+		LEDSG2 = 0x027E;
+	}
+	else
+	{
+		LEDSG1 = 0x017E;
+		LEDSG2 = 0x027E;		//显示00.
+	}
+	if (COMReg_Para2.Mode == 1)
+	{
+		LEDSG2 = 0x0230;		//显示01.
+	}
+	else if (COMReg_Para2.Mode == 2)
+	{
+		LEDSG2 = 0x026D;
+	}
+	else if (COMReg_Para2.Mode == 3)
+	{
+		LEDSG2 = 0x0279;
+	}
+	else if (COMReg_Para2.Mode == 4)
+	{
+		LEDSG2 = 0x0233;
+	}
+	else
+	{
+		LEDSG1 = 0x017E;
+		LEDSG2 = 0x027E;		//显示00.
+	}
+	if (PWM1_State & PWM_STAT_OVERCUR || PWM2_State & PWM_STAT_OVERCUR)
+		LEDSG2 = 0x0247;		//显示F.X.
+	if (PWM1_State & PWM_STAT_OVERVOL || PWM2_State & PWM_STAT_OVERVOL)
+		LEDSG2 = 0x02B8;		//显示F.X.
+
+	max_7219(LEDSG1);
+	max_7219(LEDSG2);
+}
+
+void Protection(void)
+{
+	/*---过电流软件保护---*/
+		if ((Cur_A > I_LIMIT) || (Cur_B > I_LIMIT) || (Cur_C > I_LIMIT) || (Cur_A < -I_LIMIT)
+				|| (Cur_B < -I_LIMIT) || (Cur_C < -I_LIMIT))
+		{
+			Dis1EPWM();
+			COMReg_Para1.FaultCode = PWM_STAT_OVERCUR;
+			PWM1_State |= PWM_STAT_OVERCUR;
+		}
+		else
+		{
+			COMReg_Para1.FaultCode = PWM_STAT_NOFAULT;
+		}
+		if ((Cur_U > I_LIMIT) || (Cur_V > I_LIMIT) || (Cur_W > I_LIMIT) || (Cur_U < -I_LIMIT)
+				|| (Cur_V < -I_LIMIT) || (Cur_W < -I_LIMIT))
+		{
+			Dis2EPWM();
+			COMReg_Para2.FaultCode = PWM_STAT_OVERCUR;
+			PWM2_State |= PWM_STAT_OVERCUR;
+		}
+		else
+		{
+			COMReg_Para2.FaultCode = PWM_STAT_NOFAULT;
+		}
+		/*---过电压软件保护---*/
+		if (UDC > UDC_LIMIT)
+		{
+			Dis1EPWM();
+			Dis2EPWM();
+			PWM1_State |= PWM_STAT_OVERVOL;
+			PWM2_State |= PWM_STAT_OVERVOL;
+			COMReg_Para1.FaultCode = PWM_STAT_OVERVOL;
+
+		}
+}
+
 //TODO 角度估计
 float AngleEstimation(float iq)
 {
@@ -1564,6 +1523,59 @@ float AngleEstimation(float iq)
 		theta += 2 * PI_CONSTANT;
 
 	return theta;
+}
+
+//电机#1的参数复位
+void M1ParaReset(void)
+{
+	/*高频注入的相关参数复位*/
+	AngEstPI = (PI_CONTROLLER
+			)PI_ANGEST_DEFAULT;
+	AngEstBPF = (DF22
+			)DF22_BPF_800HZ_BW320HZ;
+	AngEstLPF = (DF22
+			)DF22_LPF_100HZ;
+	IqBSF = (DF22
+			) DF22_BSF_800HZ_BW80HZ;
+	IdBSF = (DF22
+			) DF22_BSF_800HZ_BW80HZ;
+	Time = 0;
+	Imax1 = 0;
+	Imax2 = 0;
+
+	pi_Omiga1.Ref = 0;
+	pi_Omiga1.Out = 0;
+	pi_Omiga1.i1 = 0;
+	pi_id1.Ref = 0;
+	pi_id1.i1 = 0;
+	pi_id1.Out = 0;
+	pi_iq1.Ref = 0;
+	pi_iq1.i1 = 0;
+	pi_iq1.Out = 0;
+	theta1.Out = 0;
+	ramp1.Out = 0;
+	ramp_speed1.Out = 0;
+	ipark1.Ds = 0;
+	ipark1.Qs = 0;
+	Ivector_old = 0;
+}
+//电机#2的参数复位
+void M2ParaReset(void)
+{
+	pi_Omiga2.Ref = 0;
+	pi_Omiga2.Out = 0;
+	pi_Omiga2.i1 = 0;
+	pi_id2.Ref = 0;
+	pi_id2.i1 = 0;
+	pi_id2.Out = 0;
+	pi_iq2.Ref = 0;
+	pi_iq2.i1 = 0;
+	pi_iq2.Out = 0;
+	theta2.Out = 0;
+	ramp2.Out = 0;
+	ramp_speed2.Out = 0;
+	ipark2.Ds = 0;
+	ipark2.Qs = 0;
 }
 
 /*Uint16 Temp_Cal(Uint16 data)

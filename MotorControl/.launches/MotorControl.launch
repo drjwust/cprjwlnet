@@ -5,7 +5,7 @@
 <stringAttribute key="com.ti.ccstudio.debug.debugModel.ATTR_PROGRAM.Texas Instruments XDS100v2 USB Debug Probe_0/C28xx" value="${build_artifact:MotorControl}"/>
 <stringAttribute key="com.ti.ccstudio.debug.debugModel.ATTR_PROJECT.Texas Instruments XDS100v2 USB Debug Probe_0/C28xx" value="MotorControl"/>
 <stringAttribute key="com.ti.ccstudio.debug.debugModel.ATTR_TARGET_CONFIG" value="${target_config_active_default:MotorControl}"/>
-<stringAttribute key="com.ti.ccstudio.debug.debugModel.MRU_PROGRAM.Texas Instruments XDS100v2 USB Debug Probe_0/C28xx" value="X:/Code_Workspace\MotorControl\Debug\MotorControl.out"/>
+<stringAttribute key="com.ti.ccstudio.debug.debugModel.MRU_PROGRAM.Texas Instruments XDS100v2 USB Debug Probe_0/C28xx" value="J:/MyGit\MotorControl\Debug\MotorControl.out"/>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
 <listEntry value="/MotorControl"/>
 </listAttribute>

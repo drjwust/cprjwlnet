@@ -2,8 +2,8 @@
 #define Parameters_H_
 
 /*------------------------------------------------------------------------------
-Following is the list of the Build Level choices.
-------------------------------------------------------------------------------*/
+ Following is the list of the Build Level choices.
+ ------------------------------------------------------------------------------*/
 
 #ifndef TRUE
 #define FALSE 0
@@ -15,7 +15,6 @@ Following is the list of the Build Level choices.
 // Define the ISR frequency (kHz)
 #define ISR_FREQUENCY 10
 
-
 // Define the electrical motor parametes (Estun Servomotor)
 #define RS 		2.35		    	    // Stator resistance (ohm) 
 #define RR   			               	// Rotor resistance (ohm) 
@@ -23,7 +22,6 @@ Following is the list of the Build Level choices.
 #define LR   			  				// Rotor inductance (H) 	
 #define LM   			   				// Magnatizing inductance (H)
 #define POLE_PAIR  	4						// Number of pole pairs
-									
 
 // Define the base quantites
 #define BASE_VOLTAGE    346.4        // Base peak phase voltage (volt), Vdc/sqrt(3)
@@ -38,12 +36,12 @@ Following is the list of the Build Level choices.
 #define	I_ABC_COFF		0.012523089446166	//+-25.64A 最大值对应+-2047.5+2047.5
 #define	U_UDC_COFF		0.192354653893115	//
 
-#define		NOFAULT				0x00
-#define		OVERCUR				0x01
-#define 	OVERVOL				0x02
-#define		TEMPHI				0x03
-#define 	OVERTEMP			0x04
-
+#define		PWM_STAT_NOFAULT		0x00
+#define 	PWM_STAT_STOP			0X01
+#define		PWM_STAT_OVERCUR		0x02
+#define 	PWM_STAT_OVERVOL		0x04
+#define		PWM_STAT_TEMPHI			0x08
+#define 	PWM_STAT_OVERTEMP		0x0F
 
 #endif /*Parameters_H_*/
 

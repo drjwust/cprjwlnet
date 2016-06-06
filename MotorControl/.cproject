@@ -117,6 +117,10 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/DSP2833x/inc}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/lib/inc}&quot;"/>
 								</option>
+								<option id="com.ti.ccstudio.buildDefinitions.C2000_6.4.compilerID.DEFINE.1855784785" superClass="com.ti.ccstudio.buildDefinitions.C2000_6.4.compilerID.DEFINE" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="_INLINE"/>
+									<listOptionValue builtIn="false" value="__FLASH"/>
+								</option>
 								<inputType id="com.ti.ccstudio.buildDefinitions.C2000_6.4.compiler.inputType__C_SRCS.1191115517" name="C Sources" superClass="com.ti.ccstudio.buildDefinitions.C2000_6.4.compiler.inputType__C_SRCS"/>
 								<inputType id="com.ti.ccstudio.buildDefinitions.C2000_6.4.compiler.inputType__CPP_SRCS.863662998" name="C++ Sources" superClass="com.ti.ccstudio.buildDefinitions.C2000_6.4.compiler.inputType__CPP_SRCS"/>
 								<inputType id="com.ti.ccstudio.buildDefinitions.C2000_6.4.compiler.inputType__ASM_SRCS.1612007268" name="Assembly Sources" superClass="com.ti.ccstudio.buildDefinitions.C2000_6.4.compiler.inputType__ASM_SRCS"/>

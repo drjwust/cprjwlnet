@@ -9,6 +9,9 @@
 #define APP_INCLUDE_APP_H_
 #include "DCL.h"
 
+#define I_LIMIT		20	//过流保护阀值
+#define UDC_LIMIT	650	//过压保护阈值
+
 #define SAMPLE_FREQUENCE	10000	//Hz
 #define SAMPLE_PERIOD		(1.0/SAMPLE_FREQUENCE)	//s
 
