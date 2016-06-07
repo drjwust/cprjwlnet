@@ -7,7 +7,7 @@
 //AD采样接口已更改
 #include <app_define.h>
 #include <DCL.h>
-
+#include <FPU.h>
 #include "DSP2833x_Device.h"     // DSP2833x Headerfile Include File
 #include "DSP2833x_Examples.h"   // DSP2833x Examples Include File
 #include "variables.h"
@@ -62,6 +62,13 @@ float RealAngle = 0;
 float EstSpeed;
 float RealSpeed;
 float Imax1 = 0, Imax2 = 0;
+
+/***********电感参数识别********************/
+char DFTCnt = 0;	//DFT计算的序列号
+float iReal = 0;	//DFT计算的实部
+float iImag = 0;	//DFT计算的虚部
+float EstLq = 0;	//Q轴电感估计值
+float EstLd = 0;	//D轴电感估计值
 
 float GraphData1[500];
 float GraphData2[500];
@@ -369,7 +376,7 @@ interrupt void adc_isr(void)
 			PI_MACRO(pi_id1)
 
 			/*********************无速度传感器的高频注入**********************/
-			if (Time < 3)	//当时间小于3s时，电机先判断磁极位置
+			if (Time < 2)	//当时间小于3s时，电机先判断磁极位置
 			{
 				EstAngle = AngleEstimation(park1.Qs);
 
@@ -377,36 +384,31 @@ interrupt void adc_isr(void)
 				pi_iq1.Out = 0;
 				pi_id1.Out += 120 * cos(2 * 800 * PI_CONSTANT * Time);
 			}
-			else if (Time > 3 && Time < 5)
+			else if (Time > 2 && Time <= 3)
 			{
 				pi_id1.Out = 0;		//初次调试时，可以先把电流调节器输出置为0
 				pi_iq1.Out = 0;
 			}
-			else if (Time > 5 && Time <= 5.002)
+			else if (Time > 3 && Time <= 3.001)
 			{
-				pi_id1.Out = 80;
+				pi_id1.Out = 150;
 				pi_iq1.Out = 0;
-				if (Imax1 < park1.Ds)
-					Imax1 = park1.Ds;
+				if (Imax1 < fabs(park1.Ds))
+					Imax1 = fabs(park1.Ds);
 			}
-			else if (Time > 5.002 && Time <= 5.1)
+			else if (Time > 3.001 && Time <= 3.5)
 			{
 				pi_id1.Out = 0;		//初次调试时，可以先把电流调节器输出置为0
 				pi_iq1.Out = 0;
 			}
-			else if (Time > 5.1 && Time <= 5.102)
+			else if (Time > 3.5 && Time <= 3.501)
 			{
-				pi_id1.Out = -80;	//注入一个极性相反的电压
+				pi_id1.Out = -120;	//注入一个极性相反的电压
 				pi_iq1.Out = 0;
 				if (Imax2 < fabs(park1.Ds))
 					Imax2 = fabs(park1.Ds);
 			}
-			else if (Time > 5.102 && Time <= 5.2)
-			{
-				pi_id1.Out = 0;		//初次调试时，可以先把电流调节器输出置为0
-				pi_iq1.Out = 0;
-			}
-			else if (Time > 5.2)
+			else if (Time > 3.501 && Time <= 4)
 			{
 				if (Imax1 > Imax2)	//磁极极性判断
 				{
@@ -422,13 +424,94 @@ interrupt void adc_isr(void)
 						theta += 2 * PI_CONSTANT;
 					EstAngle = theta;
 				}
+				pi_id1.Out = 0;		//初次调试时，可以先把电流调节器输出置为0
+				pi_iq1.Out = 0;
+				pi_id1.v1 = 0;
+				pi_iq1.v1 = 0;
+				pi_id1.Out += 120 * cos(2 * 800 * PI_CONSTANT * Time);
+				EstLd = 0;
+				EstLq = 0;
+			}
+			else if (Time > 4 && Time <= 7)	//D轴电感识别
+			{
+				float sinval, cosval;
 
-				//		pi_id1.Out = 0;		//初次调试时，可以先把电流调节器输出置为0
-				//		pi_iq1.Out = 0;
+				if (Imax1 > Imax2)	//磁极极性判断
+				{
+					EstAngle = AngleEstimation(park1.Qs);
+				}
+				else
+				{
+					float theta;
+					theta = AngleEstimation(park1.Qs) + PI_CONSTANT;
+					if (theta > 2 * PI_CONSTANT)
+						theta -= 2 * PI_CONSTANT;
+					else if (theta < 0)
+						theta += 2 * PI_CONSTANT;
+					EstAngle = theta;
+				}
+
+//				pi_id1.Out = 0;		//初次调试时，可以先把电流调节器输出置为0
+				pi_iq1.Out = 0;
+				pi_id1.Out += 120 * cos(2 * 800 * PI_CONSTANT * Time);
+
+				sincos(4 * PI_CONSTANT * DFTCnt / 25.0, &sinval, &cosval);
+				iReal += 2.0 / 25 * park1.Ds * cosval;
+				iImag += 2.0 / 25 * park1.Ds * sinval;
+				DFTCnt++;
+				DFTCnt %= 25;
+				if (DFTCnt == 0)
+				{
+					EstLd = 120.0
+							/ (__ffsqrtf(iReal * iReal + iImag * iImag) * 2
+									* PI_CONSTANT * 800);
+					iReal = 0, iImag = 0;
+				}
+			}
+
+			else if (Time > 7 && Time <= 10)	//q轴电感识别
+			{
+				float sinval, cosval;
+
+				pi_iq1.Out = 0;
+				pi_iq1.Out += 120 * cos(2 * 800 * PI_CONSTANT * Time);
+				sincos(4 * PI_CONSTANT * DFTCnt / 25.0, &sinval, &cosval);
+				iReal += 2.0 / 25 * park1.Qs * cosval;
+				iImag += 2.0 / 25 * park1.Qs * sinval;
+				DFTCnt++;
+				DFTCnt %= 25;
+				if (DFTCnt == 0)
+				{
+					EstLq = 120.0
+							/ (__ffsqrtf(iReal * iReal + iImag * iImag) * 2
+									* PI_CONSTANT * 800);
+					iReal = 0, iImag = 0;
+				}
+			}
+			else if (Time > 10)
+			{
+				if (Imax1 > Imax2)	//磁极极性判断
+				{
+					EstAngle = AngleEstimation(park1.Qs);
+				}
+				else
+				{
+					float theta;
+					theta = AngleEstimation(park1.Qs) + PI_CONSTANT;
+					if (theta > 2 * PI_CONSTANT)
+						theta -= 2 * PI_CONSTANT;
+					else if (theta < 0)
+						theta += 2 * PI_CONSTANT;
+					EstAngle = theta;
+				}
+				pi_id1.Out = 0;		//初次调试时，可以先把电流调节器输出置为0
+				pi_iq1.Out = 0;
 				pi_id1.Out += 120 * cos(2 * 800 * PI_CONSTANT * Time);
 			}
-			DispData1 = park1.Ds;
-			DispData2 = park1.Qs;
+
+
+			DispData1 = EstLd;
+			DispData2 = EstLq;
 
 			/**********************逆PARK变换*********************************/
 			ipark1.Angle = EstAngle;
@@ -1085,7 +1168,6 @@ void En2EPWM()
 	EPwm2Regs.TZCLR.bit.OST = 1;
 	EPwm3Regs.TZCLR.bit.OST = 1;
 
-
 	EDIS;
 
 	return;
@@ -1467,38 +1549,38 @@ void LEDDisp(void)
 void Protection(void)
 {
 	/*---过电流软件保护---*/
-		if ((Cur_A > I_LIMIT) || (Cur_B > I_LIMIT) || (Cur_C > I_LIMIT) || (Cur_A < -I_LIMIT)
-				|| (Cur_B < -I_LIMIT) || (Cur_C < -I_LIMIT))
-		{
-			Dis1EPWM();
-			COMReg_Para1.FaultCode = PWM_STAT_OVERCUR;
-			PWM1_State |= PWM_STAT_OVERCUR;
-		}
-		else
-		{
-			COMReg_Para1.FaultCode = PWM_STAT_NOFAULT;
-		}
-		if ((Cur_U > I_LIMIT) || (Cur_V > I_LIMIT) || (Cur_W > I_LIMIT) || (Cur_U < -I_LIMIT)
-				|| (Cur_V < -I_LIMIT) || (Cur_W < -I_LIMIT))
-		{
-			Dis2EPWM();
-			COMReg_Para2.FaultCode = PWM_STAT_OVERCUR;
-			PWM2_State |= PWM_STAT_OVERCUR;
-		}
-		else
-		{
-			COMReg_Para2.FaultCode = PWM_STAT_NOFAULT;
-		}
-		/*---过电压软件保护---*/
-		if (UDC > UDC_LIMIT)
-		{
-			Dis1EPWM();
-			Dis2EPWM();
-			PWM1_State |= PWM_STAT_OVERVOL;
-			PWM2_State |= PWM_STAT_OVERVOL;
-			COMReg_Para1.FaultCode = PWM_STAT_OVERVOL;
+	if ((Cur_A > I_LIMIT) || (Cur_B > I_LIMIT) || (Cur_C > I_LIMIT)
+			|| (Cur_A < -I_LIMIT) || (Cur_B < -I_LIMIT) || (Cur_C < -I_LIMIT))
+	{
+		Dis1EPWM();
+		COMReg_Para1.FaultCode = PWM_STAT_OVERCUR;
+		PWM1_State |= PWM_STAT_OVERCUR;
+	}
+	else
+	{
+		COMReg_Para1.FaultCode = PWM_STAT_NOFAULT;
+	}
+	if ((Cur_U > I_LIMIT) || (Cur_V > I_LIMIT) || (Cur_W > I_LIMIT)
+			|| (Cur_U < -I_LIMIT) || (Cur_V < -I_LIMIT) || (Cur_W < -I_LIMIT))
+	{
+		Dis2EPWM();
+		COMReg_Para2.FaultCode = PWM_STAT_OVERCUR;
+		PWM2_State |= PWM_STAT_OVERCUR;
+	}
+	else
+	{
+		COMReg_Para2.FaultCode = PWM_STAT_NOFAULT;
+	}
+	/*---过电压软件保护---*/
+	if (UDC > UDC_LIMIT)
+	{
+		Dis1EPWM();
+		Dis2EPWM();
+		PWM1_State |= PWM_STAT_OVERVOL;
+		PWM2_State |= PWM_STAT_OVERVOL;
+		COMReg_Para1.FaultCode = PWM_STAT_OVERVOL;
 
-		}
+	}
 }
 
 //TODO 角度估计
@@ -1508,7 +1590,7 @@ float AngleEstimation(float iq)
 	static float theta = 0;
 	i1 = DCL_runDF22(&AngEstBPF, iq);
 	DispData1 = i1;
-	i2 = -i1 * sin(800 * 2 * PI_CONSTANT * Time);
+	i2 = i1 * sin(800 * 2 * PI_CONSTANT * Time);
 	i3 = DCL_runDF22(&AngEstLPF, i2);
 	DispData2 = i3;
 	AngEstPI.Ref = i3 * COMReg_Para1.Omiga_Ref * 0.01;
